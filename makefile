@@ -53,6 +53,10 @@ BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
+CC := gcc
+CFLAGS := -Wall -g
+
+$(CC) $(CFLAGS) -o $(BUILD_ARTIFACT_NAME) $(BUILD_ARTIFACT_NAME).c
 
 # All Target
 all: main-build
