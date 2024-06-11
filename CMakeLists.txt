@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION "3.19.0")
 
-project("subbu_project/subbu_project")
+project(subbu_project)
 
 add_executable("${PROJECT_NAME}" "src/bitwise_add_subtraction_operators.c")
 
