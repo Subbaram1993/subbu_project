@@ -43,7 +43,7 @@ jobs:
           path: dist
 
       - name: Deploy to GitHub Releases
-        uses: Subbaram1993/subbu_project@v2
+        uses: Subbaram1993/subbu_project
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
