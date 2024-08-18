@@ -1,0 +1,53 @@
+name: Regression Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  regression-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          # Install dependencies here
+          # For example:
+          pip install -r requirements.txt
+
+      - name: Run regression tests
+        run: |
+          # Run regression tests here
+          # For example:
+          python -m unittest discover -v -p 'test_regression*.py'
+
+      - name: Archive test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: regression-test-results
+          path: test_results
+
+      - name: Create regression build
+        run: |
+          # Create regression build here
+          # For example:
+          python setup.py sdist
+
+      - name: Upload regression build
+        uses: actions/upload-artifact@v2
+        with:
+          name: regression-build
+          path: dist
+
+      - name: Deploy to GitHub Releases
+        uses: softprops/gotta-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: true
+          prerelease: true
+          title: "Regression Build"
+          body: "Automatically generated regression build"
+          artifact: regression-build
