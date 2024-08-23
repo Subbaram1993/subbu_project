@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Jenkins URL and credentials
-JENKINS_URL="https://your-jenkins-instance.com"
+JENKINS_URL="http://localhost:8080/job/Subbu_Project_Build/"
 JENKINS_USERNAME="subbaramaiah_chevuru"
 JENKINS_PASSWORD="Subbu@8374127261"
 
