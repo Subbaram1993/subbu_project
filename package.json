@@ -1,0 +1,12 @@
+{
+  "name": "subbu_project",
+  "version": "1.0.0",
+  "description": "Subbu's project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Subbaram1993",
+  "license": "MIT"
+}
