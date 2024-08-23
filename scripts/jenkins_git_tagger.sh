@@ -2,14 +2,14 @@
 
 # Jenkins URL and credentials
 JENKINS_URL="https://your-jenkins-instance.com"
-JENKINS_USERNAME="your-username"
-JENKINS_PASSWORD="your-password-or-api-token"
+JENKINS_USERNAME="subbaramaiah_chevuru"
+JENKINS_PASSWORD="Subbu@8374127261"
 
 # Jenkins job name
-JENKINS_JOB_NAME="your-job-name"
+JENKINS_JOB_NAME="Subbu_Project_Build"
 
 # Git repository URL
-GIT_REPO_URL="https://your-git-repo.com/your-repo-name.git"
+GIT_REPO_URL="https://github.com/Subbaram1993/subbu_project.git"
 
 # Git tag prefix
 GIT_TAG_PREFIX="v"
