@@ -4,7 +4,7 @@
   "description": "A Node.js project for demonstrating various concepts and techniques in JavaScript",
   "main": "build.js",
   "scripts": {
-    "build": "sh ./publish.sh",
+    "build": "C:\\Program Files\\nodejs\\node.exe build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["nodejs", "javascript", "demo", "tutorial"],
