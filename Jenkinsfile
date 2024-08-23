@@ -5,12 +5,11 @@ pipeline {
         nodejs 'Node.js'
     }
 
-    ws('C:\\Program Files\\Jenkins\\workspace\\New_Subbu_Project_Build') { 
-        stages {
-            stage('Build') {
-                steps {
-                    sh 'npm run build'
-                }
+    stages {
+        stage('Clean and Build') {
+            steps {
+                deleteDir('node_modules') // Delete the node_modules directory
+                sh 'npm run build'
             }
         }
     }
