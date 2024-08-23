@@ -4,7 +4,7 @@ pipeline {
     tools {
         nodejs 'Node.js' {
             installDir 'C:/Program Files/Jenkins/tools/nodejs'
-            version 'v14.17.0'
+            version 'v20.17.0'
         }
     }
 
