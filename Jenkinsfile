@@ -2,13 +2,15 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node.js'
+        nodejs 'Node.js' {
+            installDir 'C:/Program Files/Jenkins/tools/nodejs'
+            version 'v14.17.0'
+        }
     }
 
     stages {
-        stage('Clean and Build') {
+        stage('Build') {
             steps {
-                deleteDir('node_modules') // Delete the node_modules directory
                 sh 'npm run build'
             }
         }
