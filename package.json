@@ -1,12 +1,13 @@
 {
   "name": "subbu_project",
   "version": "1.0.0",
-  "description": "Subbu's project",
+  "description": "A Node.js project for demonstrating various concepts and techniques in JavaScript",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["nodejs", "javascript", "demo", "tutorial"],
   "author": "Subbaram1993",
-  "license": "MIT"
+  "license": "ISC"
 }
