@@ -8,7 +8,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'npm run build'
+                bat 'copy E:\\subbu\\subbu_project\\package.json .'
+                bat 'npm run build'
             }
         }
     }
