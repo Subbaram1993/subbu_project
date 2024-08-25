@@ -23,8 +23,17 @@ jobs:
       - name: Read JSON Configuration
         id: read-json
         run: |
-          JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
-          echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
+          if [ -f config.json ]; then
+            JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
+            if [ "$JOB_NAME" == "null" ]; then
+              echo "Error: 'jobName' not found in config.json"
+              exit 1
+            fi
+            echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
+          else
+            echo "Error: config.json file not found"
+            exit 1
+          fi
 
       - name: Extract Job Name and Increment Build Number
         id: extract-and-increment

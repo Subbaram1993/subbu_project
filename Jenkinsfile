@@ -1,35 +1,49 @@
+import groovy.json.JsonSlurper
+
 pipeline {
     agent any
 
-    tools {
-        nodejs 'nodejs_v20.17.0'
+    parameters {
+        string(name: 'CUSTOM_PARAM', defaultValue: 'default-value', description: 'Custom parameter for the build')
+        string(name: 'BUILD_NUMBER', defaultValue: '01', description: 'Build number')
     }
 
     stages {
-        stage('Build') {
+        stage('Read JSON Config') {
             steps {
-                git branch: 'main', credentialsId: 'jenkins', url: 'https://github.com/Subbaram1993/subbu_project.git'
-                bat 'copy E:\\subbu\\subbu_project\\package.json .'
-                bat 'call "%NODE_HOME%\\nodevars.bat"'
-                bat 'npm run build'
+                script {
+                    def jsonFile = readFile('config.json')
+                    def json = new JsonSlurper().parseText(jsonFile)
+                    def jobName = json.buildConfig.jobName
+
+                    echo "Job Name from JSON: ${jobName}"
+
+                    // Pass the job name as a parameter if needed
+                    env.JOB_NAME = jobName
+                }
             }
         }
-    }
 
-    post {
-        success {
-            // Update GitHub repository with build changes and ID
-            git {
-                remote {
-                    name('origin')
-                    url('https://github.com/Subbaram1993/subbu_project.git')
-                    credentialsId('9a6fcdd9-dd37-4c69-851a-0a16c1338cf1')
+        stage('Build') {
+            steps {
+                script {
+                    def customParam = params.CUSTOM_PARAM
+                    def buildNumber = params.BUILD_NUMBER
+                    def jobName = env.JOB_NAME
+
+                    echo "Custom Parameter: ${customParam}"
+                    echo "Build Number: ${buildNumber}"
+                    echo "Job Name: ${jobName}"
+
+                    // Example usage in a script
+                    sh """
+                    echo "Building with custom parameter: ${customParam}"
+                    echo "Build Number: ${buildNumber}"
+                    echo "Job Name: ${jobName}"
+                    # Add your build commands here
+                    """
                 }
-                branch('main')
             }
-            sh "git add ."
-            sh "git commit -m 'Updated build changes for Jenkins build #${BUILD_NUMBER}'"
-            sh "git push origin main"
         }
     }
 }
