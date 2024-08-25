@@ -82,8 +82,8 @@ jobs:
 
           echo "All required environment variables are set."
 
-          # Trim the Jenkins URL to remove trailing slashes
-          TRIMMED_JENKINS_URL=$(echo "${JENKINS_URL}" | sed 's:/*$::')
+          # Temporarily hardcode the JENKINS_URL for debugging
+          TRIMMED_JENKINS_URL="http://192.168.0.211:8080"
           echo "Trimmed Jenkins URL: ${TRIMMED_JENKINS_URL}"
 
           # Clean up the job name
@@ -91,8 +91,8 @@ jobs:
           echo "Clean Job Name: ${CLEAN_JOB_NAME}"
 
           # Construct the full URL for triggering the Jenkins job
-          FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
-          echo "Full URL: ${FULL_URL}"
+          FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/buildWithParameters"
+          echo "Constructed Full URL: ${FULL_URL}"
 
           # Trigger the Jenkins build
           curl -v "${FULL_URL}" \
