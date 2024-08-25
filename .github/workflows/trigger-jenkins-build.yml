@@ -78,4 +78,3 @@ jobs:
                --data-urlencode "BUILD_NUMBER=${{ env.BUILD_NUMBER }}" \
                --data-urlencode "CUSTOM_PARAM=custom-value"  # Optional parameters
           echo "Build triggered successfully."
-
