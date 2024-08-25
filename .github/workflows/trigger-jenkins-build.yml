@@ -74,12 +74,11 @@ jobs:
           JOB_NAME: ${{ env.JOB_NAME }}
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
-          echo "Triggering Jenkins build..."
-          TRIMMED_JENKINS_URL=$(echo "${{ env.JENKINS_URL }}" | xargs)
+          TRIMMED_JENKINS_URL=$(echo "${{ secrets.JENKINS_URL }}" | sed 's:/*$::')
           CLEAN_JOB_NAME=$(echo "${{ env.JOB_NAME }}" | tr -d '\n' | jq -sRr @uri)
-          echo "Clean Job Name: ${CLEAN_JOB_NAME}"
-          curl -v -X POST "${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters" \
-            --user "${{ env.JENKINS_USER }}:${{ env.JENKINS_API_TOKEN }}" \
-            --data-urlencode "BUILD_NUMBER=${{ env.BUILD_NUMBER }}" \
-             --data-urlencode "CUSTOM_PARAM=custom-value"
-          echo "Build triggered successfully."
+          FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
+          echo "Full URL: ${FULL_URL}"
+          curl -v -X POST "${FULL_URL}" \
+               --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+               --data-urlencode "BUILD_NUMBER=${{ env.BUILD_NUMBER }}" \
+               --data-urlencode "CUSTOM_PARAM=custom-value"
