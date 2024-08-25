@@ -25,7 +25,7 @@ jobs:
         run: |
           if [ -f config.json ]; then
             JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
-            if [ "$JOB_NAME" == "null" ]; then
+            if [ "$JOB_NAME" == "null" ] || [ -z "$JOB_NAME" ]; then
               echo "Error: 'jobName' not found in config.json"
               exit 1
             fi
@@ -40,12 +40,15 @@ jobs:
         run: |
           # Extract job name from commit message (e.g., "Activity: subbu_project")
           EXTRACTED_JOB_NAME=$(echo "${{ env.COMMIT_MESSAGE }}" | grep -oP '(?<=Activity: )\S+')
-          JOB_NAME=${EXTRACTED_JOB_NAME:-${{ env.JOB_NAME }}}
-          echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
+          if [ -z "$EXTRACTED_JOB_NAME" ]; then
+            EXTRACTED_JOB_NAME=${{ env.JOB_NAME }}
+          fi
+          echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
 
-          # Read the current build number from a file
-          if [ -f .github/build-number.txt ]; then
-            BUILD_NUMBER=$(cat .github/build-number.txt)
+          # Read the current build number from a file or initialize it
+          BUILD_NUMBER_FILE=".github/build-number.txt"
+          if [ -f $BUILD_NUMBER_FILE ]; then
+            BUILD_NUMBER=$(cat $BUILD_NUMBER_FILE)
           else
             BUILD_NUMBER="00"
           fi
@@ -53,10 +56,10 @@ jobs:
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
           # Update the build number file
-          echo "${BUILD_NUMBER}" > .github/build-number.txt
+          echo "${BUILD_NUMBER}" > $BUILD_NUMBER_FILE
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add .github/build-number.txt
+          git add $BUILD_NUMBER_FILE
           git commit -m "Update build number to ${BUILD_NUMBER}"
           git push
 
