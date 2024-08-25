@@ -80,12 +80,14 @@ jobs:
             exit 1
           fi
 
+          echo "All required environment variables are set."
+
           # Trim the Jenkins URL to remove trailing slashes
-          TRIMMED_JENKINS_URL=$(echo "${{ secrets.JENKINS_URL }}" | sed 's:/*$::')
+          TRIMMED_JENKINS_URL=$(echo "${JENKINS_URL}" | sed 's:/*$::')
           echo "Trimmed Jenkins URL: ${TRIMMED_JENKINS_URL}"
 
           # Clean up the job name
-          CLEAN_JOB_NAME=$(echo "${{ env.JOB_NAME }}" | tr -d '\n')
+          CLEAN_JOB_NAME=$(echo "${JOB_NAME}" | tr -d '\n')
           echo "Clean Job Name: ${CLEAN_JOB_NAME}"
 
           # Construct the full URL for triggering the Jenkins job
@@ -97,4 +99,7 @@ jobs:
                --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
                --data-urlencode "BUILD_NUMBER=${BUILD_NUMBER}" \
                --data-urlencode "CUSTOM_PARAM=custom-value"
+
+          echo "Jenkins build trigger completed."
+
         shell: bash
