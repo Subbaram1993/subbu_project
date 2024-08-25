@@ -73,8 +73,9 @@ jobs:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
           echo "Triggering Jenkins build..."
-          curl -X POST "${JENKINS_URL}/job/${JOB_NAME}/build" \
-               --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
-               --data-urlencode "BUILD_NUMBER=${BUILD_NUMBER}" \
+          curl -X POST "${{ env.JENKINS_URL }}/job/${{ env.JOB_NAME }}/buildWithParameters" \
+               --user "${{ env.JENKINS_USER }}:${{ env.JENKINS_API_TOKEN }}" \
+               --data-urlencode "BUILD_NUMBER=${{ env.BUILD_NUMBER }}" \
                --data-urlencode "CUSTOM_PARAM=custom-value"  # Optional parameters
           echo "Build triggered successfully."
+
