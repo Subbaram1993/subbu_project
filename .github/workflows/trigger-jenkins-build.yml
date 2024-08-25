@@ -63,8 +63,14 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           
+          # Stash any local changes
+          git stash
+
           # Pull the latest changes before pushing
           git pull --rebase
+          git stash pop
+
+          # Add and commit the build number file
           git add $BUILD_NUMBER_FILE
           git commit -m "Update build number to ${BUILD_NUMBER}"
           git push
