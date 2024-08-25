@@ -95,7 +95,7 @@ jobs:
           echo "Full URL: ${FULL_URL}"
 
           # Trigger the Jenkins build
-          curl -v -X POST "${FULL_URL}" \
+          curl -v "${FULL_URL}" \
                --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
                --data-urlencode "BUILD_NUMBER=${BUILD_NUMBER}" \
                --data-urlencode "CUSTOM_PARAM=custom-value"
