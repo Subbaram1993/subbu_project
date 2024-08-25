@@ -44,7 +44,11 @@ jobs:
           echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
 
           # Read the current build number from a file
-          BUILD_NUMBER=$(cat .github/build-number.txt || echo "00")
+          if [ -f .github/build-number.txt ]; then
+            BUILD_NUMBER=$(cat .github/build-number.txt)
+          else
+            BUILD_NUMBER="00"
+          fi
           BUILD_NUMBER=$(printf "%02d" $((10#$BUILD_NUMBER + 1)))
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
