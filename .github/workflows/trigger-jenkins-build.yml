@@ -4,76 +4,26 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  trigger-jenkins:
+  trigger-build:
     runs-on: ubuntu-latest
+
+    env:
+      JENKINS_URL: ${{ secrets.JENKINS_URL }}
+      JENKINS_USER: ${{ secrets.JENKINS_USER }}
+      JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+      JOB_NAME: ${{ env.JOB_NAME }}
+      BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Get Commit Message
-        id: get-commit-message
-        run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
-          echo "Commit Message: ${COMMIT_MESSAGE}"
-          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
-
-      - name: Read JSON Configuration
-        id: read-json
-        run: |
-          if [ -f config.json ]; then
-            JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
-            if [ "$JOB_NAME" == "null" ] || [ -z "$JOB_NAME" ]; then
-              echo "Error: 'jobName' not found in config.json"
-              exit 1
-            fi
-            echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
-          else
-            echo "Error: config.json file not found"
-            exit 1
-          fi
-
-      - name: Extract Job Name and Increment Build Number
-        id: extract-and-increment
-        run: |
-          # Extract job name from commit message (e.g., "Activity: subbu_project")
-          EXTRACTED_JOB_NAME=$(echo "${{ env.COMMIT_MESSAGE }}" | grep -oP '(?<=Activity: )\S+')
-          if [ -z "$EXTRACTED_JOB_NAME" ]; then
-            EXTRACTED_JOB_NAME=${{ env.JOB_NAME }}
-          fi
-          echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
-
-          # Read the current build number from a file or initialize it
-          BUILD_NUMBER_FILE=".github/build-number.txt"
-          if [ -f $BUILD_NUMBER_FILE ]; then
-            BUILD_NUMBER=$(cat $BUILD_NUMBER_FILE)
-          else
-            BUILD_NUMBER="00"
-          fi
-          BUILD_NUMBER=$(printf "%02d" $((10#$BUILD_NUMBER + 1)))
-          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
-
-          # Update the build number file
-          echo "${BUILD_NUMBER}" > $BUILD_NUMBER_FILE
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add $BUILD_NUMBER_FILE
-          git commit -m "Update build number to ${BUILD_NUMBER}"
-          git push
-
       - name: Trigger Jenkins Build
-        env:
-          JENKINS_URL: ${{ secrets.JENKINS_URL }}
-          JENKINS_USER: ${{ secrets.JENKINS_USER }}
-          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-          JOB_NAME: ${{ env.JOB_NAME }}
-          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
           echo "Triggering Jenkins build..."
-          curl -X POST "${JENKINS_URL}/job/${JOB_NAME}/buildWithParameters" \
-               --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
-               --data-urlencode "BUILD_NUMBER=${BUILD_NUMBER}" \
-               --data-urlencode "CUSTOM_PARAM=custom-value"  # Optional parameters
-          echo "Build triggered successfully."
+          curl -X POST "${{ env.JENKINS_URL }}/job/${{ env.JOB_NAME }}/buildWithParameters" \
+            --user "${{ env.JENKINS_USER }}:${{ env.JENKINS_API_TOKEN }}" \
+            --data-urlencode "BUILD_NUMBER=${{ env.BUILD_NUMBER }}" \
+            -H "Content-Type: application/x-www-form-urlencoded"

@@ -6,31 +6,51 @@ pipeline {
     parameters {
         string(name: 'CUSTOM_PARAM', defaultValue: 'default-value', description: 'Custom parameter for the build')
         string(name: 'BUILD_NUMBER', defaultValue: '01', description: 'Build number')
-        string(name: 'JOB_NAME', defaultValue: 'default-job-name', description: 'Job name from the JSON file or commit message')
+        string(name: 'JOB_NAME', defaultValue: 'subbu_project', description: 'Job name from the commit message or JSON file')
     }
 
     stages {
         stage('Read JSON Config') {
             steps {
                 script {
+                    // Default job name to the parameter value
+                    def jobName = params.JOB_NAME
+
                     if (fileExists('config.json')) {
                         def jsonFile = readFile('config.json')
-                        def json = new JsonSlurper().parseText(jsonFile)
-                        def jobName = json.buildConfig.jobName
-
-                        if (jobName) {
-                            echo "Job Name from JSON: ${jobName}"
-                            env.JOB_NAME = jobName
-                        } else {
-                            echo "Error: 'jobName' not found in config.json"
+                        def json
+			try{
+                            json = new JsonSlurper().parseText(jsonFile)
+                        } catch (Exception e) {
+                            echo "Error parsing JSON: ${e.message}"
                             currentBuild.result = 'FAILURE'
-                            error "Job name not found in config.json"
+                            error "Failed to parse config.json"
+                        }
+
+                        def jsonJobName = json?.buildConfig?.jobName
+
+                        if (jsonJobName) {
+                            echo "Job Name from JSON: ${jsonJobName}"
+                            jobName = jsonJobName
+                        } else {
+                            echo "Warning: 'jobName' not found in config.json"
                         }
                     } else {
-                        echo "config.json file not found"
-                        currentBuild.result = 'FAILURE'
-                        error "config.json file not found"
+                        echo "Warning: config.json file not found"
                     }
+
+                    // Extract activity from commit message if available
+                    def commitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                    def activity = commitMessage.tokenize().find { it.startsWith('activity:') }
+                    
+                    if (activity) {
+                        jobName = activity.replace('activity:', '').trim()
+                        echo "Job Name derived from commit message activity: ${jobName}"
+                    } else {
+                        echo "Using job name from parameter or JSON: ${jobName}"
+                    }
+
+                    env.JOB_NAME = jobName
                 }
             }
         }
@@ -40,7 +60,7 @@ pipeline {
                 script {
                     def customParam = params.CUSTOM_PARAM
                     def buildNumber = params.BUILD_NUMBER
-                    def jobName = params.JOB_NAME
+                    def jobName = env.JOB_NAME
 
                     echo "Custom Parameter: ${customParam}"
                     echo "Build Number: ${buildNumber}"
