@@ -74,7 +74,7 @@ jobs:
 
           # Trigger the Jenkins build with authentication using the API token
           curl -v "${FULL_URL}" \
-               --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
+               --user "${{ JENKINS_USER }}:${{ JENKINS_API_TOKEN }}" \
                --data-urlencode "CUSTOM_PARAM=custom-value"
 
           echo "Jenkins build trigger completed."
