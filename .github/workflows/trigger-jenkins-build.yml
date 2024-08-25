@@ -46,21 +46,21 @@ jobs:
           echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
 
           BUILD_NUMBER_FILE=".github/build-number.txt"
-          if [ -f $BUILD_NUMBER_FILE ]; then
-            BUILD_NUMBER=$(cat $BUILD_NUMBER_FILE)
+          if [ -f "$BUILD_NUMBER_FILE" ]; then
+            BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
           else
             BUILD_NUMBER="00"
           fi
           BUILD_NUMBER=$(printf "%02d" $((10#$BUILD_NUMBER + 1)))
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
-          echo "${BUILD_NUMBER}" > $BUILD_NUMBER_FILE
+          echo "${BUILD_NUMBER}" > "$BUILD_NUMBER_FILE"
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git stash
           git pull --rebase
           git stash pop
-          git add $BUILD_NUMBER_FILE
+          git add "$BUILD_NUMBER_FILE"
           git commit -m "Update build number to ${BUILD_NUMBER}" || true
           git push
 
