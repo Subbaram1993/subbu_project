@@ -49,33 +49,18 @@ jobs:
         env:
           JENKINS_URL: ${{ secrets.JENKINS_URL }}
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
-          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}  # Reference to the API token stored in GitHub Secrets
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
           JOB_NAME: ${{ env.JOB_NAME }}
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
-          set -x  # Print commands for easier debugging
-
-          # Check if all required environment variables are set
-          if [ -z "${JENKINS_URL}" ] || [ -z "${JENKINS_USER}" ] || [ -z "${JENKINS_API_TOKEN}" ] || [ -z "${JOB_NAME}" ]; then
-            echo "Error: Required environment variables are not set."
-            exit 1
-          fi
-
-          # Trim the Jenkins URL to remove trailing slashes
-          TRIMMED_JENKINS_URL=$(echo "${JENKINS_URL}" | sed 's:/*$::')
-          echo "Trimmed Jenkins URL: ${TRIMMED_JENKINS_URL}"
-
-          # Clean up the job name
-          CLEAN_JOB_NAME=$(echo "${JOB_NAME}" | tr -d '\n')
-          echo "Clean Job Name: ${CLEAN_JOB_NAME}"
-
-          # Construct the full URL for triggering the Jenkins job
+          TRIMMED_JENKINS_URL=$(echo "${{ secrets.JENKINS_URL }}" | sed 's:/*$::')
+          CLEAN_JOB_NAME=$(echo "${{ env.JOB_NAME }}" | tr -d '\n' | jq -sRr @uri)
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
-          echo "Constructed Full URL: ${FULL_URL}"
-
-          # Trigger the Jenkins build with authentication using the API token
-          curl -v "${FULL_URL}" \
+          echo "Full URL: ${FULL_URL}"
+          curl -v -X POST '${FULL_URL}' \
                --user '${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}' \
-               --data-urlencode "CUSTOM_PARAM=custom-value"
+               --data-urlencode 'BUILD_NUMBER=${{ env.BUILD_NUMBER }}' \
+               --data-urlencode 'CUSTOM_PARAM=custom-value'
 
           echo "Jenkins build trigger completed."
         shell: bash
