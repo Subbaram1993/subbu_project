@@ -1,0 +1,5 @@
+{
+    "buildConfig": {
+        "jobName": "default-job-name"  // This will be overridden by the commit message if needed
+    }
+}
