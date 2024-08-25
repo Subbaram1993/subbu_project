@@ -101,5 +101,4 @@ jobs:
                --data-urlencode "CUSTOM_PARAM=custom-value"
 
           echo "Jenkins build trigger completed."
-
         shell: bash
