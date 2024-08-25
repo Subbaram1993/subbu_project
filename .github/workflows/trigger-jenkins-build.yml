@@ -6,19 +6,27 @@ on:
       - main
 
 jobs:
-  trigger-jenkins:
+  trigger-build:
     runs-on: ubuntu-latest
 
     env:
       JENKINS_URL: ${{ secrets.JENKINS_URL }}
       JENKINS_USER: ${{ secrets.JENKINS_USER }}
       JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-      JOB_NAME: ${{ env.JOB_NAME }}
-      BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+      JOB_NAME: subbu_project
+      BUILD_NUMBER: ${{ github.run_number }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Print Jenkins Environment Variables
+        run: |
+          echo "JENKINS_URL=${{ env.JENKINS_URL }}"
+          echo "JENKINS_USER=${{ env.JENKINS_USER }}"
+          echo "JENKINS_API_TOKEN=${{ secrets.JENKINS_API_TOKEN }}"  # Masked for security
+          echo "JOB_NAME=${{ env.JOB_NAME }}"
+          echo "BUILD_NUMBER=${{ env.BUILD_NUMBER }}"
 
       - name: Trigger Jenkins Build
         run: |
