@@ -64,22 +64,11 @@ jobs:
           git commit -m "Update build number to ${BUILD_NUMBER}" || true
           git push
 
-      - name: Debug URL and Environment
-        run: |
-          echo "JENKINS_URL: ${JENKINS_URL}"
-          echo "JENKINS_USER: ${JENKINS_USER}"
-          echo "JENKINS_API_TOKEN: ${JENKINS_API_TOKEN}"
-          echo "JOB_NAME: ${JOB_NAME}"
-          echo "BUILD_NUMBER: ${BUILD_NUMBER}"
-          echo "TRIMMED_JENKINS_URL: ${TRIMMED_JENKINS_URL}"
-          echo "CLEAN_JOB_NAME: ${CLEAN_JOB_NAME}"
-          echo "FULL_URL: ${FULL_URL}"
-
       - name: Trigger Jenkins Build
         env:
           JENKINS_URL: ${{ secrets.JENKINS_URL }}
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
-          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}  # Reference to the API token stored in GitHub Secrets
           JOB_NAME: ${{ env.JOB_NAME }}
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
