@@ -68,7 +68,7 @@ jobs:
         env:
           JENKINS_URL: ${{ secrets.JENKINS_URL }}
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
-          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}  # Reference to the API token stored in GitHub Secrets
           JOB_NAME: ${{ env.JOB_NAME }}
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
@@ -80,10 +80,8 @@ jobs:
             exit 1
           fi
 
-          echo "All required environment variables are set."
-
-          # Temporarily hardcode the JENKINS_URL for debugging
-          TRIMMED_JENKINS_URL="http://192.168.0.211:8080"
+          # Trim the Jenkins URL to remove trailing slashes
+          TRIMMED_JENKINS_URL=$(echo "${JENKINS_URL}" | sed 's:/*$::')
           echo "Trimmed Jenkins URL: ${TRIMMED_JENKINS_URL}"
 
           # Clean up the job name
@@ -91,10 +89,10 @@ jobs:
           echo "Clean Job Name: ${CLEAN_JOB_NAME}"
 
           # Construct the full URL for triggering the Jenkins job
-          FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/buildWithParameters"
+          FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
           echo "Constructed Full URL: ${FULL_URL}"
 
-          # Trigger the Jenkins build
+          # Trigger the Jenkins build with authentication using the API token
           curl -v "${FULL_URL}" \
                --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
                --data-urlencode "BUILD_NUMBER=${BUILD_NUMBER}" \
