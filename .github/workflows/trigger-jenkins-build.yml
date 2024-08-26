@@ -85,7 +85,7 @@ jobs:
          fi
 
          echo "Jenkins build trigger completed."
-     shell: bash
+        shell: bash
 
       - name: Increment and Update Build Number
         if: success()
