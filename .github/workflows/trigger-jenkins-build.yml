@@ -70,6 +70,8 @@ jobs:
              echo "Error: FULL_URL is empty, malformed, or contains invalid characters."
              exit 1
          fi
+         # Debug: Ensure BUILD_NUMBER is set or empty
+          echo "BUILD_NUMBER: ${BUILD_NUMBER}"
 
          # Check if BUILD_NUMBER is set and formulate the curl command accordingly
          if [ -z "$BUILD_NUMBER" ]; then
