@@ -53,12 +53,25 @@ jobs:
           JOB_NAME: ${{ env.JOB_NAME }}
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
+          # Trim the Jenkins URL
           TRIMMED_JENKINS_URL=$(echo -n "$JENKINS_URL" | sed 's:/*$::')
+
+          # Clean the job name and encode it for the URL
           CLEAN_JOB_NAME=$(echo -n "$JOB_NAME" | jq -sRr @uri)
+
+          #Combine to form the full URL
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
+
+          # Debug: Ensure the FULL_URL is correct
           echo "Full URL: ${FULL_URL}"
 
-          # Check if BUILD_NUMBER is set
+          # Check if the FULL_URL is valid and not empty
+          if [ -z "$FULL_URL" ]; then
+             echo "Error: FULL_URL is empty or malformed."
+             exit 1
+          fi
+
+          # Check if BUILD_NUMBER is set and formulate the curl command accordingly
           if [ -z "$BUILD_NUMBER" ]; then
              echo "BUILD_NUMBER is empty, not including it in the request."
              curl -v -X POST "${FULL_URL}" \
