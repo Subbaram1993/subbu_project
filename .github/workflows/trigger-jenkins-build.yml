@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
+  if false
   trigger-jenkins:
     runs-on: ubuntu-latest
 
