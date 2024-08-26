@@ -46,52 +46,54 @@ jobs:
           echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
 
       - name: Trigger Jenkins Build
+        id: trigger-build
         env:
-         JENKINS_URL: ${{ secrets.JENKINS_URL }}
-         JENKINS_USER: ${{ secrets.JENKINS_USER }}
-         JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-         JOB_NAME: ${{ env.JOB_NAME }}
-         BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+          JENKINS_URL: ${{ secrets.JENKINS_URL }}
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+          JOB_NAME: ${{ env.JOB_NAME }}
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
-         # Trim the Jenkins URL
-         TRIMMED_JENKINS_URL=$(echo -n "$JENKINS_URL" | sed 's:/*$::')
+          # Trim the Jenkins URL
+          TRIMMED_JENKINS_URL=$(echo -n "$JENKINS_URL" | sed 's:/*$::')
 
-         # Clean the job name and encode it for the URL
-         CLEAN_JOB_NAME=$(echo -n "$JOB_NAME" | jq -sRr @uri)
+          # Clean the job name and encode it for the URL
+          CLEAN_JOB_NAME=$(echo -n "$JOB_NAME" | jq -sRr @uri)
 
-         # Combine to form the full URL
-         FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
+          # Combine to form the full URL
+          FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
 
-         # Debug: Ensure the FULL_URL is correct
-         echo "Full URL: ${FULL_URL}"
-
-         # Check if the FULL_URL is valid and not empty
-         if [ -z "$FULL_URL" ] || [[ "$FULL_URL" == *"***"* ]]; then
-             echo "Error: FULL_URL is empty, malformed, or contains invalid characters."
-             exit 1
-         fi
-         # Debug: Ensure BUILD_NUMBER is set or empty
+          # Debug: Ensure the FULL_URL is correct
+          echo "Full URL: ${FULL_URL}"
+          echo "JENKINS_USER: ${JENKINS_USER}"
+          echo "JENKINS_API_TOKEN: ${JENKINS_API_TOKEN}"
+          echo "JOB_NAME: ${JOB_NAME}"
           echo "BUILD_NUMBER: ${BUILD_NUMBER}"
 
-         # Check if BUILD_NUMBER is set and formulate the curl command accordingly
-         if [ -z "$BUILD_NUMBER" ]; then
-             echo "BUILD_NUMBER is empty, not including it in the request."
-             curl -v "${FULL_URL}" \
-                  --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
-                  --data-urlencode "CUSTOM_PARAM=custom-value"
-         else
-             curl -v "${FULL_URL}" \
-                  --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
-                  --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
-                  --data-urlencode "CUSTOM_PARAM=custom-value"
-         fi
+          # Check if the FULL_URL is valid and not empty
+          if [ -z "$FULL_URL" ] || [[ "$FULL_URL" == *"***"* ]]; then
+              echo "Error: FULL_URL is empty, malformed, or contains invalid characters."
+              exit 1
+          fi
 
-         echo "Jenkins build trigger completed."
-        shell: bash
+          # Use curl with detailed trace for debugging
+          if [ -z "$BUILD_NUMBER" ]; then
+              echo "BUILD_NUMBER is empty, not including it in the request."
+              curl -v --trace-ascii /dev/stdout "${FULL_URL}" \
+                   --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+                   --data-urlencode "CUSTOM_PARAM=custom-value"
+          else
+              curl -v --trace-ascii /dev/stdout "${FULL_URL}" \
+                   --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+                   --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
+                   --data-urlencode "CUSTOM_PARAM=custom-value"
+          fi
+
+          echo "Jenkins build trigger completed."
 
       - name: Increment and Update Build Number
-        if: success()
         id: increment-build-number
+        if: success()
         run: |
           BUILD_NUMBER_FILE=".github/build-number.txt"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
