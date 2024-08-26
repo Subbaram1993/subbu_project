@@ -55,7 +55,7 @@ jobs:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
           # Trim the Jenkins URL
-          TRIMMED_JENKINS_URL=$(echo -n "$JENKINS_URL" | sed 's:/*$::')
+          TRIMMED_JENKINS_URL=$(echo -n "$JENKINS_URL" | sed 's:/+$::')
 
           # Clean the job name and encode it for the URL
           CLEAN_JOB_NAME=$(echo -n "$JOB_NAME" | jq -sRr @uri)
