@@ -53,16 +53,26 @@ jobs:
           JOB_NAME: ${{ env.JOB_NAME }}
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
         run: |
-          TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
-          CLEAN_JOB_NAME=$(echo "$JOB_NAME" | tr -d '\n' | jq -sRr @uri)
+          TRIMMED_JENKINS_URL=$(echo -n "$JENKINS_URL" | sed 's:/*$::')
+          CLEAN_JOB_NAME=$(echo -n "$JOB_NAME" | jq -sRr @uri)
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
           echo "Full URL: ${FULL_URL}"
-          curl -v -X POST "${FULL_URL}" \
-               --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
-               --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
-               --data-urlencode "CUSTOM_PARAM=custom-value"
+
+          # Check if BUILD_NUMBER is set
+          if [ -z "$BUILD_NUMBER" ]; then
+             echo "BUILD_NUMBER is empty, not including it in the request."
+             curl -v -X POST "${FULL_URL}" \
+                  --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+                  --data-urlencode "CUSTOM_PARAM=custom-value"
+          else
+             curl -v -X POST "${FULL_URL}" \
+                  --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+                  --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
+                  --data-urlencode "CUSTOM_PARAM=custom-value"
+          fi
 
           echo "Jenkins build trigger completed."
+
         shell: bash
 
       - name: Increment and Update Build Number
