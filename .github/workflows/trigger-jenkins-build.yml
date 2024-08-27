@@ -43,8 +43,8 @@ jobs:
 
           # Extract job name from commit message (e.g., "Activity: subbu_project")
           EXTRACTED_JOB_NAME=$(echo "$COMMIT_MESSAGE" | grep -oP '(?<=Activity: )\S+')
-          echo "EXTRACTED_JOB_NAME: $EXTRACTED_JOB_NAME"
           if [ -z "$EXTRACTED_JOB_NAME" ]; then
+            echo "No job name found in commit message, using JOB_NAME from config.json"
             EXTRACTED_JOB_NAME=$JOB_NAME
           fi
           echo "Final JOB_NAME: $EXTRACTED_JOB_NAME"
@@ -52,7 +52,6 @@ jobs:
 
           # Read the current build number from a file or initialize it
           BUILD_NUMBER_FILE=".github/build-number.txt"
-          echo "BUILD_NUMBER_FILE: $BUILD_NUMBER_FILE"
           if [ -f $BUILD_NUMBER_FILE ]; then
             BUILD_NUMBER=$(cat $BUILD_NUMBER_FILE)
             echo "Current build number: $BUILD_NUMBER"
@@ -66,18 +65,13 @@ jobs:
 
           # Update the build number file
           echo "$BUILD_NUMBER" > $BUILD_NUMBER_FILE
-          echo "Updated build number file: $BUILD_NUMBER_FILE"
-
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add $BUILD_NUMBER_FILE
           git commit -m "Update build number to $BUILD_NUMBER"
           git push
 
-        shell: /usr/bin/bash -e {0}
-        env:
-             COMMIT_MESSAGE: Updated the latest2 trigger-jenkins-build.yml file
-             JOB_NAME: subbu_project
+        shell: bash
 
       - name: Trigger Jenkins Build
         env:
@@ -89,8 +83,14 @@ jobs:
           DEPLOY_ENVIRONMENT: development
         run: |
           echo "Triggering Jenkins build..."
-          curl -X POST "${JENKINS_URL}/job/${JOB_NAME}/buildWithParameters" \
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${JENKINS_URL}/job/${JOB_NAME}/buildWithParameters" \
                --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
                --data-urlencode "BUILD_NUMBER=${BUILD_NUMBER}" \
-               --data-urlencode "DEPLOY_ENVIRONMENT=${DEPLOY_ENVIRONMENT}"
+               --data-urlencode "DEPLOY_ENVIRONMENT=${DEPLOY_ENVIRONMENT}")
+          if [ "$RESPONSE" -ne 201 ]; then
+            echo "Failed to trigger Jenkins build. HTTP response code: $RESPONSE"
+            exit 1
+          fi
           echo "Build triggered successfully."
+
+        shell: bash
