@@ -38,6 +38,7 @@ jobs:
       - name: Extract Job Name and Increment Build Number
         id: extract-and-increment
         run: |
+          echo "Starting Job Name extraction and Build Number increment..."
           echo "Commit message: $COMMIT_MESSAGE"
           echo "JOB_NAME: $JOB_NAME"
 
@@ -52,6 +53,7 @@ jobs:
 
           # Read the current build number from a file or initialize it
           BUILD_NUMBER_FILE=".github/build-number.txt"
+          echo "BUILD_NUMBER_FILE path: $BUILD_NUMBER_FILE"
           if [ -f $BUILD_NUMBER_FILE ]; then
             BUILD_NUMBER=$(cat $BUILD_NUMBER_FILE)
             echo "Current build number: $BUILD_NUMBER"
@@ -65,11 +67,15 @@ jobs:
 
           # Update the build number file
           echo "$BUILD_NUMBER" > $BUILD_NUMBER_FILE
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add $BUILD_NUMBER_FILE
-          git commit -m "Update build number to $BUILD_NUMBER"
-          git push
+          echo "Updated build number file with new build number."
+
+          git config user.name "github-actions" || { echo 'Git config failed'; exit 1; }
+          git config user.email "actions@github.com" || { echo 'Git config failed'; exit 1; }
+          git add $BUILD_NUMBER_FILE || { echo 'Git add failed'; exit 1; }
+          git commit -m "Update build number to $BUILD_NUMBER" || { echo 'Git commit failed'; exit 1; }
+          git push || { echo 'Git push failed'; exit 1; }
+
+          echo "Job Name extraction and Build Number increment completed successfully."
 
         shell: bash
 
