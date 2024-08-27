@@ -78,6 +78,6 @@ jobs:
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
           echo "Full URL: ${FULL_URL}"
           curl -v -X POST "${FULL_URL}" \
-               --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-               --data-urlencode "BUILD_NUMBER=${{ env.BUILD_NUMBER }}" \
-               --data-urlencode "DEPLOY_ENVIRONMENT=${DEPLOY_ENVIRONMENT}"
+               --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+               --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
+               --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT"
