@@ -9,6 +9,7 @@ on:
 jobs:
   trigger-jenkins:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -38,43 +39,45 @@ jobs:
       - name: Extract Job Name and Increment Build Number
         id: extract-and-increment
         run: |
-          # Extract job name from commit message (e.g., "Activity: subbu_project")
-          EXTRACTED_JOB_NAME=$(echo "${{ env.COMMIT_MESSAGE }}" | grep -oP '(?<=Activity: )\S+')
+          EXTRACTED_JOB_NAME=$(echo "${{ env.COMMIT_MESSAGE }}" | grep -oP '(?<=Activity: )\S+' || echo "")
           if [ -z "$EXTRACTED_JOB_NAME" ]; then
             EXTRACTED_JOB_NAME=${{ env.JOB_NAME }}
           fi
           echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
 
-          # Read the current build number from a file or initialize it
           BUILD_NUMBER_FILE=".github/build-number.txt"
-          if [ -f $BUILD_NUMBER_FILE ]; then
-            BUILD_NUMBER=$(cat $BUILD_NUMBER_FILE)
+          if [ -f "$BUILD_NUMBER_FILE" ]; then
+            BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
           else
             BUILD_NUMBER="00"
           fi
           BUILD_NUMBER=$(printf "%02d" $((10#$BUILD_NUMBER + 1)))
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
-          # Update the build number file
-          echo "${BUILD_NUMBER}" > $BUILD_NUMBER_FILE
+          echo "${BUILD_NUMBER}" > "$BUILD_NUMBER_FILE"
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add $BUILD_NUMBER_FILE
-          git commit -m "Update build number to ${BUILD_NUMBER}"
+          git stash
+          git pull --rebase
+          git stash pop
+          git add "$BUILD_NUMBER_FILE"
+          git commit -m "Update build number to ${BUILD_NUMBER}" || true
           git push
 
-     - name: Trigger Jenkins Build
-       env:
-         JENKINS_URL: ${{ secrets.JENKINS_URL }}
-         JENKINS_USER: ${{ secrets.JENKINS_USER }}
-         JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-         JOB_NAME: ${{ env.JOB_NAME }}
-         BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-         DEPLOY_ENVIRONMENT: development  # Set the environment variable
-       run: |
-         echo "Triggering Jenkins build..."
-         curl -X POST "${JENKINS_URL}/job/${JOB_NAME}/buildWithParameters" \
-              --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" \
-              --data-urlencode "BUILD_NUMBER=${BUILD_NUMBER}" \
-              --data-urlencode "DEPLOY_ENVIRONMENT=${DEPLOY_ENVIRONMENT}"  # Use the environment variable
-         echo "Build triggered successfully."
+      - name: Trigger Jenkins Build
+        env:
+          JENKINS_URL: ${{ secrets.JENKINS_URL }}
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+          JOB_NAME: ${{ env.JOB_NAME }}
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+          DEPLOY_ENVIRONMENT: development
+        run: |
+          TRIMMED_JENKINS_URL=$(echo "${{ secrets.JENKINS_URL }}" | sed 's:/*$::')
+          CLEAN_JOB_NAME=$(echo "${{ env.JOB_NAME }}" | tr -d '\n' | jq -sRr @uri)
+          FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/buildWithParameters"
+          echo "Full URL: ${FULL_URL}"
+          curl -v -X POST "${FULL_URL}" \
+               --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+               --data-urlencode "BUILD_NUMBER=${{ env.BUILD_NUMBER }}" \
+               --data-urlencode "DEPLOY_ENVIRONMENT=${DEPLOY_ENVIRONMENT}"
