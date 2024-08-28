@@ -82,8 +82,8 @@ jobs:
                      --data-urlencode \"BUILD_NUMBER=$BUILD_NUMBER\" \
                      --data-urlencode \"DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT\""
           echo "Executing curl command:"
-          curl -v -X POST "${FULL_URL}" --user "${JENKINS_USER}:${JENKINS_API_TOKEN}" <<EOF
-                                        --data-urlencode "BUILD_NUMBER=${BUILD_NUMBER}"
-                                        --data-urlencode "DEPLOY_ENVIRONMENT=${DEPLOY_ENVIRONMENT}"
-          EOF
+          curl -v -X POST "${FULL_URL}" \
+             --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+             --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
+             --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT"
 
