@@ -66,6 +66,7 @@ jobs:
 
       #- name: Trigger Jenkins Build
     steps:
+      - name: Trigger Jenkins Build
       - env:
           JENKINS_URL: ${{ secrets.JENKINS_URL }}
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
