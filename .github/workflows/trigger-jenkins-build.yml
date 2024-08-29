@@ -10,7 +10,7 @@ jobs:
   trigger-jenkins:
     runs-on: ubuntu-latest
 
-    #steps:
+    steps:
       # - name: Checkout repository
       #   uses: actions/checkout@v4
 
@@ -64,33 +64,36 @@ jobs:
       #     git commit -m "Update build number to ${BUILD_NUMBER}" || true
       #     git push
 
-      #- name: Trigger Jenkins Build
-    steps:
       - name: Trigger Jenkins Build
         env:
-          JENKINS_URL: ${{ secrets.JENKINS_URL }}
-          JENKINS_USER: ${{ secrets.JENKINS_USER }}
-          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-          JOB_NAME: ${{ env.JOB_NAME }}
-          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+          JENKINS_URL: ${{ secrets.JENKINS_URL || 'http://localhost:8080' }}
+          JENKINS_USER: ${{ secrets.JENKINS_USER || 'subbaramaiah_chevuru' }}
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN || '11da2be03c5b0dbbcfd2038946659b60c2' }}
+          JOB_NAME: ${{ env.JOB_NAME || 'subbu_project' }}
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER || '001' }}
           DEPLOY_ENVIRONMENT: development
         run: |
-          TRIMMED_JENKINS_URL="$(echo "$JENKINS_URL" | sed 's:/*$::')"
-          CLEAN_JOB_NAME="$(echo "$JOB_NAME" | tr -d '\n' | jq -sRr @uri)"
+          TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
+          CLEAN_JOB_NAME=$(echo "$JOB_NAME" | tr -d '\n' | jq -sRr @uri)
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/build"
           echo "Full URL: ${FULL_URL}"
 
+          echo "curl -v -X POST \"${FULL_URL}\" \
+            --user \"$JENKINS_USER:$JENKINS_API_TOKEN\" \
+            --data-urlencode \"BUILD_NUMBER=$BUILD_NUMBER\" \
+            --data-urlencode \"DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT\""
+
           echo "Executing curl command:"
           curl -v \
-               -X POST "${FULL_URL}" \
-               --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
-               --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
-               --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT"
+            -X POST "${FULL_URL}" \
+            --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+            --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
+            --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT"
 
           # Curl command with hardcoded values
-          echo "Curl Command with Hardcoded values:"
+          echo " Curl Command with Hardcoded values:"
           curl \
-              -X POST "http://localhost:8080/job/subbu_project/build" \
-              --user "subbaramaiah_chevuru:11da2be03c5b0dbbcfd2038946659b60c2" \
-              --data-urlencode "BUILD_NUMBER=001" \
-              --data-urlencode "DEPLOY_ENVIRONMENT=development"
+            -X POST "http://localhost:8080/job/subbu_project/build" \
+            --user "subbaramaiah_chevuru:11da2be03c5b0dbbcfd2038946659b60c2" \
+            --data-urlencode "BUILD_NUMBER=001" \
+            --data-urlencode "DEPLOY_ENVIRONMENT=development"
