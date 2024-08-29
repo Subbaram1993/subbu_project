@@ -65,6 +65,7 @@ jobs:
       #     git push
 
       - name: Trigger Jenkins Build
+        shell: bash
         env:
           JENKINS_URL: ${{ secrets.JENKINS_URL || 'http://localhost:8080' }}
           JENKINS_USER: ${{ secrets.JENKINS_USER || 'subbaramaiah_chevuru' }}
