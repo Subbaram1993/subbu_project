@@ -65,7 +65,7 @@ jobs:
       #     git push
 
       - name: Trigger Jenkins Build
-        shell: pwsh
+        shell: cmd
         env:
           JENKINS_URL: ${{ secrets.JENKINS_URL || 'http://localhost:8080' }}
           JENKINS_USER: ${{ secrets.JENKINS_USER || 'subbaramaiah_chevuru' }}
@@ -74,7 +74,7 @@ jobs:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER || '001' }}
           DEPLOY_ENVIRONMENT: development
         run: |
-          TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
+          $TRIMMED_JENKINS_URL = $env:JENKINS_URL.TrimEnd('/')
           $CLEAN_JOB_NAME = [System.Web.HttpUtility]::UrlEncode($env:JOB_NAME)
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/build"
           Write-Output "Full URL: $FULL_URL"
