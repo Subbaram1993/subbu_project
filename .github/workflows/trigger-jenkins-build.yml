@@ -36,5 +36,6 @@ jobs:
           echo "Executing curl command:"
           curl -v "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+               --header "Content-Type: application/x-www-form-urlencoded" \
                --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
                --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT"
