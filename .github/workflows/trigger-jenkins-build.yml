@@ -34,8 +34,7 @@ jobs:
 
           # Execute the curl command to trigger the Jenkins build
           echo "Executing curl command:"
-          curl -v \
-               -X POST "$FULL_URL" \
+          curl -v "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
                --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
                --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT"
