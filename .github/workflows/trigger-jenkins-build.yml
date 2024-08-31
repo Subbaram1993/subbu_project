@@ -1,5 +1,3 @@
----
-
 name: Trigger Jenkins Build
 
 on:
@@ -12,6 +10,40 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get Commit Message
+        id: get-commit-message
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
+          echo "Commit Message: ${COMMIT_MESSAGE}"
+          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
+
+      - name: Read JSON Configuration
+        id: read-json
+        run: |
+          if [ -f config.json ]; then
+            JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
+            if [ "$JOB_NAME" == "null" ] || [ -z "$JOB_NAME" ]; then
+              echo "Error: 'jobName' not found in config.json"
+              exit 1
+            fi
+            echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
+          else
+            echo "Error: config.json file not found"
+            exit 1
+          fi
+
+      - name: Extract Job Name
+        id: extract-job-name
+        run: |
+          EXTRACTED_JOB_NAME=$(echo "${{ env.COMMIT_MESSAGE }}" | grep -oP '(?<=Activity: )\S+' || echo "")
+          if [ -z "$EXTRACTED_JOB_NAME" ]; then
+            EXTRACTED_JOB_NAME=${{ env.JOB_NAME }}
+          fi
+          echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
+
       - name: Trigger Jenkins Build
         shell: bash
         env:
@@ -48,3 +80,26 @@ jobs:
                --header "Content-Type: application/x-www-form-urlencoded" \
                --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
                --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT"
+
+      - name: Increment and Update Build Number
+        if: success()
+        id: increment-build-number
+        run: |
+          BUILD_NUMBER_FILE=".github/build-number.txt"
+          if [ -f "$BUILD_NUMBER_FILE" ]; then
+            BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
+          else
+            BUILD_NUMBER="00"
+          fi
+          BUILD_NUMBER=$(printf "%02d" $((10#$BUILD_NUMBER + 1)))
+          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
+
+          echo "${BUILD_NUMBER}" > "$BUILD_NUMBER_FILE"
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git stash
+          git pull --rebase
+          git stash pop
+          git add "$BUILD_NUMBER_FILE"
+          git commit -m "Update build number to ${BUILD_NUMBER}" || true
+          git push
