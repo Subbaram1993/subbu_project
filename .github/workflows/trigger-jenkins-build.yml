@@ -97,9 +97,14 @@ jobs:
           echo "${BUILD_NUMBER}" > "$BUILD_NUMBER_FILE"
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git stash
-          git pull --rebase
-          git stash pop
+
+          git fetch || { echo "git fetch failed"; exit 1; }
+          git reset --hard origin/${GITHUB_REF#refs/heads/} || { echo "git reset failed"; exit 1; }
+
           git add "$BUILD_NUMBER_FILE"
-          git commit -m "Update build number to ${BUILD_NUMBER}" || true
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "Update build number to ${BUILD_NUMBER}" || { echo "git commit failed"; exit 1; }
+            git push || { echo "git push failed"; exit 1; }
+          else
+            echo "No changes to commit"
+          fi
