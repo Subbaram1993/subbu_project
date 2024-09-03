@@ -7,7 +7,7 @@
 void print_list(FILE *fp1)
 {
     char ch;
-    fp1 = fopen("cheeti.txt","r");
+    fp1 = fopen("../Output_Files/cheeti.txt","r");
     if(fp1 == NULL)
     {
         printf("\nFILE is Empty.....!!!!\n");
