@@ -45,13 +45,13 @@ jobs:
           echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
 
       - name: Trigger Jenkins Build
-        id: trigger-jenkins
         shell: bash
         env:
           JENKINS_URL: ${{ secrets.JENKINS_URL }}
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
           JOB_NAME: ${{ env.JOB_NAME || 'subbu_project' }}
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER || '001' }}
           DEPLOY_ENVIRONMENT: development
         run: |
           # Trim trailing slashes from JENKINS_URL
@@ -72,51 +72,38 @@ jobs:
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/build"
           echo "Full URL: $FULL_URL"
 
-          # Trigger the build and capture the response
-          RESPONSE=$(curl -s -X POST "$FULL_URL" \
+          # Execute the curl command to trigger the Jenkins build with the crumb
+          echo "Executing curl command:"
+          curl -v "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
                --header "Jenkins-Crumb:$CRUMB" \
                --header "Content-Type: application/x-www-form-urlencoded" \
-               --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT")
+               --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
+               --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT"
 
-          # Get the location of the new build
-          BUILD_URL=$(echo "$RESPONSE" | grep -oP '(?<=Location: )\S+')
-
-          if [ -z "$BUILD_URL" ]; then
-            echo "Error: Failed to obtain build URL from Jenkins response. Exiting."
-            exit 1
-          fi
-
-          # Extract the build number from the build URL
-          BUILD_NUMBER=$(echo "$BUILD_URL" | grep -oP '(?<=/)[0-9]+(?=/)')
-
-          if [ -z "$BUILD_NUMBER" ]; then
-            echo "Error: Failed to extract build number from Jenkins URL. Exiting."
-            exit 1
-          fi
-
-          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
-
-      - name: Update Build Number File
-        id: update-build-number
+      - name: Increment and Update Build Number
+        if: success()
+        id: increment-build-number
         run: |
           BUILD_NUMBER_FILE=".github/build-number.txt"
-          
           if [ -f "$BUILD_NUMBER_FILE" ]; then
-            # Read the existing build number
-            EXISTING_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
-            
-            if ! [[ "$EXISTING_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
-              echo "Error: Existing build number is not a valid number. Exiting."
+            BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
+
+            if ! [[ "$BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
+              echo "Error: Build Number is not a valid number. Exiting."
               exit 1
             fi
           else
-            EXISTING_BUILD_NUMBER=0
+            BUILD_NUMBER= 0
           fi
 
-          # Update the build number file with the new build number
-          echo "$BUILD_NUMBER" > "$BUILD_NUMBER_FILE"
+          # Increment Build Number
+          BUILD_NUMBER=%((BUILD_NUMBER+1))
 
+          BUILD_NUMBER=$(printf "%02d" $BUILD_NUMBER)
+          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
+
+          echo "${BUILD_NUMBER}" > "$BUILD_NUMBER_FILE"
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
