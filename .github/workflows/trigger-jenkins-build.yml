@@ -89,7 +89,7 @@ jobs:
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
           else
-            BUILD_NUMBER="00"
+            BUILD_NUMBER= 00
           fi
           BUILD_NUMBER=$(printf "%02d" $((10#$BUILD_NUMBER + 1)))
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
