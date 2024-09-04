@@ -44,11 +44,25 @@ jobs:
           fi
           echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
 
-      - name: Fetch Latest Jenkins Build Number
-        id: fetch-build-number
+      - name: Fetch Local Build Number
+        id: fetch-local-build-number
         run: |
-          LATEST_BUILD_NUMBER=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" \
-              "$JENKINS_URL/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
+          BUILD_NUMBER_FILE=".github/build-number.txt"
+          if [ -f "$BUILD_NUMBER_FILE" ]; then
+            LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
+          else
+            LOCAL_BUILD_NUMBER=0
+          fi
+          if [ -z "$LOCAL_BUILD_NUMBER" ]; then
+            LOCAL_BUILD_NUMBER=0
+          fi
+          echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}" >> $GITHUB_ENV
+
+      - name: Fetch Latest Jenkins Build Number
+        id: fetch-jenkins-build-number
+        run: |
+          LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
 
           if [ "$LATEST_BUILD_NUMBER" == "null" ] || [ -z "$LATEST_BUILD_NUMBER" ]; then
             echo "Error: Unable to retrieve Jenkins build number. Exiting."
@@ -56,6 +70,17 @@ jobs:
           fi
 
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
+
+      - name: Determine New Build Number
+        id: determine-build-number
+        run: |
+          if [ "${{ env.LOCAL_BUILD_NUMBER }}" -ge "${{ env.LATEST_BUILD_NUMBER }}" ]; then
+            BUILD_NUMBER=$((env.LOCAL_BUILD_NUMBER + 1))
+          else
+            BUILD_NUMBER=$((env.LATEST_BUILD_NUMBER + 1))
+          fi
+          BUILD_NUMBER=$(printf "%02d" "$BUILD_NUMBER")
+          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
       - name: Trigger Jenkins Build
         id: trigger-build
@@ -65,14 +90,11 @@ jobs:
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
           JOB_NAME: ${{ env.JOB_NAME }}
-          BUILD_NUMBER: $((LATEST_BUILD_NUMBER + 1))
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
           DEPLOY_ENVIRONMENT: development
         run: |
           # Trim trailing slashes from JENKINS_URL
           TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
-
-          # Clean job name (no need to modify)
-          CLEAN_JOB_NAME="$JOB_NAME"
 
           # Fetch the Jenkins crumb
           CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
@@ -82,12 +104,8 @@ jobs:
             exit 1
           fi
 
-          # Construct the full URL
-          FULL_URL="${TRIMMED_JENKINS_URL}/job/${CLEAN_JOB_NAME}/build"
-          echo "Full URL: $FULL_URL"
-
-          # Execute the curl command to trigger the Jenkins build with the crumb
-          echo "Executing curl command:"
+          # Construct the full URL and trigger the build
+          FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/build"
           response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
                --header "Jenkins-Crumb:$CRUMB" \
@@ -102,28 +120,28 @@ jobs:
 
           echo "Jenkins build triggered successfully."
 
-      - name: Increment and Update Build Number
-        if: steps.trigger-build.outcome == 'success'
-        id: increment-build-number
+      - name: Re-fetch Latest Jenkins Build Number
+        id: refetch-jenkins-build-number
         run: |
-          BUILD_NUMBER_FILE=".github/build-number.txt"
-
-          # Fetch the latest build number from Jenkins
-          LATEST_BUILD_NUMBER=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" \
-              "$JENKINS_URL/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
+          sleep 10  # Wait for Jenkins to update the build number
+          LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
 
           if [ "$LATEST_BUILD_NUMBER" == "null" ] || [ -z "$LATEST_BUILD_NUMBER" ]; then
-            echo "Error: Unable to retrieve Jenkins build number. Exiting."
+            echo "Error: Unable to retrieve Jenkins build number after triggering. Exiting."
             exit 1
           fi
 
-          # Increment Build Number
-          BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
-          BUILD_NUMBER=$(printf "%02d" $BUILD_NUMBER)
-          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
+
+      - name: Update Build Number in File
+        if: steps.trigger-build.outcome == 'success'
+        id: update-build-number
+        run: |
+          BUILD_NUMBER_FILE=".github/build-number.txt"
 
           # Update build number in the file
-          echo "${BUILD_NUMBER}" > "$BUILD_NUMBER_FILE"
+          echo "${{ env.LATEST_BUILD_NUMBER }}" > "$BUILD_NUMBER_FILE"
 
           # Configure Git and commit the updated build number
           git config user.name "github-actions"
@@ -134,7 +152,7 @@ jobs:
 
           git add "$BUILD_NUMBER_FILE"
           if ! git diff --cached --quiet; then
-            git commit -m "Update build number to ${BUILD_NUMBER}" || { echo "git commit failed"; exit 1; }
+            git commit -m "Update build number to ${{ env.LATEST_BUILD_NUMBER }}" || { echo "git commit failed"; exit 1; }
             git push || { echo "git push failed"; exit 1; }
           else
             echo "No changes to commit"
