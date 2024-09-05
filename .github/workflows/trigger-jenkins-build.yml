@@ -47,7 +47,7 @@ jobs:
       - name: Fetch Local Build Number
         id: fetch-local-build-number
         run: |
-          BUILD_NUMBER_FILE="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/old_build_number.txt"
+          BUILD_NUMBER_FILE="/home/subbaramaiah_ch/subbu/subbu_project/old_build_number.txt"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
           else
@@ -138,7 +138,7 @@ jobs:
         if: steps.trigger-build.outcome == 'success'
         id: update-build-number
         run: |
-          BUILD_NUMBER_FILE="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/new_build_number.txt"
+          BUILD_NUMBER_FILE="/home/subbaramaiah_ch/subbu/subbu_project/new_build_number.txt"
 
           # Update build number in the file
           echo "${{ env.LATEST_BUILD_NUMBER }}" >> "$BUILD_NUMBER_FILE"
