@@ -141,8 +141,9 @@ jobs:
           BUILD_NUMBER_FILE="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build_number.txt"
 
           # Update build number in the file
-          echo "${{ env.LATEST_BUILD_NUMBER }}" > "$BUILD_NUMBER_FILE"
+          echo "${{ env.LATEST_BUILD_NUMBER }}" >> "$BUILD_NUMBER_FILE"
 
+          echo "Updating the Latest Build Number with ${{env.LATEST_BUILD_NUMBER}} to $BUILD_NUMBER_FILE"
           # Configure Git and commit the updated build number
           git config user.name "github-actions"
           git config user.email "actions@github.com"
