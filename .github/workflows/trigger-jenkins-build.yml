@@ -47,7 +47,7 @@ jobs:
       - name: Fetch Local Build Number
         id: fetch-local-build-number
         run: |
-          BUILD_NUMBER_FILE="/home/subbaramaiah_ch/subbu/subbu_project/old_build_number.txt"
+          BUILD_NUMBER_FILE=".github/build-numbers/old_build_number.txt"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
           else
@@ -138,16 +138,21 @@ jobs:
         if: steps.trigger-build.outcome == 'success'
         id: update-build-numbers
         run: |
-          OLD_BUILD_NUMBER_FILE="/home/subbaramaiah_ch/subbu/subbu_project/old_build_number.txt"
-          NEW_BUILD_NUMBER_FILE="/home/subbaramaiah_ch/subbu/subbu_project/new_build_number.txt"
+          OLD_BUILD_NUMBER_FILE=".github/build-numbers/old_build_number.txt"
+          NEW_BUILD_NUMBER_FILE=".github/build-numbers/new_build_number.txt"
 
-          # Write the old build number to old_build_number.txt
-          echo "${{ env.LOCAL_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
-          echo "Updating the Old Build Number with ${{ env.LOCAL_BUILD_NUMBER }} to $OLD_BUILD_NUMBER_FILE"
+          # Ensure the build numbers directory exists
+          mkdir -p .github/build-numbers
 
-          # Write the new build number to new_build_number.txt
-          echo "${{ env.LATEST_BUILD_NUMBER }}" > "$NEW_BUILD_NUMBER_FILE"
-          echo "Updating the New Build Number with ${{ env.LATEST_BUILD_NUMBER }} to $NEW_BUILD_NUMBER_FILE"
+          # Update old_build_number.txt with the latest build number
+          echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
+          echo "Updated old build number to $OLD_BUILD_NUMBER_FILE"
+
+          # Append the range of new build numbers to new_build_number.txt
+          for (( i=${{ env.LOCAL_BUILD_NUMBER }} + 1; i<=${{ env.LATEST_BUILD_NUMBER }}; i++ )); do
+            echo "$i" >> "$NEW_BUILD_NUMBER_FILE"
+          done
+          echo "Updated new build numbers in $NEW_BUILD_NUMBER_FILE"
 
           # Configure Git and commit the updated build numbers
           git config user.name "github-actions"
@@ -158,7 +163,7 @@ jobs:
 
           git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
           if ! git diff --cached --quiet; then
-            git commit -m "Update old build number to ${{ env.LOCAL_BUILD_NUMBER }} and new build number to ${{ env.LATEST_BUILD_NUMBER }}" || { echo "git commit failed"; exit 1; }
+            git commit -m "Update old build number to ${{ env.LATEST_BUILD_NUMBER }} and append new build numbers" || { echo "git commit failed"; exit 1; }
             git push || { echo "git push failed"; exit 1; }
           else
             echo "No changes to commit"
