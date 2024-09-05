@@ -47,7 +47,7 @@ jobs:
       - name: Fetch Local Build Number
         id: fetch-local-build-number
         run: |
-          BUILD_NUMBER_FILE="../../build-number.txt"
+          BUILD_NUMBER_FILE="build-number.txt"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
           else
