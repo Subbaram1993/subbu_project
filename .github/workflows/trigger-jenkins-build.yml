@@ -53,7 +53,7 @@ jobs:
           else
             LOCAL_BUILD_NUMBER=0
           fi
-          if [ -z "$LOCAL_BUILD_NUMBER" ]; then
+          if [ -z "$LOCAL_BUILD_NUMBER" ] || ! [[ "$LOCAL_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
             LOCAL_BUILD_NUMBER=0
           fi
           echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}" >> $GITHUB_ENV
@@ -64,7 +64,7 @@ jobs:
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
 
-          if [ "$LATEST_BUILD_NUMBER" == "null" ] || [ -z "$LATEST_BUILD_NUMBER" ]; then
+          if [ "$LATEST_BUILD_NUMBER" == "null" ] || [ -z "$LATEST_BUILD_NUMBER" ] || ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
             echo "Error: Unable to retrieve Jenkins build number. Exiting."
             exit 1
           fi
@@ -75,9 +75,9 @@ jobs:
         id: determine-build-number
         run: |
           if [ "${{ env.LOCAL_BUILD_NUMBER }}" -ge "${{ env.LATEST_BUILD_NUMBER }}" ]; then
-            BUILD_NUMBER=$((env.LOCAL_BUILD_NUMBER + 1))
+            BUILD_NUMBER=$((LOCAL_BUILD_NUMBER + 1))
           else
-            BUILD_NUMBER=$((env.LATEST_BUILD_NUMBER + 1))
+            BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
           fi
           BUILD_NUMBER=$(printf "%02d" "$BUILD_NUMBER")
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
@@ -93,10 +93,7 @@ jobs:
           BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
           DEPLOY_ENVIRONMENT: development
         run: |
-          # Trim trailing slashes from JENKINS_URL
           TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
-
-          # Fetch the Jenkins crumb
           CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
 
           if [ -z "$CRUMB" ]; then
@@ -104,7 +101,6 @@ jobs:
             exit 1
           fi
 
-          # Construct the full URL and trigger the build
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/build"
           response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
@@ -127,7 +123,7 @@ jobs:
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
 
-          if [ "$LATEST_BUILD_NUMBER" == "null" ] || [ -z "$LATEST_BUILD_NUMBER" ]; then
+          if [ "$LATEST_BUILD_NUMBER" == "null" ] || [ -z "$LATEST_BUILD_NUMBER" ] || ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
             echo "Error: Unable to retrieve Jenkins build number after triggering. Exiting."
             exit 1
           fi
@@ -148,11 +144,22 @@ jobs:
           echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
           echo "Updated old build number to $OLD_BUILD_NUMBER_FILE"
 
-          # Append the range of new build numbers to new_build_number.txt
+          # Append new build numbers with statuses to new_build_number.txt
+          echo "Fetching build statuses..."
           for (( i=${{ env.LOCAL_BUILD_NUMBER }} + 1; i<=${{ env.LATEST_BUILD_NUMBER }}; i++ )); do
-            echo "$i" >> "$NEW_BUILD_NUMBER_FILE"
+            BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+                                      "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$i/api/json?tree=result" | jq -r '.result')
+            if [ "$BUILD_STATUS" == "null" ] || [ -z "$BUILD_STATUS" ]; then
+              BUILD_STATUS="in progress"
+            elif [ "$BUILD_STATUS" == "SUCCESS" ]; then
+              BUILD_STATUS="success"
+            else
+              BUILD_STATUS="failed"
+            fi
+
+            echo "$i - $BUILD_STATUS" >> "$NEW_BUILD_NUMBER_FILE"
           done
-          echo "Updated new build numbers in $NEW_BUILD_NUMBER_FILE"
+          echo "Updated new build numbers and statuses in $NEW_BUILD_NUMBER_FILE"
 
           # Configure Git and commit the updated build numbers
           git config user.name "github-actions"
@@ -163,7 +170,7 @@ jobs:
 
           git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
           if ! git diff --cached --quiet; then
-            git commit -m "Update old build number to ${{ env.LATEST_BUILD_NUMBER }} and append new build numbers" || { echo "git commit failed"; exit 1; }
+            git commit -m "Update old build number to ${{ env.LATEST_BUILD_NUMBER }} and append new build numbers with statuses" || { echo "git commit failed"; exit 1; }
             git push || { echo "git push failed"; exit 1; }
           else
             echo "No changes to commit"
