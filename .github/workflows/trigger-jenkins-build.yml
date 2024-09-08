@@ -116,10 +116,10 @@ jobs:
 
           echo "Jenkins build triggered successfully."
 
-      - name: Re-fetch Latest Jenkins Build Number
-        id: refetch-jenkins-build-number
+      - name: Re-fetch Latest Jenkins Build Number & Status
+        id: refetch-jenkins-build-number-status
         run: |
-          sleep 10  # Wait for Jenkins to update the build number
+          sleep 10  # Wait for Jenkins to update the build number and status
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
 
@@ -128,7 +128,19 @@ jobs:
             exit 1
           fi
 
+          BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$LATEST_BUILD_NUMBER/api/json?tree=result" | jq -r '.result')
+
+          if [ "$BUILD_STATUS" == "null" ] || [ -z "$BUILD_STATUS" ]; then
+            BUILD_STATUS="in progress"
+          elif [ "$BUILD_STATUS" == "SUCCESS" ]; then
+            BUILD_STATUS="success"
+          else
+            BUILD_STATUS="failed"
+          fi
+
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
 
       - name: Update Old and New Build Numbers
         if: steps.trigger-build.outcome == 'success'
@@ -140,26 +152,13 @@ jobs:
           # Ensure the build numbers directory exists
           mkdir -p .github/build-numbers
 
-          # Update old_build_number.txt with the latest build number
+          # Update old_build_number.txt with the latest build number (60 in this case)
           echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
           echo "Updated old build number to $OLD_BUILD_NUMBER_FILE"
 
-          # Append new build numbers with statuses to new_build_number.txt
-          echo "Fetching build statuses..."
-          for (( i=${{ env.LOCAL_BUILD_NUMBER }} + 1; i<=${{ env.LATEST_BUILD_NUMBER }}; i++ )); do
-            BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-                                      "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$i/api/json?tree=result" | jq -r '.result')
-            if [ "$BUILD_STATUS" == "null" ] || [ -z "$BUILD_STATUS" ]; then
-              BUILD_STATUS="in progress"
-            elif [ "$BUILD_STATUS" == "SUCCESS" ]; then
-              BUILD_STATUS="success"
-            else
-              BUILD_STATUS="failed"
-            fi
-
-            echo "$i - $BUILD_STATUS" >> "$NEW_BUILD_NUMBER_FILE"
-          done
-          echo "Updated new build numbers and statuses in $NEW_BUILD_NUMBER_FILE"
+          # Append the new build number with status to new_build_number.txt
+          echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" >> "$NEW_BUILD_NUMBER_FILE"
+          echo "Updated new build number and status in $NEW_BUILD_NUMBER_FILE"
 
           # Configure Git and commit the updated build numbers
           git config user.name "github-actions"
