@@ -49,7 +49,7 @@ jobs:
       - name: Fetch Local Build Number
         id: fetch-local-build-number
         run: |
-          BUILD_NUMBER_FILE=".github/build-numbers/old_build_number.txt"
+          BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
           else
@@ -148,8 +148,8 @@ jobs:
         if: steps.trigger-build.outcome == 'success'
         id: update-build-numbers
         run: |
-          OLD_BUILD_NUMBER_FILE=".github/build-numbers/old_build_number.txt"
-          NEW_BUILD_NUMBER_FILE=".github/build-numbers/new_build_number.txt"
+          OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
+          NEW_BUILD_NUMBER_FILE=".github/build_numbers/new_build_number.txt"
 
           # Ensure the build numbers directory exists
           mkdir -p .github/build-numbers
