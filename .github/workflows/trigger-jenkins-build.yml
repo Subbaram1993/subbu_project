@@ -50,15 +50,9 @@ jobs:
         id: fetch-local-build-number
         run: |
           BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
-          echo "Checking for build number file at: $BUILD_NUMBER_FILE"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
-            echo "Found local build number: $LOCAL_BUILD_NUMBER"
           else
-            echo "No build number file found. Initializing build number to 0."
-            LOCAL_BUILD_NUMBER=0
-          fi
-          if [ -z "$LOCAL_BUILD_NUMBER" ] || ! [[ "$LOCAL_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
             LOCAL_BUILD_NUMBER=0
           fi
           echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}" >> $GITHUB_ENV
@@ -68,14 +62,6 @@ jobs:
         run: |
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
-
-          echo "Jenkins returned latest build number: $LATEST_BUILD_NUMBER"
-
-          if [ "$LATEST_BUILD_NUMBER" == "null" ] || [ -z "$LATEST_BUILD_NUMBER" ] || ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
-            echo "Error: Unable to retrieve Jenkins build number. Exiting."
-            exit 1
-          fi
-
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
 
       - name: Determine New Build Number
@@ -87,7 +73,6 @@ jobs:
             BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
           fi
           BUILD_NUMBER=$(printf "%02d" "$BUILD_NUMBER")
-          echo "Determined new build number: $BUILD_NUMBER"
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
       - name: Check if Jenkins Build Should be Triggered
@@ -118,7 +103,6 @@ jobs:
           fi
 
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/build"
-          echo "Triggering Jenkins build with build number: $BUILD_NUMBER at URL: $FULL_URL"
           response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
                --header "Jenkins-Crumb:$CRUMB" \
@@ -139,41 +123,34 @@ jobs:
           sleep 10  # Wait for Jenkins to update the build number and status
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
-
-          echo "Refetched latest Jenkins build number: $LATEST_BUILD_NUMBER"
-
-          if [ "$LATEST_BUILD_NUMBER" == "null" ] || [ -z "$LATEST_BUILD_NUMBER" ] || ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
-            echo "Error: Unable to retrieve Jenkins build number after triggering. Exiting."
-            exit 1
-          fi
-
           BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$LATEST_BUILD_NUMBER/api/json?tree=result" | jq -r '.result')
-
-          if [ "$BUILD_STATUS" == "null" ] || [ -z "$BUILD_STATUS" ]; then
-            BUILD_STATUS="in progress"
-          elif [ "$BUILD_STATUS" == "SUCCESS" ]; then
-            BUILD_STATUS="success"
-          else
-            BUILD_STATUS="failed"
-          fi
-
-          echo "Refetched build status: $BUILD_STATUS"
-
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
 
-      - name: Save Build Numbers as Artifacts
-        id: save-artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-numbers
-          path: |
-            .github/build_numbers/old_build_number.txt
-            .github/build_numbers/new_build_number.txt
+      - name: Update Build Numbers Files
+        id: update-build-numbers
+        run: |
+          OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
+          NEW_BUILD_NUMBER_FILE=".github/build_numbers/new_build_number.txt"
+          mkdir -p .github/build_numbers
+          echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
+          echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" > "$NEW_BUILD_NUMBER_FILE"
+
+          # Configure Git and commit the updated build numbers
+          git config user.name "Subbaramaiah Chevuru"
+          git config user.email "ram.subaram@gmail.com"
+          git fetch origin
+          git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update build numbers to ${{ env.LATEST_BUILD_NUMBER }} and status ${{ env.BUILD_STATUS }}"
+            git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
+          else
+            echo "No changes to commit."
+          fi
 
       - name: Post-job Cleanup
-        if: always()  # Always run this step even if previous steps fail
+        if: always()
         run: |
           echo "Starting post-job cleanup..."
           if [ -x "/usr/bin/make" ]; then
@@ -182,5 +159,4 @@ jobs:
             echo "Error: Make executable not found at /usr/bin/make. Exiting."
             exit 1
           fi
-
           echo "Post-job cleanup completed."
