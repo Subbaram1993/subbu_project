@@ -171,8 +171,8 @@ jobs:
           echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" >> "$NEW_BUILD_NUMBER_FILE"
 
           # Configure Git and commit the updated build numbers
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name "Subbaramaiah Chevuru"
+          git config user.email "ram.subaram@gmail.com"
 
           git fetch origin || { echo "git fetch failed"; exit 1; }
           git reset --hard origin/${GITHUB_REF#refs/heads/} || { echo "git reset failed"; exit 1; }
