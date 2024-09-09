@@ -163,7 +163,7 @@ jobs:
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
 
-      - name: Update Old and New Build Numbers
+      - name: Update Build Number in Artifacts
         id: update-build-numbers
         run: |
           OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
@@ -176,23 +176,11 @@ jobs:
           echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
 
           echo "Updating new build number file at: $NEW_BUILD_NUMBER_FILE"
-          echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" >> "$NEW_BUILD_NUMBER_FILE"
+          echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" > "$NEW_BUILD_NUMBER_FILE"
 
-          # Configure Git and commit the updated build numbers
-          git config user.name "Subbaramaiah Chevuru"
-          git config user.email "ram.subaram@gmail.com"
-
-          git fetch origin || { echo "git fetch failed"; exit 1; }
-
-          git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
-          if ! git diff --cached --quiet; then
-            git commit -m "Update build numbers to ${{ env.LATEST_BUILD_NUMBER }} and status ${{ env.BUILD_STATUS }}" || { echo "git commit failed"; exit 1; }
-            
-            # Use PAT_TOKEN for push
-            git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/} || { echo "git push failed"; exit 1; }
-          else
-            echo "No changes to commit."
-          fi
+          # Upload build numbers as artifacts
+          echo "Uploading build numbers as artifacts."
+          gh release create build-numbers-${{ github.run_id }} "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE" || { echo "Artifact upload failed"; exit 1; }
 
       - name: Post-job Cleanup
         if: always()  # Always run this step even if previous steps fail
