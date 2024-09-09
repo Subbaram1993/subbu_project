@@ -171,8 +171,8 @@ jobs:
           echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" >> "$NEW_BUILD_NUMBER_FILE"
 
           # Configure Git and commit the updated build numbers
-          git config user.name "Subbaramaiah Chevuru"
-          git config user.email "ram.subaram@gmail.com"
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
 
           git fetch origin || { echo "git fetch failed"; exit 1; }
           git reset --hard origin/${GITHUB_REF#refs/heads/} || { echo "git reset failed"; exit 1; }
@@ -184,3 +184,19 @@ jobs:
           else
             echo "No changes to commit."
           fi
+
+       # Post-job Cleanup
+      - name: Post-job Cleanup
+        if: always()  # Always run this step even if previous steps fail
+        run: |
+          echo "Starting post-job cleanup..."
+          # Ensure paths are correct and that /usr/bin/make is available
+          if [ -x "/usr/bin/make" ]; then
+            echo "Make executable found at /usr/bin/make"
+          else
+            echo "Error: Make executable not found at /usr/bin/make. Exiting."
+            exit 1
+          fi
+
+          # Check if any other cleanups are required
+          echo "Post-job cleanup completed successfully."

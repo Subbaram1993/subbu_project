@@ -58,7 +58,7 @@ void print_array(int a[], int n){
 
 // Main Functions starts here
 int main(){
-	int *a,i,j,n;
+	int *a,i,n;
 
 	printf("\nEnter the Number of Elements: \n");
 	scanf("%d",&n);
