@@ -163,24 +163,14 @@ jobs:
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
 
-      - name: Update Build Number in Artifacts
-        id: update-build-numbers
-        run: |
-          OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
-          NEW_BUILD_NUMBER_FILE=".github/build_numbers/new_build_number.txt"
-
-          # Ensure the build numbers directory exists
-          mkdir -p .github/build_numbers
-
-          echo "Updating old build number file at: $OLD_BUILD_NUMBER_FILE"
-          echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
-
-          echo "Updating new build number file at: $NEW_BUILD_NUMBER_FILE"
-          echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" > "$NEW_BUILD_NUMBER_FILE"
-
-          # Upload build numbers as artifacts
-          echo "Uploading build numbers as artifacts."
-          gh release create build-numbers-${{ github.run_id }} "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE" || { echo "Artifact upload failed"; exit 1; }
+      - name: Save Build Numbers as Artifacts
+        id: save-artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-numbers
+          path: |
+            .github/build_numbers/old_build_number.txt
+            .github/build_numbers/new_build_number.txt
 
       - name: Post-job Cleanup
         if: always()  # Always run this step even if previous steps fail
