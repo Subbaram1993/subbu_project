@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          persist-credentials: false
+          persist-credentials: false  # Disable default GitHub token
 
       - name: Get Commit Message
         id: get-commit-message
@@ -175,22 +175,20 @@ jobs:
           git config user.email "ram.subaram@gmail.com"
 
           git fetch origin || { echo "git fetch failed"; exit 1; }
-          #git reset --hard origin/${GITHUB_REF#refs/heads/} || { echo "git reset failed"; exit 1; }
 
           git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
           if ! git diff --cached --quiet; then
             git commit -m "Update build numbers to ${{ env.LATEST_BUILD_NUMBER }} and status ${{ env.BUILD_STATUS }}" || { echo "git commit failed"; exit 1; }
-            git push origin HEAD:${GITHUB_REF#refs/heads/} || { echo "git push failed"; exit 1; }
+            # Use PAT_TOKEN for push
+            git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/} || { echo "git push failed"; exit 1; }
           else
             echo "No changes to commit."
           fi
 
-       # Post-job Cleanup
       - name: Post-job Cleanup
         if: always()  # Always run this step even if previous steps fail
         run: |
           echo "Starting post-job cleanup..."
-          # Ensure paths are correct and that /usr/bin/make is available
           if [ -x "/usr/bin/make" ]; then
             echo "Make executable found at /usr/bin/make"
           else
@@ -198,5 +196,4 @@ jobs:
             exit 1
           fi
 
-          # Check if any other cleanups are required
-          echo "Post-job cleanup completed successfully."
+          echo "Post-job cleanup
