@@ -22,6 +22,14 @@ jobs:
           echo "Commit Message: ${COMMIT_MESSAGE}"
           echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
 
+      - name: Skip build if commit message contains [skip ci]
+        id: skip-build
+        run: |
+          if echo "${{ env.COMMIT_MESSAGE }}" | grep -q '\[skip ci\]'; then
+            echo "Skipping build trigger due to '[skip ci]' in commit message."
+            exit 0
+          fi
+
       - name: Read JSON Configuration
         id: read-json
         run: |
@@ -143,8 +151,9 @@ jobs:
           git fetch origin
           git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
           if ! git diff --cached --quiet; then
-            git commit -m "Update build numbers to ${{ env.LATEST_BUILD_NUMBER }} and status ${{ env.BUILD_STATUS }}"
-            #git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
+            git commit -m "Update build numbers to ${{ env.LATEST_BUILD_NUMBER }} and status ${{ env.BUILD_STATUS }} [skip ci]"
+            # Push changes using PAT
+            git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
           fi
