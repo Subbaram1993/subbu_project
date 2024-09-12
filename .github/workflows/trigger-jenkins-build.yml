@@ -10,18 +10,11 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Set up Log File and Directory
+      - name: Set up Log File in Repository Root
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          mkdir -p "$LOG_DIR"  # Create directory if it doesn't exist
-          LOG_FILE="$LOG_DIR/build_execution.log"
-          if [ ! -d "$LOG_DIR" ]; then
-            echo "Error: Directory $LOG_DIR could not be created." 
-            exit 1
-          else
-            echo "Log directory created: $LOG_DIR"
-          fi
-          echo "Starting script execution: $(date)" | tee -a "$LOG_FILE"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
+          echo "Log file path: $LOG_FILE"
+          echo "Starting execution log: $(date)" | tee -a "$LOG_FILE"
         shell: bash
 
       - name: Checkout repository
@@ -31,8 +24,7 @@ jobs:
 
       - name: Get Commit Message
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
           echo "Commit Message: ${COMMIT_MESSAGE}" | tee -a "$LOG_FILE"
           echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
@@ -40,8 +32,7 @@ jobs:
 
       - name: Skip build if commit message contains [skip ci]
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           if echo "${{ env.COMMIT_MESSAGE }}" | grep -q '\[skip ci\]'; then
             echo "Skipping build trigger due to '[skip ci]' in commit message." | tee -a "$LOG_FILE"
             exit 0
@@ -50,8 +41,7 @@ jobs:
 
       - name: Read JSON Configuration
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           if [ -f config.json ]; then
             JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
             if [ "$JOB_NAME" == "null" ] || [ -z "$JOB_NAME" ]; then
@@ -68,8 +58,7 @@ jobs:
 
       - name: Extract Job Name
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           EXTRACTED_JOB_NAME=$(echo "${{ env.COMMIT_MESSAGE }}" | grep -oP '(?<=Activity: )\S+' || echo "")
           if [ -z "$EXTRACTED_JOB_NAME" ]; then
             EXTRACTED_JOB_NAME=${{ env.JOB_NAME }}
@@ -80,8 +69,7 @@ jobs:
 
       - name: Fetch Local Build Number
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
@@ -94,8 +82,7 @@ jobs:
 
       - name: Fetch Latest Jenkins Build Number
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" | tee -a "$LOG_FILE"
@@ -104,8 +91,7 @@ jobs:
 
       - name: Determine New Build Number
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           if [ "${{ env.LOCAL_BUILD_NUMBER }}" -ge "${{ env.LATEST_BUILD_NUMBER }}" ]; then
             BUILD_NUMBER=$((LOCAL_BUILD_NUMBER + 1))
           else
@@ -118,8 +104,7 @@ jobs:
 
       - name: Trigger Jenkins Build
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
           CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
 
@@ -144,18 +129,38 @@ jobs:
           echo "Jenkins build triggered successfully." | tee -a "$LOG_FILE"
         shell: bash
 
+      - name: Re-fetch Latest Jenkins Build Number & Status
+        run: |
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
+          sleep 10  # Wait for Jenkins to update the build number and status
+          LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
+          BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$LATEST_BUILD_NUMBER/api/json?tree=result" | jq -r '.result')
+          echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" | tee -a "$LOG_FILE"
+          echo "BUILD_STATUS=${BUILD_STATUS}" | tee -a "$LOG_FILE"
+          echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
+        shell: bash
+
       - name: Update Build Numbers Files
         run: |
-          LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
+          LOG_FILE="${{ github.workspace }}/build_execution.log"
           OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
           NEW_BUILD_NUMBER_FILE=".github/build_numbers/new_build_number.txt"
           mkdir -p .github/build_numbers
           echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
           echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" >> "$NEW_BUILD_NUMBER_FILE"
+
+          # Configure Git and commit the updated build numbers
           git config user.name "Subbaramaiah Chevuru"
           git config user.email "ram.subaram@gmail.com"
+          git fetch origin
           git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
-          git commit -m "Update build numbers"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "Update build numbers to ${{ env.LATEST_BUILD_NUMBER }} and status ${{ env.BUILD_STATUS }} [skip ci]"
+            git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
+          else
+            echo "No changes to commit." | tee -a "$LOG_FILE"
+          fi
         shell: bash
