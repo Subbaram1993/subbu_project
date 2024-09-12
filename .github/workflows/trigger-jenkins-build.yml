@@ -10,106 +10,103 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Set up Log File in Repository Root
-        run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
-          echo "Log file path: $LOG_FILE"
-          echo "Starting execution log: $(date)" | tee -a "$LOG_FILE"
-        shell: bash
-
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           persist-credentials: false  # Disable default GitHub token
 
       - name: Get Commit Message
+        id: get-commit-message
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
-          echo "Commit Message: ${COMMIT_MESSAGE}" | tee -a "$LOG_FILE"
+          echo "Commit Message: ${COMMIT_MESSAGE}"
           echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
-        shell: bash
 
       - name: Skip build if commit message contains [skip ci]
+        id: skip-build
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           if echo "${{ env.COMMIT_MESSAGE }}" | grep -q '\[skip ci\]'; then
-            echo "Skipping build trigger due to '[skip ci]' in commit message." | tee -a "$LOG_FILE"
+            echo "Skipping build trigger due to '[skip ci]' in commit message."
             exit 0
           fi
-        shell: bash
 
       - name: Read JSON Configuration
+        id: read-json
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           if [ -f config.json ]; then
             JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
             if [ "$JOB_NAME" == "null" ] || [ -z "$JOB_NAME" ]; then
-              echo "Error: 'jobName' not found in config.json" | tee -a "$LOG_FILE"
+              echo "Error: 'jobName' not found in config.json"
               exit 1
             fi
-            echo "JOB_NAME=${JOB_NAME}" | tee -a "$LOG_FILE"
             echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
           else
-            echo "Error: config.json file not found" | tee -a "$LOG_FILE"
+            echo "Error: config.json file not found"
             exit 1
           fi
-        shell: bash
 
       - name: Extract Job Name
+        id: extract-job-name
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           EXTRACTED_JOB_NAME=$(echo "${{ env.COMMIT_MESSAGE }}" | grep -oP '(?<=Activity: )\S+' || echo "")
           if [ -z "$EXTRACTED_JOB_NAME" ]; then
             EXTRACTED_JOB_NAME=${{ env.JOB_NAME }}
           fi
-          echo "JOB_NAME=${EXTRACTED_JOB_NAME}" | tee -a "$LOG_FILE"
           echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
-        shell: bash
 
       - name: Fetch Local Build Number
+        id: fetch-local-build-number
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
           else
             LOCAL_BUILD_NUMBER=0
           fi
-          echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}" | tee -a "$LOG_FILE"
           echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}" >> $GITHUB_ENV
-        shell: bash
 
       - name: Fetch Latest Jenkins Build Number
+        id: fetch-jenkins-build-number
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
-          echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" | tee -a "$LOG_FILE"
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
-        shell: bash
 
       - name: Determine New Build Number
+        id: determine-build-number
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           if [ "${{ env.LOCAL_BUILD_NUMBER }}" -ge "${{ env.LATEST_BUILD_NUMBER }}" ]; then
             BUILD_NUMBER=$((LOCAL_BUILD_NUMBER + 1))
           else
             BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
           fi
           BUILD_NUMBER=$(printf "%02d" "$BUILD_NUMBER")
-          echo "BUILD_NUMBER=${BUILD_NUMBER}" | tee -a "$LOG_FILE"
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
-        shell: bash
+
+      - name: Check if Jenkins Build Should be Triggered
+        id: check-build-trigger
+        run: |
+          if [ "${{ env.BUILD_NUMBER }}" -le "${{ env.LATEST_BUILD_NUMBER }}" ]; then
+            echo "No new build is needed. Exiting."
+            exit 0
+          fi
 
       - name: Trigger Jenkins Build
+        id: trigger-build
+        shell: bash
+        env:
+          JENKINS_URL: ${{ secrets.JENKINS_URL }}
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+          JOB_NAME: ${{ env.JOB_NAME }}
+          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
+          DEPLOY_ENVIRONMENT: development
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
           CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
 
           if [ -z "$CRUMB" ]; then
-            echo "Failed to obtain crumb. Exiting." | tee -a "$LOG_FILE"
+            echo "Failed to obtain crumb. Exiting."
             exit 1
           fi
 
@@ -119,38 +116,34 @@ jobs:
                --header "Jenkins-Crumb:$CRUMB" \
                --header "Content-Type: application/x-www-form-urlencoded" \
                --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
-               --data-urlencode "DEPLOY_ENVIRONMENT=development")
+               --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT")
 
           if [ "$response" -ne 201 ]; then
-            echo "Error: Jenkins build trigger failed with response code $response. Exiting." | tee -a "$LOG_FILE"
+            echo "Error: Jenkins build trigger failed with response code $response. Exiting."
             exit 1
           fi
 
-          echo "Jenkins build triggered successfully." | tee -a "$LOG_FILE"
-        shell: bash
+          echo "Jenkins build triggered successfully."
 
       - name: Re-fetch Latest Jenkins Build Number & Status
+        id: refetch-jenkins-build-number-status
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           sleep 10  # Wait for Jenkins to update the build number and status
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
           BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$LATEST_BUILD_NUMBER/api/json?tree=result" | jq -r '.result')
-          echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" | tee -a "$LOG_FILE"
-          echo "BUILD_STATUS=${BUILD_STATUS}" | tee -a "$LOG_FILE"
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
-        shell: bash
 
       - name: Update Build Numbers Files
+        id: update-build-numbers
         run: |
-          LOG_FILE="${{ github.workspace }}/build_execution.log"
           OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
           NEW_BUILD_NUMBER_FILE=".github/build_numbers/new_build_number.txt"
           mkdir -p .github/build_numbers
           echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
-          echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" >> "$NEW_BUILD_NUMBER_FILE"
+          echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" > "$NEW_BUILD_NUMBER_FILE"
 
           # Configure Git and commit the updated build numbers
           git config user.name "Subbaramaiah Chevuru"
@@ -159,8 +152,20 @@ jobs:
           git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
           if ! git diff --cached --quiet; then
             git commit -m "Update build numbers to ${{ env.LATEST_BUILD_NUMBER }} and status ${{ env.BUILD_STATUS }} [skip ci]"
+            # Push changes using PAT
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
-            echo "No changes to commit." | tee -a "$LOG_FILE"
+            echo "No changes to commit."
           fi
-        shell: bash
+
+      - name: Post-job Cleanup
+        if: always()
+        run: |
+          echo "Starting post-job cleanup..."
+          if [ -x "/usr/bin/make" ]; then
+            echo "Make executable found at /usr/bin/make"
+          else
+            echo "Error: Make executable not found at /usr/bin/make. Exiting."
+            exit 1
+          fi
+          echo "Post-job cleanup completed."
