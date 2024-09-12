@@ -13,8 +13,14 @@ jobs:
       - name: Set up Log File and Directory
         run: |
           LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          mkdir -p "$LOG_DIR"
+          mkdir -p "$LOG_DIR"  # Create directory if it doesn't exist
           LOG_FILE="$LOG_DIR/build_execution.log"
+          if [ ! -d "$LOG_DIR" ]; then
+            echo "Error: Directory $LOG_DIR could not be created." 
+            exit 1
+          else
+            echo "Log directory created: $LOG_DIR"
+          fi
           echo "Starting script execution: $(date)" | tee -a "$LOG_FILE"
         shell: bash
 
