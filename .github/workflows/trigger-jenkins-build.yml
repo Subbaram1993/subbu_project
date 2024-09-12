@@ -10,11 +10,11 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Set up Log File
+      - name: Set up Log File and Directory
         run: |
           LOG_DIR="/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/runner_actions"
-          LOG_FILE="$LOG_DIR/build_execution.log"
           mkdir -p "$LOG_DIR"
+          LOG_FILE="$LOG_DIR/build_execution.log"
           echo "Starting script execution: $(date)" | tee -a "$LOG_FILE"
         shell: bash
 
