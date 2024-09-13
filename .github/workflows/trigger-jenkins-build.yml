@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - "main"
+    paths-ignore:
+      - ".github/build_numbers/old_build_number.txt"
+      - ".github/build_numbers/new_build_number.txt"
 
 jobs:
   trigger-jenkins:
