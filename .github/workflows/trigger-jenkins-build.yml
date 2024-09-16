@@ -51,12 +51,13 @@ jobs:
         id: fetch-local-build-number
         run: |
           BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
+          echo "Checking if $BUILD_NUMBER_FILE exists..."
           if [ -f "$BUILD_NUMBER_FILE" ]; then
             LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE" | tr -d '[:space:]')  # Remove any whitespace
-            echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}"
+            echo "LOCAL_BUILD_NUMBER read from file: ${LOCAL_BUILD_NUMBER}"
           else
             LOCAL_BUILD_NUMBER=0
-            echo "OLD_BUILD_NUMBER_FILE does not exist, initializing LOCAL_BUILD_NUMBER to 0."
+            echo "File $BUILD_NUMBER_FILE does not exist, initializing LOCAL_BUILD_NUMBER to 0."
           fi
           # Ensure LOCAL_BUILD_NUMBER is an integer
           if ! [[ "$LOCAL_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
@@ -140,6 +141,8 @@ jobs:
           OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
           NEW_BUILD_NUMBER_FILE=".github/build_numbers/new_build_number.txt"
           mkdir -p .github/build_numbers
+
+          echo "Updating build numbers in $OLD_BUILD_NUMBER_FILE and $NEW_BUILD_NUMBER_FILE"
 
           # Update old_build_number.txt with the latest build number
           echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
