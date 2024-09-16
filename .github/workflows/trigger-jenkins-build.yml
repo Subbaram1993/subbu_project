@@ -52,13 +52,15 @@ jobs:
         run: |
           BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
           if [ -f "$BUILD_NUMBER_FILE" ]; then
-            LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE")
+            LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE" | tr -d '[:space:]')  # Remove any whitespace
+            echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}"
           else
             LOCAL_BUILD_NUMBER=0
+            echo "OLD_BUILD_NUMBER_FILE does not exist, initializing LOCAL_BUILD_NUMBER to 0."
           fi
           # Ensure LOCAL_BUILD_NUMBER is an integer
           if ! [[ "$LOCAL_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
-            echo "Error: LOCAL_BUILD_NUMBER is not a valid integer."
+            echo "Error: LOCAL_BUILD_NUMBER is not a valid integer. Value: '${LOCAL_BUILD_NUMBER}'"
             exit 1
           fi
           echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}" >> $GITHUB_ENV
@@ -70,7 +72,7 @@ jobs:
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
           # Ensure LATEST_BUILD_NUMBER is an integer
           if ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
-            echo "Error: LATEST_BUILD_NUMBER is not a valid integer."
+            echo "Error: LATEST_BUILD_NUMBER is not a valid integer. Value: '${LATEST_BUILD_NUMBER}'"
             exit 1
           fi
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
@@ -141,9 +143,11 @@ jobs:
 
           # Update old_build_number.txt with the latest build number
           echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
+          echo "Updated old build number to $OLD_BUILD_NUMBER_FILE"
 
           # Initialize new_build_number.txt with the latest build number and its status
           echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" > "$NEW_BUILD_NUMBER_FILE"
+          echo "Build history updated in $NEW_BUILD_NUMBER_FILE"
 
           # Configure Git, fetch, rebase, commit, and push the updated build numbers
           git config user.name "Subbaramaiah Chevuru"
