@@ -1,12 +1,9 @@
-name: Trigger Jenkins Build
+name: Trigger Jenkins Build and Update Build Numbers
 
 on:
   push:
     branches:
-      - "main"
-    #paths-ignore:
-     # - ".github/build_numbers/old_build_number.txt"
-     # - ".github/build_numbers/new_build_number.txt"
+      - main
 
 jobs:
   trigger-jenkins:
@@ -134,18 +131,30 @@ jobs:
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
 
-      - name: Update Build Numbers Files
+      - name: Update Build Numbers
         if: steps.trigger-build.outcome == 'success'
         id: update-build-numbers
         run: |
+          TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
+          CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
+
+          if [ -z "$CRUMB" ]; then
+            echo "Failed to obtain crumb. Exiting."
+            exit 1
+          fi
+
+          FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/lastSuccessfulBuild/api/json"
+          LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$FULL_URL" | jq -r '.number')
+          echo "LAST_SUCCESSFUL_BUILD_NUMBER=${LAST_SUCCESSFUL_BUILD_NUMBER}" >> $GITHUB_ENV
+
           OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
           NEW_BUILD_NUMBER_FILE=".github/build_numbers/new_build_number.txt"
           mkdir -p .github/build_numbers
 
           echo "Updating build numbers in $OLD_BUILD_NUMBER_FILE and $NEW_BUILD_NUMBER_FILE"
 
-          # Update old_build_number.txt with the latest build number
-          echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
+          # Update old_build_number.txt with the latest successful build number
+          echo "${{ env.LAST_SUCCESSFUL_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
           echo "Updated old build number to $OLD_BUILD_NUMBER_FILE"
 
           # Initialize new_build_number.txt with the latest build number and its status
