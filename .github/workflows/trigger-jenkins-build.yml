@@ -144,7 +144,7 @@ jobs:
           echo "$BUILD_HISTORY" > "$NEW_BUILD_NUMBER_FILE"
 
           # Filter and append the range of new build numbers with status
-          for (( i=$((${{ env.LOCAL_BUILD_NUMBER }} + 1)); i<=${{ env.LATEST_BUILD_NUMBER }}; i++ )); do
+          for i in $(seq $(( LOCAL_BUILD_NUMBER + 1 )) $LATEST_BUILD_NUMBER); do
             if [[ -z "$i" || ! "$i" =~ ^[0-9]+$ ]]; then
               echo "Invalid build number encountered: $i. Skipping."
               continue
@@ -172,7 +172,8 @@ jobs:
           git config user.name "Subbaramaiah Chevuru"
           git config user.email "ram.subaram@gmail.com"
           git fetch origin
-          git rebase origin/main  # Rebase to handle non-fast-forward errors
+          git stash  # Stash any changes
+          git pull --rebase origin main  # Rebase to handle non-fast-forward errors
           git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
           if ! git diff --cached --quiet; then
             git commit -m "Update build numbers with status [skip ci]"
