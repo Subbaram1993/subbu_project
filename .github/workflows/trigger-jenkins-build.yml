@@ -48,15 +48,6 @@ jobs:
             exit 1
           fi
 
-      - name: Extract Job Name
-        id: extract-job-name
-        run: |
-          EXTRACTED_JOB_NAME=$(echo "${{ env.COMMIT_MESSAGE }}" | grep -oP '(?<=Activity: )\S+' || echo "")
-          if [ -z "$EXTRACTED_JOB_NAME" ]; then
-            EXTRACTED_JOB_NAME=${{ env.JOB_NAME }}
-          fi
-          echo "JOB_NAME=${EXTRACTED_JOB_NAME}" >> $GITHUB_ENV
-
       - name: Fetch Local Build Number
         id: fetch-local-build-number
         run: |
@@ -85,14 +76,6 @@ jobs:
           fi
           BUILD_NUMBER=$(printf "%02d" "$BUILD_NUMBER")
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
-
-      - name: Check if Jenkins Build Should be Triggered
-        id: check-build-trigger
-        run: |
-          if [ "${{ env.BUILD_NUMBER }}" -le "${{ env.LATEST_BUILD_NUMBER }}" ]; then
-            echo "No new build is needed. Exiting."
-            exit 0
-          fi
 
       - name: Trigger Jenkins Build
         id: trigger-build
@@ -153,22 +136,20 @@ jobs:
 
           echo "Build history response: $BUILD_HISTORY"
 
-          # Update old_build_number.txt with the previous build numbers and the latest build number
-          if [ -f "$OLD_BUILD_NUMBER_FILE" ]; then
-            # Append the latest build number to old_build_number.txt
-            echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
-            echo "Updated old build number to $OLD_BUILD_NUMBER_FILE"
-          else
-            # If file doesn't exist, create it and add the latest build number
-            echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
-            echo "Created old build number file with $LATEST_BUILD_NUMBER"
-          fi
+          # Update old_build_number.txt with the latest build number
+          echo "${{ env.LATEST_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
+          echo "Updated old build number to $OLD_BUILD_NUMBER_FILE"
 
           # Initialize new_build_number.txt with current build history
           echo "$BUILD_HISTORY" > "$NEW_BUILD_NUMBER_FILE"
 
           # Filter and append the range of new build numbers with status
-          for (( i=${{ env.LOCAL_BUILD_NUMBER }} + 1; i<=${{ env.LATEST_BUILD_NUMBER }}; i++ )); do
+          for (( i=$((${{ env.LOCAL_BUILD_NUMBER }} + 1)); i<=${{ env.LATEST_BUILD_NUMBER }}; i++ )); do
+            if [[ -z "$i" || ! "$i" =~ ^[0-9]+$ ]]; then
+              echo "Invalid build number encountered: $i. Skipping."
+              continue
+            fi
+
             # Fetch the build status from Jenkins
             BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
                                   "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$i/api/json?tree=result" | jq -r '.result')
@@ -187,14 +168,14 @@ jobs:
 
           echo "Build history updated in $NEW_BUILD_NUMBER_FILE"
 
-          # Configure Git and commit the updated build numbers
+          # Configure Git, fetch, rebase, commit, and push the updated build numbers
           git config user.name "Subbaramaiah Chevuru"
           git config user.email "ram.subaram@gmail.com"
           git fetch origin
+          git rebase origin/main  # Rebase to handle non-fast-forward errors
           git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
           if ! git diff --cached --quiet; then
             git commit -m "Update build numbers with status [skip ci]"
-            # Push changes using PAT
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
@@ -207,7 +188,5 @@ jobs:
           if [ -x "/usr/bin/make" ]; then
             echo "Make executable found at /usr/bin/make"
           else
-            echo "Error: Make executable not found at /usr/bin/make. Exiting."
-            exit 1
+            echo "Make executable not found. Skipping make cleanup."
           fi
-          echo "Post-job cleanup completed."
