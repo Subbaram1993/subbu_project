@@ -68,7 +68,7 @@ jobs:
           fi
 
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/build"
-          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$FULL_URL" \
+          response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
                --header "Jenkins-Crumb:$CRUMB" \
                --header "Content-Type: application/x-www-form-urlencoded")
@@ -104,18 +104,16 @@ jobs:
 
           # Fetch the last successful build number
           FULL_URL="${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/api/json"
-          LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$FULL_URL" | jq -r '.number')
+          LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" "$FULL_URL" | jq -r '.number')
 
           # Update the last successful build number in JSON
           jq ".last_successful_build_number = $LAST_SUCCESSFUL_BUILD_NUMBER" "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
           echo "Updated last successful build number to $LAST_SUCCESSFUL_BUILD_NUMBER"
 
-          # Prepare BUILD_STATUS for jq handling
-          BUILD_STATUS=${BUILD_STATUS:-"null"}  # Default to null if empty
-
           # Append the latest build number and status to build_history in JSON
-          jq --argjson build_number "$LATEST_BUILD_NUMBER" --arg status "$BUILD_STATUS" \
-            '.build_history += [{"build_number": $build_number, "status": $status}]' \
+          jq --argjson latestBuildNumber "${{ env.LATEST_BUILD_NUMBER }}" \
+             --arg buildStatus "${{ env.BUILD_STATUS }}" \
+             '.build_history += [{"build_number": $latestBuildNumber, "status": $buildStatus}]' \
             "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
 
           echo "Build history updated in $JSON_FILE"
