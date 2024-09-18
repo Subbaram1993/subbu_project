@@ -33,10 +33,6 @@ jobs:
       - name: Fetch Latest Jenkins Build Number
         id: fetch-jenkins-build-number
         run: |
-          echo "Using Jenkins URL: ${{ secrets.JENKINS_URL }}"
-          echo "Using Jenkins User: ${{ secrets.JENKINS_USER }}"
-
-          # Fetch the latest build number from Jenkins
           LATEST_BUILD_NUMBER_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number")
 
@@ -72,7 +68,7 @@ jobs:
           fi
 
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/build"
-          response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
                --header "Jenkins-Crumb:$CRUMB" \
                --header "Content-Type: application/x-www-form-urlencoded")
@@ -84,14 +80,10 @@ jobs:
 
           echo "Jenkins build triggered successfully."
 
-      - name: Sleep for 30 seconds before checking build status
-        run: |
-          echo "Waiting for 30 seconds to allow Jenkins to start the build..."
-          sleep 30
-
       - name: Re-fetch Latest Jenkins Build Number & Status
         id: refetch-jenkins-build-number-status
         run: |
+          sleep 30  # Wait for Jenkins to update the build number and status
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
           BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
@@ -136,4 +128,3 @@ jobs:
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
-          fi
