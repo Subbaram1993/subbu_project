@@ -33,8 +33,14 @@ jobs:
       - name: Fetch Latest Jenkins Build Number
         id: fetch-jenkins-build-number
         run: |
-          LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
+          LATEST_BUILD_NUMBER_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+            "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number")
+
+          echo "Raw response from Jenkins:"
+          echo "$LATEST_BUILD_NUMBER_RESPONSE"
+
+          # Parse the build number
+          LATEST_BUILD_NUMBER=$(echo "$LATEST_BUILD_NUMBER_RESPONSE" | jq -r '.number')
 
           if [ -z "$LATEST_BUILD_NUMBER" ] || [ "$LATEST_BUILD_NUMBER" == "null" ]; then
             echo "Error: No builds found for job '${{ env.JOB_NAME }}'."
@@ -42,6 +48,7 @@ jobs:
           fi
 
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
+        shell: bash
 
       - name: Trigger Jenkins Build
         id: trigger-build
@@ -76,11 +83,19 @@ jobs:
       - name: Re-fetch Latest Jenkins Build Number & Status
         id: refetch-jenkins-build-number-status
         run: |
-          sleep 10  # Wait for Jenkins to update the build number and status
+          sleep 30  # Wait for Jenkins to update the build number and status
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
+
+          # Ensure LATEST_BUILD_NUMBER is not empty
+          if [ -z "$LATEST_BUILD_NUMBER" ]; then
+            echo "Error: Failed to fetch latest build number after triggering build."
+            exit 1
+          fi
+
           BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$LATEST_BUILD_NUMBER/api/json?tree=result" | jq -r '.result')
+
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
 
@@ -121,4 +136,3 @@ jobs:
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
-          fi
