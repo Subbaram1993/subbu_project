@@ -71,7 +71,8 @@ jobs:
           response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
                --header "Jenkins-Crumb:$CRUMB" \
-               --header "Content-Type: application/x-www-form-urlencoded")
+               --header "Content-Type: application/x-www-form-urlencoded" \
+               --request POST)
 
           if [ "$response" -ne 201 ]; then
             echo "Error: Jenkins build trigger failed with response code $response. Exiting."
