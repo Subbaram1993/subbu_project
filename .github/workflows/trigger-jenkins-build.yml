@@ -15,20 +15,6 @@ jobs:
         with:
           persist-credentials: false  # Disable default GitHub token
 
-      - name: Get Commit Message
-        id: get-commit-message
-        run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
-          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
-
-      - name: Skip build if commit message contains [skip ci]
-        id: skip-build
-        run: |
-          if echo "${{ env.COMMIT_MESSAGE }}" | grep -q '\[skip ci\]'; then
-            echo "Skipping build trigger due to '[skip ci]' in commit message."
-            exit 0
-          fi
-
       - name: Read JSON Configuration
         id: read-json
         run: |
@@ -44,32 +30,6 @@ jobs:
             exit 1
           fi
 
-      - name: Debug JSON and Environment Variables
-        run: |
-          echo "COMMIT_MESSAGE: ${{ env.COMMIT_MESSAGE }}"
-          echo "JOB_NAME: ${{ env.JOB_NAME }}"
-          echo "LOCAL_BUILD_NUMBER: ${{ env.LOCAL_BUILD_NUMBER }}"
-          cat config.json | jq
-
-      - name: Fetch Local Build Number
-        id: fetch-local-build-number
-        run: |
-          BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
-          echo "Checking if $BUILD_NUMBER_FILE exists..."
-          if [ -f "$BUILD_NUMBER_FILE" ]; then
-            LOCAL_BUILD_NUMBER=$(cat "$BUILD_NUMBER_FILE" | tr -d '[:space:]')  # Remove any whitespace
-            echo "LOCAL_BUILD_NUMBER read from file: ${LOCAL_BUILD_NUMBER}"
-          else
-            LOCAL_BUILD_NUMBER=0
-            echo "File $BUILD_NUMBER_FILE does not exist, initializing LOCAL_BUILD_NUMBER to 0."
-          fi
-          # Ensure LOCAL_BUILD_NUMBER is an integer
-          if ! [[ "$LOCAL_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
-            echo "Error: LOCAL_BUILD_NUMBER is not a valid integer. Value: '${LOCAL_BUILD_NUMBER}'"
-            exit 1
-          fi
-          echo "LOCAL_BUILD_NUMBER=${LOCAL_BUILD_NUMBER}" >> $GITHUB_ENV
-
       - name: Fetch Latest Jenkins Build Number
         id: fetch-jenkins-build-number
         run: |
@@ -81,24 +41,7 @@ jobs:
             exit 1
           fi
 
-          # Ensure LATEST_BUILD_NUMBER is an integer
-          if ! [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
-            echo "Error: LATEST_BUILD_NUMBER is not a valid integer. Value: '${LATEST_BUILD_NUMBER}'"
-            exit 1
-          fi
-
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
-
-      - name: Determine New Build Number
-        id: determine-build-number
-        run: |
-          if [ "${{ env.LOCAL_BUILD_NUMBER }}" -ge "${{ env.LATEST_BUILD_NUMBER }}" ]; then
-            BUILD_NUMBER=$((LOCAL_BUILD_NUMBER + 1))
-          else
-            BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
-          fi
-          BUILD_NUMBER=$(printf "%02d" "$BUILD_NUMBER")
-          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
       - name: Trigger Jenkins Build
         id: trigger-build
@@ -108,8 +51,6 @@ jobs:
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
           JOB_NAME: ${{ env.JOB_NAME }}
-          BUILD_NUMBER: ${{ env.BUILD_NUMBER }}
-          DEPLOY_ENVIRONMENT: development
         run: |
           TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
           CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
@@ -123,9 +64,7 @@ jobs:
           response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
                --header "Jenkins-Crumb:$CRUMB" \
-               --header "Content-Type: application/x-www-form-urlencoded" \
-               --data-urlencode "BUILD_NUMBER=$BUILD_NUMBER" \
-               --data-urlencode "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT")
+               --header "Content-Type: application/x-www-form-urlencoded")
 
           if [ "$response" -ne 201 ]; then
             echo "Error: Jenkins build trigger failed with response code $response. Exiting."
@@ -145,35 +84,30 @@ jobs:
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
 
-      - name: Update Build Numbers
-        if: steps.trigger-build.outcome == 'success'
+      - name: Update Build Numbers in JSON
         id: update-build-numbers
         run: |
-          TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
-          CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
-
-          if [ -z "$CRUMB" ]; then
-            echo "Failed to obtain crumb. Exiting."
-            exit 1
-          fi
-
-          FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/lastSuccessfulBuild/api/json"
-          LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$FULL_URL" | jq -r '.number')
-          echo "LAST_SUCCESSFUL_BUILD_NUMBER=${LAST_SUCCESSFUL_BUILD_NUMBER}" >> $GITHUB_ENV
-
-          OLD_BUILD_NUMBER_FILE=".github/build_numbers/old_build_number.txt"
-          NEW_BUILD_NUMBER_FILE=".github/build_numbers/new_build_number.txt"
+          JSON_FILE=".github/build_numbers/build_numbers.json"
           mkdir -p .github/build_numbers
 
-          echo "Updating build numbers in $OLD_BUILD_NUMBER_FILE and $NEW_BUILD_NUMBER_FILE"
+          # Initialize the JSON file if it doesn't exist
+          if [ ! -f "$JSON_FILE" ]; then
+            echo '{"last_successful_build_number": 0, "build_history": []}' > "$JSON_FILE"
+          fi
 
-          # Update old_build_number.txt with the latest successful build number
-          echo "${{ env.LAST_SUCCESSFUL_BUILD_NUMBER }}" > "$OLD_BUILD_NUMBER_FILE"
-          echo "Updated old build number to $OLD_BUILD_NUMBER_FILE"
+          # Fetch the last successful build number
+          FULL_URL="${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/api/json"
+          LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$FULL_URL" | jq -r '.number')
 
-          # Initialize new_build_number.txt with the latest build number and its status
-          echo "${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }}" > "$NEW_BUILD_NUMBER_FILE"
-          echo "Build history updated in $NEW_BUILD_NUMBER_FILE"
+          # Update the last successful build number in JSON
+          jq ".last_successful_build_number = $LAST_SUCCESSFUL_BUILD_NUMBER" "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
+          echo "Updated last successful build number to $LAST_SUCCESSFUL_BUILD_NUMBER"
+
+          # Append the latest build number and status to build_history in JSON
+          jq '.build_history += [{"build_number": '"${{ env.LATEST_BUILD_NUMBER }}"', "status": "'"${{ env.BUILD_STATUS }}"'"}]' \
+            "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
+
+          echo "Build history updated in $JSON_FILE"
 
           # Configure Git, fetch, rebase, commit, and push the updated build numbers
           git config user.name "Subbaramaiah Chevuru"
@@ -181,20 +115,10 @@ jobs:
           git fetch origin
           git stash  # Stash any changes
           git pull --rebase origin main  # Rebase to handle non-fast-forward errors
-          git add "$OLD_BUILD_NUMBER_FILE" "$NEW_BUILD_NUMBER_FILE"
+          git add "$JSON_FILE"
           if ! git diff --cached --quiet; then
-            git commit -m "Update build numbers with status [skip ci]"
+            git commit -m "Update build numbers in JSON with status [skip ci]"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
-          fi
-
-      - name: Post-job Cleanup
-        if: always()
-        run: |
-          echo "Starting post-job cleanup..."
-          if [ -x "/usr/bin/make" ]; then
-            echo "Make executable found at /usr/bin/make"
-          else
-            echo "Make executable not found. Skipping make cleanup."
           fi
