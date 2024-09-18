@@ -110,8 +110,12 @@ jobs:
           jq ".last_successful_build_number = $LAST_SUCCESSFUL_BUILD_NUMBER" "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
           echo "Updated last successful build number to $LAST_SUCCESSFUL_BUILD_NUMBER"
 
+          # Prepare BUILD_STATUS for jq handling
+          BUILD_STATUS=${BUILD_STATUS:-"null"}  # Default to null if empty
+
           # Append the latest build number and status to build_history in JSON
-          jq '.build_history += [{"build_number": '"${{ env.LATEST_BUILD_NUMBER }}"', "status": "'"${{ env.BUILD_STATUS }}"'"}]' \
+          jq --argjson build_number "$LATEST_BUILD_NUMBER" --arg status "$BUILD_STATUS" \
+            '.build_history += [{"build_number": $build_number, "status": $status}]' \
             "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
 
           echo "Build history updated in $JSON_FILE"
@@ -128,3 +132,4 @@ jobs:
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
+          fi
