@@ -120,8 +120,8 @@ jobs:
           echo "Build history updated in $JSON_FILE"
 
           # Configure Git, stash untracked files, fetch, rebase, commit, and push the updated build numbers
-          git config user.name "Subbaramaiah Chevuru"
-          git config user.email "ram.subaram@gmail.com"
+          git config user.name "${{ github.actor }}"  # Dynamic GitHub username
+          git config user.email "${{ secrets.GIT_EMAIL }}"  # Secret for email
           git fetch origin
           git stash push -m "Stashing untracked files"
           git pull --rebase origin main
