@@ -124,7 +124,14 @@ jobs:
           git config user.email "${{ secrets.GIT_EMAIL }}"  # Secret for email
           git fetch origin
           git stash push -m "Stashing untracked files"
-          git pull --rebase origin main
+          
+          # Attempt to pull with rebase and handle merge conflicts
+          git pull --rebase origin main || {
+            echo "Error: Merge conflict occurred. Aborting."
+            git merge --abort
+            exit 1
+          }
+
           git stash pop
           git add "$JSON_FILE"
           if ! git diff --cached --quiet; then
