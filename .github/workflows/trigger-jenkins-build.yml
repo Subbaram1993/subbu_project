@@ -129,25 +129,29 @@ jobs:
           git config user.name "${{ github.actor }}"  # Dynamic GitHub username
           git config user.email "${{ secrets.GIT_EMAIL }}"  # Secret for email
 
-          # Attempt to pull with rebase and handle merge conflicts
-          git fetch origin
-          git stash push -m "Stashing untracked files"
-          
-          # Try to pull the latest changes
-          git pull --rebase origin main || {
-            echo "Merge conflict occurred. Attempting to resolve automatically."
-            git merge --abort  # Abort the current merge
-            git stash pop || true  # Pop the stash, ignore if empty
-
-            # Here you can add your conflict resolution logic
-            # Example: Using the incoming changes
-            git checkout --theirs "$JSON_FILE"  # This uses the version from origin/main
-
-            git add "$JSON_FILE"
-          }
-
           # Check if there are changes to commit
-          if ! git diff --cached --quiet; then
+          if ! git diff --quiet; then
+            echo "Changes detected, preparing to commit."
+
+            # Attempt to pull with rebase
+            git fetch origin
+            git stash push -m "Stashing untracked files"
+            git pull --rebase origin main || {
+              echo "Merge conflict occurred. Attempting to resolve automatically."
+              git merge --abort  # Abort the current merge
+              git stash pop || true  # Pop the stash, ignore if empty
+
+              # Check if there's a merge conflict
+              if git ls-files -u | grep -q .; then
+                echo "Merge conflicts detected. Please resolve them manually."
+                exit 1
+              fi
+            }
+
+            git stash pop
+            git add "$JSON_FILE"
+
+            # Commit the changes
             git commit -m "Update build numbers in JSON with status [skip ci]"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
