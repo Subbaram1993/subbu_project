@@ -102,11 +102,34 @@ jobs:
         id: update-build-numbers
         run: |
           JSON_FILE=".github/build_numbers/build_numbers.json"
+          FAILED_JSON_FILE=".github/build_numbers/failed_builds.json"  # New failed builds file
           mkdir -p .github/build_numbers
 
-          # Initialize the JSON file if it doesn't exist
+          # Initialize the JSON files if they don't exist
           if [ ! -f "$JSON_FILE" ]; then
             echo '{"last_successful_build_number": 0, "build_history": []}' > "$JSON_FILE"
+          fi
+
+          if [ ! -f "$FAILED_JSON_FILE" ]; then
+            # Initialize failed builds JSON and fetch existing failed builds
+            echo '{"failed_builds": []}' > "$FAILED_JSON_FILE"  # Initialize failed builds JSON
+
+            # Fetch previously failed builds
+            echo "Fetching previously failed builds..."
+            FAILED_BUILDS_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/api/json?tree=builds[number,status][result=FAILURE]")
+
+            # Check if there are any failed builds
+            FAILED_BUILDS=$(echo "$FAILED_BUILDS_RESPONSE" | jq -r '.builds[] | select(.result=="FAILURE") | {build_number: .number, status: "FAILED"}')
+
+            # Append previously failed builds to the JSON file
+            if [ "$FAILED_BUILDS" != "" ]; then
+              jq --argjson failedBuilds "[$FAILED_BUILDS]" \
+                '.failed_builds += $failedBuilds' \
+                "$FAILED_JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$FAILED_JSON_FILE"
+            fi
+
+            echo "Previously failed builds added to $FAILED_JSON_FILE"
           fi
 
           # Fetch the last successful build number
@@ -124,6 +147,16 @@ jobs:
             "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
 
           echo "Build history updated in $JSON_FILE"
+
+          # Append to failed_builds.json if the build failed
+          if [ "$BUILD_STATUS" == "FAILED" ]; then
+            jq --argjson latestBuildNumber "${{ env.LATEST_BUILD_NUMBER }}" \
+               --arg buildStatus "${{ env.BUILD_STATUS }}" \
+               '.failed_builds += [{"build_number": $latestBuildNumber, "status": $buildStatus}]' \
+              "$FAILED_JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$FAILED_JSON_FILE"
+
+            echo "Failed build history updated in $FAILED_JSON_FILE"
+          fi
 
           # Configure Git
           git config user.name "${{ github.actor }}"  # Dynamic GitHub username
@@ -149,10 +182,10 @@ jobs:
             }
 
             git stash pop
-            git add "$JSON_FILE"
+            git add "$JSON_FILE" "$FAILED_JSON_FILE"  # Add both JSON files
 
             # Commit the changes
-            git commit -m "Update build numbers in JSON with status [skip ci]"
+            git commit -m "Update build numbers and failed builds in JSON with status [skip ci]"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
