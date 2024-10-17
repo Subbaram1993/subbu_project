@@ -119,21 +119,28 @@ jobs:
 
           echo "Build history updated in $JSON_FILE"
 
-          # Configure Git, stash untracked files, fetch, rebase, commit, and push the updated build numbers
+          # Configure Git
           git config user.name "${{ github.actor }}"  # Dynamic GitHub username
           git config user.email "${{ secrets.GIT_EMAIL }}"  # Secret for email
+
+          # Attempt to pull with rebase and handle merge conflicts
           git fetch origin
           git stash push -m "Stashing untracked files"
           
-          # Attempt to pull with rebase and handle merge conflicts
+          # Try to pull the latest changes
           git pull --rebase origin main || {
-            echo "Error: Merge conflict occurred. Aborting."
-            git merge --abort
-            exit 1
+            echo "Merge conflict occurred. Attempting to resolve automatically."
+            git merge --abort  # Abort the current merge
+            git stash pop || true  # Pop the stash, ignore if empty
+
+            # Here you can add your conflict resolution logic
+            # Example: Using the incoming changes
+            git checkout --theirs "$JSON_FILE"  # This uses the version from origin/main
+
+            git add "$JSON_FILE"
           }
 
-          git stash pop
-          git add "$JSON_FILE"
+          # Check if there are changes to commit
           if ! git diff --cached --quiet; then
             git commit -m "Update build numbers in JSON with status [skip ci]"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
