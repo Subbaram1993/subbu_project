@@ -1,9 +1,22 @@
-// Online C compiler to run C program online
+/********************************************************/
+/*	Name	: Calculate the Cheeti			*/
+/*	Author 	: Subbaramaiah Chevuru			*/
+/*	Mail    : ram.subaram@gmail.com			*/
+/*							*/
+/********************************************************/
 
+/********************************************************/
+/*		REVISION LOG				*/
+/********************************************************/
+/* 24-11-02 - 	Initial Draft for the Cheet Program 	*/
+/*		and save into a file.			*/
+/*							*/
+/********************************************************/
+//Header Files
 #include <stdio.h>
-
 #include <stdlib.h>
 
+//To print the list into the file.
 void print_list(FILE *fp1)
 {
     char ch;
@@ -25,6 +38,7 @@ void print_list(FILE *fp1)
     fclose(fp1);
 }
 
+//Main starts Here
 int main() {
     int amount,i,n;
     float total=0;
