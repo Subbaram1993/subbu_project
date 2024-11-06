@@ -152,7 +152,7 @@ jobs:
             git add "$JSON_FILE"  # Add JSON file
 
             # Commit the changes
-            git commit -m "Update build numbers in JSON with status $latestBuildNumber"
+            git commit -m "Update build numbers in JSON with status $latestBuildNumber [skip ci]"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
