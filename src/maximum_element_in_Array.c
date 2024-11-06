@@ -1,9 +1,26 @@
+//////////////////////////////////////////////////////////////////////////
+//	Name 	:	Maximum and Minimum number in the Array		//
+//	Author  :	Subbaramaiah Chevuru				//
+//									//
+//////////////////////////////////////////////////////////////////////////
+
+//======================================================================//
+//			REVISION LOG					//
+//======================================================================//
+// Date 		What						//
+//======================================================================//
+// 2024-11-06	-	Initial Version of the C Program.		//
+//									//
+//======================================================================//
+
+// Header Files
 #include <stdio.h>
 #include <stdlib.h>
 
+//Main Starts Here
 int main() {
     int *a;
-    int i,j, min,max,n;
+    int i,min,max,n;
     printf("\n Enter the number of elements:\n"),
     scanf("%d", &n);
     printf("\n Enter %d numbers:\n", n);
