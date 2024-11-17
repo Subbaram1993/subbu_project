@@ -1,64 +1,16 @@
 {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  "last_successful_build_number": 9,
-=======
-  "last_successful_build_number": 10,
->>>>>>> Stashed changes
-=======
   "last_successful_build_number": 11,
->>>>>>> Stashed changes
   "build_history": [
+        {
+      "build_number": 3,
+      "status": "SUCCESS"
+    },
     {
       "build_number": 4,
       "status": "SUCCESS"
     },
     {
       "build_number": 5,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 12,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 15,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 17,
-      "status": "null"
-    },
-    {
-      "build_number": 18,
-      "status": "null"
-    },
-    {
-      "build_number": 19,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 21,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 22,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 23,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 25,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 34,
-      "status": "SUCCESS"
-    },
-    {
-      "build_number": 3,
       "status": "SUCCESS"
     },
     {
@@ -74,11 +26,11 @@
       "status": "SUCCESS"
     },
     {
-<<<<<<< Updated upstream
       "build_number": 9,
-=======
+      "status": "SUCCESS"
+    },
+    {
       "build_number": 10,
->>>>>>> Stashed changes
       "status": "SUCCESS"
     },
     {
