@@ -9,4 +9,5 @@ add_executable("${PROJECT_NAME}" ${SRC_FILES})
 
 install (TARGETS "${PROJECT_NAME}" DESTINATION bin)
 
-install (FILES "src/" DESTINATION src)
+# Install all files from the src folder
+install(DIRECTORY "src/" DESTINATION src)
