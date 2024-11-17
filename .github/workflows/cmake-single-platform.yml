@@ -3,9 +3,11 @@ name: CMake Build, Test, and Update Tag with Jenkins Build Number
 
 on:
   workflow_run:
-    workflows: ["trigger-jenkins-build.yml"]
+    workflows: 
+      - "trigger-jenkins-build.yml"  # Name of the triggering workflow
     types:
       - completed
+    conclusion: success  # Ensure it runs only if trigger-jenkins-build.yml is successful
 
 env:
   # Set the build type to Release
