@@ -18,6 +18,7 @@ jobs:
       - name: Read JSON Configuration
         id: read-json
         run: |
+          # Check if config.json exists and read jobName
           if [ -f config.json ]; then
             JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
             if [ "$JOB_NAME" == "null" ] || [ -z "$JOB_NAME" ]; then
@@ -33,6 +34,7 @@ jobs:
       - name: Fetch Latest Jenkins Build Number
         id: fetch-jenkins-build-number
         run: |
+          # Fetch the last build number from Jenkins
           LATEST_BUILD_NUMBER_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number")
 
@@ -42,6 +44,7 @@ jobs:
           # Parse the build number
           LATEST_BUILD_NUMBER=$(echo "$LATEST_BUILD_NUMBER_RESPONSE" | jq -r '.number')
 
+          # Check if the build number is valid
           if [ -z "$LATEST_BUILD_NUMBER" ] || [ "$LATEST_BUILD_NUMBER" == "null" ]; then
             echo "Error: No builds found for job '${{ env.JOB_NAME }}'."
             exit 1
@@ -59,14 +62,17 @@ jobs:
           JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
           JOB_NAME: ${{ env.JOB_NAME }}
         run: |
+          # Trim trailing slashes from Jenkins URL
           TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
           CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
 
+          # Ensure the crumb is valid
           if [ -z "$CRUMB" ]; then
             echo "Failed to obtain crumb. Exiting."
             exit 1
           fi
 
+          # Trigger the Jenkins build
           FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/build"
           response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
                --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
@@ -84,7 +90,8 @@ jobs:
       - name: Re-fetch Latest Jenkins Build Number & Status
         id: refetch-jenkins-build-number-status
         run: |
-          sleep 100  # Wait for Jenkins to update the build number and status
+          # Wait for Jenkins to complete the build and update build info
+          sleep 100
           LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
               "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
           BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
@@ -98,9 +105,9 @@ jobs:
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
 
-      - name: Update Build Numbers in JSON
-        id: update-build-numbers
+      - name: Update Build Numbers in JSON and Commit
         run: |
+          # Define JSON file path
           JSON_FILE=".github/build_numbers/build_numbers.json"
           mkdir -p .github/build_numbers
 
@@ -125,20 +132,13 @@ jobs:
 
           echo "Build history updated in $JSON_FILE"
 
-          # Configure Git
-          git config user.name "${{ github.actor }}"  # Dynamic GitHub username
-          git config user.email "${{ secrets.GIT_EMAIL }}"  # Secret for email
-
-          # Import GPG private key from GitHub secrets
+          # Import GPG private key and configure Git
           mkdir -p ~/.gnupg
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-
-          # Export the GPG key to Git config
-          gpg --list-secret-keys --keyid-format LONG
-          GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep -oP '(?<=/)[A-F0-9]+(?= :)')
-
-          git config --global user.signingkey $GPG_KEY_ID
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ secrets.GIT_EMAIL }}"
           git config --global commit.gpgSign true
+          git config --global user.signingkey 589F21131DCC9E8D4655FC9514E04537727ADA7F
 
           # Check if there are changes to commit
           if ! git diff --quiet; then
@@ -149,8 +149,8 @@ jobs:
             git stash push -m "Stashing untracked files"
             git pull --rebase origin main || {
               echo "Merge conflict occurred. Attempting to resolve automatically."
-              git merge --abort  # Abort the current merge
-              git stash pop || true  # Pop the stash, ignore if empty
+              git merge --abort
+              git stash pop || true
 
               # Check if there's a merge conflict
               if git ls-files -u | grep -q .; then
@@ -159,11 +159,9 @@ jobs:
               fi
             }
 
-            git stash pop
-            git add "$JSON_FILE"  # Add JSON file
-
-            # Commit the changes
-            git commit -m "Update build numbers in JSON with status $latestBuildNumber [skip ci]"
+            git stash pop || true
+            git add "$JSON_FILE"
+            git commit -S -m "Update build numbers in JSON with status ${{ env.BUILD_STATUS }} for build ${{ env.LATEST_BUILD_NUMBER }}"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
