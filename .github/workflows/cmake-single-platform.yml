@@ -15,7 +15,7 @@ env:
 jobs:
   build-and-test:
     # Run the job on a self-hosted runner with labels 'self-hosted' and 'ubuntu'
-    runs-on: [self-hosted, ubuntu]
+    runs-on: self-hosted
 
     steps:
       # Checkout the repository code
