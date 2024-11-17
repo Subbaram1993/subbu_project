@@ -133,8 +133,12 @@ jobs:
           mkdir -p ~/.gnupg
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
 
-          # Sign the commit with GPG using the passphrase
-          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --quick-sign --default-key 589F21131DCC9E8D4655FC9514E04537727ADA7F
+          # Export the GPG key to Git config
+          gpg --list-secret-keys --keyid-format LONG
+          GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep -oP '(?<=/)[A-F0-9]+(?= :)')
+
+          git config --global user.signingkey $GPG_KEY_ID
+          git config --global commit.gpgSign true
 
           # Check if there are changes to commit
           if ! git diff --quiet; then
