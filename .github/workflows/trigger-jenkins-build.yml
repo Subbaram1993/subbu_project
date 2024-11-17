@@ -161,7 +161,7 @@ jobs:
 
             git stash pop || true
             git add "$JSON_FILE"
-            git commit -S -m "Update build numbers in JSON with status ${{ env.BUILD_STATUS }} for build ${{ env.LATEST_BUILD_NUMBER }}"
+            git commit -S -m "Update build numbers in JSON with status  [skip ci]"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
