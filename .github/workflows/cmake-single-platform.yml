@@ -1,44 +1,80 @@
-# This workflow builds and tests a CMake project on a self-hosted Ubuntu runner (WSL)
-name: CMake Build and Test on Self-Hosted Ubuntu (WSL)
+# Workflow to build, test, and update Git tag for a CMake project using Jenkins Build Number
+name: CMake Build, Test, and Update Tag with Jenkins Build Number
 
 on:
-  # Trigger the workflow on push and pull request events for the main branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["trigger-jenkins-build.yml"]
+    types:
+      - completed
 
 env:
-  # Set the build type to Release (can be changed to Debug, RelWithDebInfo, etc.)
+  # Set the build type to Release
   BUILD_TYPE: Release
+  # Jenkins URL and Job Name
+  JENKINS_URL: ${{ secrets.JENKINS_URL }}
+  JENKINS_USER: ${{ secrets.JENKINS_USER }}
+  JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+  JOB_NAME: ${{ secrets.JOB_NAME }}
 
 jobs:
-  build-and-test:
-    # Run the job on a self-hosted runner with labels 'self-hosted' and 'ubuntu'
+  build-and-tag:
     runs-on: self-hosted
 
     steps:
-      # Checkout the repository code
-      - name: Checkout code
+      # Checkout the repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       # Configure CMake
       - name: Configure CMake
         run: |
-          # Create a build directory
           mkdir -p build
-          # Configure CMake with the specified build type
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       # Build the project
       - name: Build
         run: |
-          # Build the project with the configured build type
           cmake --build build --config ${{env.BUILD_TYPE}}
 
-      # Run tests
-      - name: Test
+      # Run Tests
+      - name: Run Tests
         working-directory: build
         run: |
-          # Run tests with the configured build type
           ctest -C ${{env.BUILD_TYPE}}
+
+      # Fetch the latest Jenkins build number
+      - name: Get Jenkins Build Number
+        id: get_build_number
+        run: |
+          # Authenticate to Jenkins using API token
+          BUILD_NUMBER=$(curl -s --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+            "${{ secrets.JENKINS_URL }}/job/${{ secrets.JOB_NAME }}/lastBuild/api/json" | jq -r '.number')
+
+          if [ -z "$BUILD_NUMBER" ]; then
+            echo "Error: Unable to fetch Jenkins build number"
+            exit 1
+          fi
+
+          echo "Jenkins Build Number: $BUILD_NUMBER"
+          
+          # Set the version based on the Jenkins build number
+          VERSION="v1.$BUILD_NUMBER"
+          echo "version=$VERSION" >> $GITHUB_ENV
+
+      # Commit Version Changes (if needed)
+      - name: Commit Version Update (if needed)
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ secrets.GIT_EMAIL }}"
+          git config --global commit.gpgSign true
+          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
+          
+          git add .
+          git commit -S -m "Increment version to ${{ env.version }}" || echo "No changes to commit"
+          git push
+
+      # Create or Update Git Tag
+      - name: Update Git Tag
+        run: |
+          git tag -f ${{ env.version }}
+          git push origin --force ${{ env.version }}
