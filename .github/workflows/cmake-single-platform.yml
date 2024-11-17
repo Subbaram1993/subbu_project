@@ -1,5 +1,5 @@
-# This workflow builds and tests a CMake project on a single platform (Ubuntu)
-name: CMake Build and Test on Ubuntu
+# This workflow builds and tests a CMake project on a self-hosted Ubuntu runner (WSL)
+name: CMake Build and Test on Self-Hosted Ubuntu (WSL)
 
 on:
   # Trigger the workflow on push and pull request events for the main branch
@@ -14,30 +14,31 @@ env:
 
 jobs:
   build-and-test:
-    # Run the job on the latest Ubuntu environment
-    runs-on: ubuntu-latest
+    # Run the job on a self-hosted runner with labels 'self-hosted' and 'ubuntu'
+    runs-on: [self-hosted, ubuntu]
 
     steps:
       # Checkout the repository code
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       # Configure CMake
       - name: Configure CMake
         run: |
           # Create a build directory
-          mkdir -p ${{github.workspace}}/build
+          mkdir -p build
           # Configure CMake with the specified build type
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       # Build the project
       - name: Build
         run: |
           # Build the project with the configured build type
-          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+          cmake --build build --config ${{env.BUILD_TYPE}}
 
       # Run tests
       - name: Test
-        working-directory: ${{github.workspace}}/build
+        working-directory: build
         run: |
           # Run tests with the configured build type
           ctest -C ${{env.BUILD_TYPE}}
