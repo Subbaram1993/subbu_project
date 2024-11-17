@@ -1,8 +1,12 @@
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   "last_successful_build_number": 9,
 =======
   "last_successful_build_number": 10,
+>>>>>>> Stashed changes
+=======
+  "last_successful_build_number": 11,
 >>>>>>> Stashed changes
   "build_history": [
     {
@@ -75,6 +79,10 @@
 =======
       "build_number": 10,
 >>>>>>> Stashed changes
+      "status": "SUCCESS"
+    },
+    {
+      "build_number": 11,
       "status": "SUCCESS"
     }
   ]
