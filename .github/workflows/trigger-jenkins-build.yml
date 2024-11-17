@@ -129,6 +129,13 @@ jobs:
           git config user.name "${{ github.actor }}"  # Dynamic GitHub username
           git config user.email "${{ secrets.GIT_EMAIL }}"  # Secret for email
 
+          # Import GPG private key from GitHub secrets
+          mkdir -p ~/.gnupg
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+
+          # Sign the commit with GPG using the passphrase
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --quick-sign --default-key 589F21131DCC9E8D4655FC9514E04537727ADA7F
+
           # Check if there are changes to commit
           if ! git diff --quiet; then
             echo "Changes detected, preparing to commit."
