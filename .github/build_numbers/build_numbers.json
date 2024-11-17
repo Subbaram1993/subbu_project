@@ -1,5 +1,5 @@
 {
-  "last_successful_build_number": 15,
+  "last_successful_build_number": 16,
   "build_history": [
     {
       "build_number": 3,
@@ -51,6 +51,10 @@
     },
     {
       "build_number": 15,
+      "status": "SUCCESS"
+    },
+    {
+      "build_number": 16,
       "status": "SUCCESS"
     }
   ]
