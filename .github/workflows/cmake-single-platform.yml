@@ -48,10 +48,16 @@ jobs:
       - name: Get Jenkins Build Number
         id: get_build_number
         run: |
-          # Authenticate to Jenkins using API token
-          BUILD_NUMBER=$(curl -s --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-            "${{ secrets.JENKINS_URL }}/job/${{ secrets.JOB_NAME }}/lastBuild/api/json" | jq -r '.number')
+          # Authenticate to Jenkins using API token and fetch last build details
+          RESPONSE=$(curl -s --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+            "${{ secrets.JENKINS_URL }}/job/${{ secrets.JOB_NAME }}/lastBuild/api/json")
 
+          echo "Jenkins API Response: $RESPONSE"
+          
+          # Extract the build number from the API response
+          BUILD_NUMBER=$(echo "$RESPONSE" | jq -r '.number')
+
+          # Check if build number was fetched
           if [ -z "$BUILD_NUMBER" ]; then
             echo "Error: Unable to fetch Jenkins build number"
             exit 1
