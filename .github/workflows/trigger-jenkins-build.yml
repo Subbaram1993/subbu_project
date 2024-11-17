@@ -138,7 +138,7 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ secrets.GIT_EMAIL }}"
           git config --global commit.gpgSign true
-          git config --global user.signingkey 589F21131DCC9E8D4655FC9514E04537727ADA7F
+          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
 
           # Check if there are changes to commit
           if ! git diff --quiet; then
@@ -161,7 +161,7 @@ jobs:
 
             git stash pop || true
             git add "$JSON_FILE"
-            git commit -S -m "Update build numbers in JSON with status  [skip ci]"
+            git commit -S -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} [skip ci]"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
