@@ -1,5 +1,9 @@
 {
+<<<<<<< Updated upstream
   "last_successful_build_number": 9,
+=======
+  "last_successful_build_number": 10,
+>>>>>>> Stashed changes
   "build_history": [
     {
       "build_number": 4,
@@ -66,7 +70,11 @@
       "status": "SUCCESS"
     },
     {
+<<<<<<< Updated upstream
       "build_number": 9,
+=======
+      "build_number": 10,
+>>>>>>> Stashed changes
       "status": "SUCCESS"
     }
   ]
