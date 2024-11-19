@@ -94,28 +94,8 @@ jobs:
         run: |
           git push origin main  # Push changes to the main branch
 
-      # Create or Update Git Tag
+       # Create or Update Git Tag
       - name: Update Git Tag
         run: |
-          # Ensure the version is set
-          if [ -z "${{ env.version }}" ]; then
-            echo "Version is not set. Exiting."
-            exit 1
-          fi
-
-          # Check if the tag already exists; if not, create it
-          git fetch --tags  # Fetch the latest tags from remote
-
-          # If the tag exists, delete it and recreate it
-          if git rev-parse "${{ env.version }}" >/dev/null 2>&1; then
-            echo "Tag ${{ env.version }} already exists. Updating the tag."
-            git tag -d ${{ env.version }}  # Delete the existing tag if it exists
-          fi
-
-          # Create or update the tag (no GPG signing)
-          git tag ${{ env.version }} -m "Version ${{ env.version }}"  # Create the tag with a message
-
-          # Push the updated tag to the remote repository
-          git push origin --force ${{ env.version }}  # Force push the tag
-
-
+          git tag -f ${{ env.version }}
+          git push origin --force ${{ env.version }}
