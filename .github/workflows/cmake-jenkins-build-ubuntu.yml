@@ -94,15 +94,21 @@ jobs:
         run: |
           git push origin main  # Push changes to the main branch
 
-           # Create or Update Git Tag
+      # Create or Update Git Tag
       - name: Update Git Tag with GPG
         run: |
-          # Ensure the GPG key is available and imported for Git to sign the tag
+          # Import GPG key for signing if it's not already imported
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-          
-          # Create or update the tag
-          git tag -f ${{ env.version }} -m "Version ${{ env.version }}"  # Tag with GPG sign and message
+
+          # Check if version is set
+          if [ -z "${{ env.version }}" ]; then
+            echo "Version is not set. Exiting."
+            exit 1
+          fi
+
+          # Create or update the tag with GPG signing
+          git tag -s ${{ env.version }} -m "Version ${{ env.version }}"  # GPG sign the tag
 
           # Push the updated tag to the remote repository
-          git push origin --force ${{ env.version }}
+          git push origin --force ${{ env.version }}  # Force push the tag
 
