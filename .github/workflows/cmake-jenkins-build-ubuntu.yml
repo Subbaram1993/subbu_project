@@ -38,19 +38,19 @@ jobs:
       # Configure CMake
       - name: Configure CMake
         run: |
-          mkdir -p build
+          mkdir -p build  # Create a build directory if it doesn't exist
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       # Build the project
       - name: Build
         run: |
-          cmake --build build --config ${{env.BUILD_TYPE}}
+          cmake --build build --config ${{env.BUILD_TYPE}}  # Build the project with specified configuration
 
       # Run Tests
       - name: Run Tests
         working-directory: build
         run: |
-          ctest -C ${{env.BUILD_TYPE}}
+          ctest -C ${{env.BUILD_TYPE}}  # Execute tests using ctest
 
       # Fetch the latest Jenkins build number
       - name: Get Jenkins Build Number
@@ -77,20 +77,44 @@ jobs:
           VERSION="v1.$BUILD_NUMBER"
           echo "version=$VERSION" >> $GITHUB_ENV
 
+      # Pull Latest Changes and Handle Conflicts
+      - name: Pull Latest Changes and Handle Conflicts
+        run: |
+          set -e  # Exit on any error
+
+          # Configure Git with GPG
+          git config user.name "${{ github.actor }}"  # Set Git user name
+          git config user.email "${{ secrets.GIT_EMAIL }}"  # Set Git user email
+          git config --global commit.gpgSign true  # Enable GPG signing for commits
+          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"  # Use the provided GPG key
+
+          # Pull the latest changes from the main branch
+          git pull origin main --rebase || {
+            echo "Merge conflict detected. Resolving automatically using 'theirs' strategy."
+            git checkout --theirs .  # Prioritize remote changes
+            git add .  # Stage the resolved changes
+            git rebase --continue || {
+              echo "Automatic conflict resolution failed. Aborting rebase."
+              git rebase --abort
+              exit 1
+            }
+          }
+
+          echo "Pull and rebase completed successfully."
+
       # Commit Version Changes (if needed)
       - name: Commit Version Update (if needed)
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ secrets.GIT_EMAIL }}"
-          git config --global commit.gpgSign true
-          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
-          
-          git add .
+          git add .  # Stage all changes
           git commit -S -m "Increment version to ${{ env.version }}" || echo "No changes to commit"
-          git push
+
+      # Push Changes
+      - name: Push Changes
+        run: |
+          git push origin main  # Push changes to the main branch
 
       # Create or Update Git Tag
-      - name: Update Git Tag
+      - name: Update Git Tag with GPG
         run: |
-          git tag -f ${{ env.version }}
-          git push origin --force ${{ env.version }}
+          git tag -s ${{ env.version }} -m "Tagging version ${{ env.version }}"  # Create a signed tag
+          git push origin --force ${{ env.version }}  # Push the updated tag
