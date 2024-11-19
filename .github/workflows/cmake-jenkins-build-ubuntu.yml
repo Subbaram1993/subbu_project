@@ -97,5 +97,5 @@ jobs:
       # Create or Update Git Tag
       - name: Update Git Tag with GPG
         run: |
-          git tag -s ${{ env.version }} -m "Tagging version ${{ env.version }}"  # Create a signed tag
+          git tag -f ${{ env.version }}
           git push origin --force ${{ env.version }}  # Push the updated tag
