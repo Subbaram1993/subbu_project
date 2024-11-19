@@ -52,31 +52,6 @@ jobs:
         run: |
           ctest -C ${{env.BUILD_TYPE}}  # Execute tests using ctest
 
-      # Fetch the latest Jenkins build number
-      - name: Get Jenkins Build Number
-        id: get_build_number
-        run: |
-          # Authenticate to Jenkins using API token
-          RESPONSE=$(curl -s --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-            "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json")
-
-          echo "Jenkins API Response: $RESPONSE"
-          
-          # Extract the build number from the API response
-          BUILD_NUMBER=$(echo "$RESPONSE" | jq -r '.number')
-
-          # Check if build number was fetched
-          if [ -z "$BUILD_NUMBER" ]; then
-            echo "Error: Unable to fetch Jenkins build number"
-            exit 1
-          fi
-
-          echo "Jenkins Build Number: $BUILD_NUMBER"
-          
-          # Set the version based on the Jenkins build number
-          VERSION="v1.$BUILD_NUMBER"
-          echo "version=$VERSION" >> $GITHUB_ENV
-
       # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
         run: |
@@ -87,6 +62,9 @@ jobs:
           git config user.email "${{ secrets.GIT_EMAIL }}"  # Set Git user email
           git config --global commit.gpgSign true  # Enable GPG signing for commits
           git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"  # Use the provided GPG key
+
+          # Stash any unstaged changes to avoid errors during rebase
+          git stash || echo "Nothing to stash"
 
           # Pull the latest changes from the main branch
           git pull origin main --rebase || {
@@ -99,6 +77,9 @@ jobs:
               exit 1
             }
           }
+
+          # Apply stashed changes after rebase
+          git stash pop || echo "No stashed changes to apply"
 
           echo "Pull and rebase completed successfully."
 

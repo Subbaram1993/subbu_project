@@ -108,7 +108,7 @@ jobs:
       - name: Update Build Numbers in JSON and Commit
         run: |
           # Define JSON file path
-          JSON_FILE=".github/build_numbers/build_numbers.json"
+          JSON_FILE=".github/build_numbers/build_numbers_status.json"
           mkdir -p .github/build_numbers
 
           # Initialize the JSON file if it doesn't exist
