@@ -89,13 +89,14 @@ jobs:
           git add .  # Stage all changes
           git commit -S -m "Increment version to ${{ env.version }}" || echo "No changes to commit"
 
+       # Create or Update Git Tag
+      - name: Update Git Tag
+        run: |
+          git tag -f ${{ env.version }}
+          
       # Push Changes
       - name: Push Changes
         run: |
           git push origin main  # Push changes to the main branch
 
-       # Create or Update Git Tag
-      - name: Update Git Tag
-        run: |
-          git tag -f ${{ env.version }}
-          git push origin --force ${{ env.version }}
+
