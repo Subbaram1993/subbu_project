@@ -29,93 +29,74 @@ jobs:
       - name: Set Job Name from config.json
         id: set_job_name
         run: |
-          # Extract jobName from config.json
           JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
-          
-          # Set it as an environment variable
           echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
 
       # Configure CMake
       - name: Configure CMake
         run: |
-          mkdir -p build  # Create a build directory if it doesn't exist
+          mkdir -p build
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       # Build the project
       - name: Build
         run: |
-          cmake --build build --config ${{env.BUILD_TYPE}}  # Build the project with specified configuration
+          cmake --build build --config ${{env.BUILD_TYPE}}
 
       # Run Tests
       - name: Run Tests
         working-directory: build
         run: |
-          ctest -C ${{env.BUILD_TYPE}}  # Execute tests using ctest
+          ctest -C ${{env.BUILD_TYPE}}
 
       # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
         run: |
-          set -e  # Exit on any error
-
-          # Configure Git with GPG
-          git config user.name "${{ github.actor }}"  # Set Git user name
-          git config user.email "${{ secrets.GIT_EMAIL }}"  # Set Git user email
-          git config --global commit.gpgSign true  # Enable GPG signing for commits
-          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"  # Use the provided GPG key
-
-          # Stash any unstaged changes to avoid errors during rebase
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ secrets.GIT_EMAIL }}"
+          git config --global commit.gpgSign true
+          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
+          
           git stash || echo "Nothing to stash"
-
-          # Pull the latest changes from the main branch
           git pull origin main --rebase || {
-            echo "Merge conflict detected. Resolving automatically using 'theirs' strategy."
-            git checkout --theirs .  # Prioritize remote changes
-            git add .  # Stage the resolved changes
+            echo "Merge conflict detected. Resolving automatically using 'theirs'."
+            git checkout --theirs .
+            git add .
             git rebase --continue || {
-              echo "Automatic conflict resolution failed. Aborting rebase."
               git rebase --abort
               exit 1
             }
           }
-
-          # Apply stashed changes after rebase
           git stash pop || echo "No stashed changes to apply"
-
-          echo "Pull and rebase completed successfully."
 
       # Fetch Latest Jenkins Build Number
       - name: Get Latest Jenkins Build Number
         id: get_jenkins_build_number
         run: |
-          # Get the latest successful build number from Jenkins
           BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber")
-          
-          # Set the build number as an environment variable
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
           echo "Fetched Jenkins build number: $BUILD_NUMBER"
+
+      # Determine Version
+      - name: Determine Version
+        id: determine_version
+        run: |
+          PATCH=$((BUILD_NUMBER % 10))
+          MINOR=$((BUILD_NUMBER / 10 % 6))
+          MAJOR=$((BUILD_NUMBER / 60))
+          VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "Determined Version: $VERSION"
 
       # Commit Version Changes (if needed)
       - name: Commit Version Update (if needed)
         run: |
-          # Construct the version tag using the Jenkins build number
-          VERSION="v0.${{ env.BUILD_NUMBER }}"
-          
-          # Set the version in the environment variable
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
-          # Stage and commit any version updates
-          git add .  # Stage all changes
-          git commit -S -m "Increment version to $VERSION" || echo "No changes to commit"
+          git add .
+          git commit -S -m "Increment version to ${{ env.VERSION }}" || echo "No changes to commit"
 
       # Create or Update Git Tag
       - name: Update Git Tag
         run: |
-          VERSION="v0.${{ env.BUILD_NUMBER }}"
-          git tag -f $VERSION  # Create or update the tag with the Jenkins build number
-
-      # Push Changes and Tag
-      - name: Push Changes and Tag
-        run: |
-          git push origin main  # Push changes to the main branch
-          git push origin --force ${{ env.VERSION }}  # Push the updated tag to the remote repository
+          git tag -f ${{ env.VERSION }}
+          git push origin --force ${{ env.VERSION }}
