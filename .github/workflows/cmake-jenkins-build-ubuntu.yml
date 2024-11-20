@@ -104,7 +104,7 @@ jobs:
       - name: Save Artifacts to Repo
         run: |
           git add artifacts/
-          git commit -S -m "Add artifacts for version ${{ env.VERSION }}" || echo "No changes to commit"
+          git commit -S -m "Add artifacts and Incremented the TAG version ${{ env.VERSION }}" || echo "No changes to commit"
 
       # Create and Push Tag
       - name: Create and Push Tag
