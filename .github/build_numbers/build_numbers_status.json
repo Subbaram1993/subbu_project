@@ -124,6 +124,10 @@
     {
       "build_number": 35,
       "status": "SUCCESS"
+    },
+    {
+      "build_number": 37,
+      "status": "FAILURE"
     }
   ]
 }
