@@ -6,7 +6,7 @@ on:
       - "Trigger Jenkins Build and Update Build Numbers"  # Name of the triggering workflow
     types:
       - completed
-    conclusion: success  # Ensure it runs only if trigger-jenkins-build.yml is successful
+    conclusion: success	# Ensure it runs only if trigger-jenkins-build.yml is successful
 
 env:
   BUILD_TYPE: Release
@@ -23,9 +23,6 @@ jobs:
       # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v4
-        run: |
-          echo "Checkout Code" >> $LOG_FILE
-          git checkout $GITHUB_REF >> $LOG_FILE 2>&1
 
       # Set Job Name from config.json
       - name: Set Job Name from config.json
@@ -42,6 +39,7 @@ jobs:
 
       # Configure CMake
       - name: Configure CMake
+        id: configure_cmake
         run: |
           echo "Configuring CMake..." >> $LOG_FILE
           mkdir -p build
@@ -49,12 +47,14 @@ jobs:
 
       # Build the project
       - name: Build
+        id: build_project
         run: |
           echo "Building the project..." >> $LOG_FILE
           cmake --build build --config ${{env.BUILD_TYPE}} >> $LOG_FILE 2>&1
 
       # Run CMake Tests
       - name: Run CMake Tests
+        id: run_cmake_tests
         working-directory: build
         run: |
           echo "Running CMake Tests..." >> $LOG_FILE
@@ -62,34 +62,30 @@ jobs:
 
       # Compile and Run C Test Suite
       - name: Compile and Run C Test Suite
+        id: compile_and_run_tests
         run: |
           echo "Compiling and Running C Test Suite..." >> $LOG_FILE
           TEST_DIR="subbu_project/test"
           SRC_DIR="src"
           for test_file in $TEST_DIR/*.c; do
-            # Extract the base name of the test file (e.g., test_bitwise_add_subtraction)
             base_name=$(basename "$test_file" .c)
-            
-            # Deduce the corresponding source file from the base name
             source_file="$SRC_DIR/${base_name#test_}.c"
-            
-            # Ensure the source file exists before attempting to compile
             if [ ! -f "$source_file" ]; then
               echo "Source file $source_file not found for test $test_file. Skipping..." >> $LOG_FILE
               continue
             fi
-            
-            # Compile the test with the corresponding source file
+	    # Compile the test with the corresponding source file
             echo "Compiling test: $base_name" >> $LOG_FILE
             gcc -Wall -Wextra -O2 -o "test_${base_name}" "$test_file" "$source_file" >> $LOG_FILE 2>&1
-            
-            # Run the test binary
+
+	    # Run the test binary
             echo "Running test for ${base_name}" >> $LOG_FILE
             ./test_${base_name} >> $LOG_FILE 2>&1
           done
 
       # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
+        id: pull_changes
         run: |
           echo "Pulling latest changes..." >> $LOG_FILE
           git config user.name "${{ github.actor }}" >> $LOG_FILE 2>&1
@@ -151,12 +147,12 @@ jobs:
             echo "Artifact download failed!" >> $LOG_FILE
             exit 1
           fi
-
           unzip -o $ARTIFACTS_DIR/archive.zip -d $ARTIFACTS_DIR >> $LOG_FILE 2>&1
           echo "Artifacts retrieved and saved to $ARTIFACTS_DIR" >> $LOG_FILE
 
       # Save Artifacts in Repository
       - name: Save Artifacts to Repo
+        id: save_artifacts
         run: |
           echo "Saving artifacts to repository..." >> $LOG_FILE
           git add artifacts/ >> $LOG_FILE 2>&1
@@ -164,16 +160,18 @@ jobs:
 
       # Create and Push Tag
       - name: Create and Push Tag
+        id: create_and_push_tag
         run: |
           echo "Creating and pushing tag..." >> $LOG_FILE
           TAG_NAME="${{ env.VERSION }}"
           echo "Incremented the TAG version: $TAG_NAME" >> $LOG_FILE
-          
+
           git tag -f "$TAG_NAME" >> $LOG_FILE 2>&1
           git push origin --force "$TAG_NAME" >> $LOG_FILE 2>&1
 
       # Push Changes
       - name: Push Changes
+        id: push_changes
         run: |
           echo "Pushing changes to the repository..." >> $LOG_FILE
           git push origin main >> $LOG_FILE 2>&1
