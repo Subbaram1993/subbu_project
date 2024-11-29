@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/subbu_project_numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.o -o subbu_project_numbers_to_word_conversion  -lm 
