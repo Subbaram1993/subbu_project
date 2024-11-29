@@ -3,17 +3,17 @@ name: CMake Build, Test, and Update Tag with Jenkins Build Number
 on:
   workflow_run:
     workflows: 
-      - "Trigger Jenkins Build and Update Build Numbers"  # Name of the triggering workflow
+      - "Trigger Jenkins Build and Update Build Numbers"
     types:
       - completed
-    conclusion: success	# Ensure it runs only if trigger-jenkins-build.yml is successful
+    conclusion: success
 
 env:
   BUILD_TYPE: Release
   JENKINS_URL: ${{ secrets.JENKINS_URL }}
   JENKINS_USER: ${{ secrets.JENKINS_USER }}
   JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-  LOG_FILE: "build_and_test.log"  # Define the log file
+  LOG_FILE: "build_and_test.log"
 
 jobs:
   build-and-tag:
@@ -24,7 +24,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Set Job Name from config.json
+      # Read the config.json and set the jobName as an environment variable
       - name: Set Job Name from config.json
         id: set_job_name
         run: |
@@ -74,11 +74,8 @@ jobs:
               echo "Source file $source_file not found for test $test_file. Skipping..." >> $LOG_FILE
               continue
             fi
-	    # Compile the test with the corresponding source file
             echo "Compiling test: $base_name" >> $LOG_FILE
             gcc -Wall -Wextra -O2 -o "test_${base_name}" "$test_file" "$source_file" >> $LOG_FILE 2>&1
-
-	    # Run the test binary
             echo "Running test for ${base_name}" >> $LOG_FILE
             ./test_${base_name} >> $LOG_FILE 2>&1
           done
@@ -164,8 +161,6 @@ jobs:
         run: |
           echo "Creating and pushing tag..." >> $LOG_FILE
           TAG_NAME="${{ env.VERSION }}"
-          echo "Incremented the TAG version: $TAG_NAME" >> $LOG_FILE
-
           git tag -f "$TAG_NAME" >> $LOG_FILE 2>&1
           git push origin --force "$TAG_NAME" >> $LOG_FILE 2>&1
 
