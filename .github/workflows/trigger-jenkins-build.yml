@@ -15,6 +15,16 @@ jobs:
         with:
           persist-credentials: false  # Disable default GitHub token
 
+      - name: Install Git LFS
+        run: |
+          # Install Git LFS if not already installed
+          git lfs install
+
+      - name: Fetch LFS Objects
+        run: |
+          # Fetch LFS objects to ensure they are correctly pulled
+          git lfs pull
+
       - name: Read JSON Configuration
         id: read-json
         run: |
