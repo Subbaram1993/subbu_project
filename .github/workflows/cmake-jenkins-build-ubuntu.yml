@@ -87,17 +87,18 @@ jobs:
 
       - name: Push Changes and Tags without LFS upload
         run: |
-          # Increase the Git buffer size to handle large pushes
-          git config --global http.postBuffer 1048576000  # 1GB buffer size
+          # Increase the Git buffer size to handle large pushes (10GB buffer)
+          git config --global http.postBuffer 10485760000  # 10GB buffer size
 
           # Temporarily disable Git LFS for this push by skipping the smudge filter
-          GIT_LFS_SKIP_SMUDGE=1 git push origin main || {
+          GIT_LFS_SKIP_SMUDGE=1 git push origin main --no-verify || {
             echo "Retrying Git push with debug flags..."
-            GIT_TRACE=1 GIT_CURL_VERBOSE=1 GIT_LFS_SKIP_SMUDGE=1 git push origin main
+            GIT_TRACE=1 GIT_CURL_VERBOSE=1 GIT_LFS_SKIP_SMUDGE=1 git push origin main --no-verify
           }
 
           # Clean up Git repository (optional but recommended)
           git gc --aggressive --prune=now
+          git fsck
 
           # Remove LFS tracked files from commit before pushing
           git lfs untrack "*.zip"
@@ -105,16 +106,16 @@ jobs:
           git commit -S -m "Remove LFS tracked files from the commit" || echo "No changes to commit"
 
           # Push the changes first
-          git push origin main || {
+          git push origin main --no-verify || {
             echo "Retrying Git push for changes..."
-            GIT_LFS_SKIP_SMUDGE=1 git push origin main
+            GIT_LFS_SKIP_SMUDGE=1 git push origin main --no-verify
           }
 
           # Push the tags separately
           git tag -f "${{ env.VERSION }}"
-          git push origin --tags || {
+          git push origin --tags --no-verify || {
             echo "Retrying Git push for tags without LFS upload..."
-            GIT_LFS_SKIP_SMUDGE=1 git push origin --tags
+            GIT_LFS_SKIP_SMUDGE=1 git push origin --tags --no-verify
           }
 
       - name: Verify Push Status
