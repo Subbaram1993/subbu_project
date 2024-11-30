@@ -1,1 +1,0 @@
-/usr/bin/cc -O3 -DNDEBUG CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.o -o subbu_project_selection_sort  -lm 

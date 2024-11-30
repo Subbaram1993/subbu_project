@@ -1,1 +1,0 @@
-/usr/bin/cc -O3 -DNDEBUG CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o -o subbu_project_sum_of_unique_array_elements  -lm 
