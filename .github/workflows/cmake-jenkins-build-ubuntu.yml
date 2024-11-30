@@ -165,12 +165,24 @@ jobs:
           # Debugging: Check repository state
           echo "Repository remote status:" >> ./build_and_test.log
           git remote -v >> ./build_and_test.log 2>&1
-          
+
+          # Check for unstaged changes and handle them
+          if ! git diff-index --quiet HEAD --; then
+            echo "Unstaged changes detected. Stashing changes..." >> ./build_and_test.log
+            git stash save "Temporary stash for CI/CD" >> ./build_and_test.log 2>&1
+          fi
+
           echo "Fetching latest changes..." >> ./build_and_test.log
           git fetch origin --tags >> ./build_and_test.log 2>&1
 
           echo "Pulling latest changes..." >> ./build_and_test.log
           git pull origin main --rebase >> ./build_and_test.log 2>&1
+
+          # Restore stashed changes if they were saved
+          if git stash list | grep -q "Temporary stash for CI/CD"; then
+            echo "Restoring stashed changes..." >> ./build_and_test.log
+            git stash pop >> ./build_and_test.log 2>&1
+          fi
 
           # Check if the tag exists remotely
           if git ls-remote --tags origin | grep -qw "refs/tags/$TAG_NAME"; then
@@ -185,13 +197,8 @@ jobs:
           # Push the tag to the remote
           echo "Pushing tag $TAG_NAME to remote..." >> ./build_and_test.log
           git push origin --force "$TAG_NAME" >> ./build_and_test.log 2>&1
-          
-        shell: bash
 
-      # Debug Logs
-      - name: Debug Logs
-        if: failure()
-        run: cat ./build_and_test.log
+        shell: bash
 
       # Push Changes
       - name: Push Changes
