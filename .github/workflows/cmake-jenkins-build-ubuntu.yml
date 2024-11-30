@@ -159,45 +159,65 @@ jobs:
       - name: Create and Push Tag
         id: create_and_push_tag
         run: |
+          set -x  # Enable command tracing for debug purposes
           echo "Creating and pushing tag..." >> ./build_and_test.log
           TAG_NAME="${{ env.VERSION }}"
 
-          # Debugging: Check repository state
+          # Debugging: Check repository status
           echo "Repository remote status:" >> ./build_and_test.log
           git remote -v >> ./build_and_test.log 2>&1
+          echo "Git status before pull:" >> ./build_and_test.log
+          git status >> ./build_and_test.log 2>&1
 
-          # Check for unstaged changes and handle them
+          # Ensure working directory is clean
           if ! git diff-index --quiet HEAD --; then
             echo "Unstaged changes detected. Stashing changes..." >> ./build_and_test.log
             git stash save "Temporary stash for CI/CD" >> ./build_and_test.log 2>&1
           fi
 
+          # Fetch and rebase
           echo "Fetching latest changes..." >> ./build_and_test.log
           git fetch origin --tags >> ./build_and_test.log 2>&1
 
           echo "Pulling latest changes..." >> ./build_and_test.log
-          git pull origin main --rebase >> ./build_and_test.log 2>&1
+          git pull origin main --rebase >> ./build_and_test.log 2>&1 || {
+            echo "Rebase failed!" >> ./build_and_test.log
+            exit 1
+          }
 
-          # Restore stashed changes if they were saved
+          # Restore stashed changes
           if git stash list | grep -q "Temporary stash for CI/CD"; then
             echo "Restoring stashed changes..." >> ./build_and_test.log
-            git stash pop >> ./build_and_test.log 2>&1
+            git stash pop >> ./build_and_test.log 2>&1 || {
+              echo "Failed to restore stashed changes!" >> ./build_and_test.log
+              exit 1
+            }
           fi
 
-          # Check if the tag exists remotely
+          # Check if the tag exists
           if git ls-remote --tags origin | grep -qw "refs/tags/$TAG_NAME"; then
             echo "Tag $TAG_NAME exists remotely. Deleting it first..." >> ./build_and_test.log
-            git push origin :refs/tags/"$TAG_NAME" >> ./build_and_test.log 2>&1
+            git push origin :refs/tags/"$TAG_NAME" >> ./build_and_test.log 2>&1 || {
+              echo "Failed to delete remote tag $TAG_NAME!" >> ./build_and_test.log
+              exit 1
+            }
           fi
 
-          # Create or overwrite the tag locally
+          # Create the tag locally
           echo "Creating tag $TAG_NAME locally..." >> ./build_and_test.log
-          git tag -f "$TAG_NAME" >> ./build_and_test.log 2>&1
+          git tag -f "$TAG_NAME" >> ./build_and_test.log 2>&1 || {
+            echo "Failed to create local tag $TAG_NAME!" >> ./build_and_test.log
+            exit 1
+          }
 
-          # Push the tag to the remote
+          # Push the tag to the remote repository
           echo "Pushing tag $TAG_NAME to remote..." >> ./build_and_test.log
-          git push origin --force "$TAG_NAME" >> ./build_and_test.log 2>&1
+          git push origin --force "$TAG_NAME" >> ./build_and_test.log 2>&1 || {
+            echo "Failed to push tag $TAG_NAME to remote!" >> ./build_and_test.log
+            exit 1
+          }
 
+          echo "Tag $TAG_NAME successfully created and pushed." >> ./build_and_test.log
         shell: bash
 
       # Push Changes
