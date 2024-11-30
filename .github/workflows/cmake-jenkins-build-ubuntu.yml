@@ -3,10 +3,10 @@ name: CMake Build, Test, and Update Tag with Jenkins Build Number
 on:
   workflow_run:
     workflows:
-      - "Trigger Jenkins Build and Update Build Numbers"  # Name of the triggering workflow
+      - "Trigger Jenkins Build and Update Build Numbers"
     types:
       - completed
-    conclusion: success  # Ensure it runs only if trigger-jenkins-build.yml is successful
+    conclusion: success
 
 env:
   BUILD_TYPE: Release
@@ -19,35 +19,30 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Read the config.json and set the jobName as an environment variable
+      - name: Install Git LFS
+        run: git lfs install
+
       - name: Set Job Name from config.json
         id: set_job_name
         run: |
           JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
           echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
 
-      # Configure CMake
       - name: Configure CMake
         run: |
           mkdir -p build
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-      # Build the project
       - name: Build
-        run: |
-          cmake --build build --config ${{env.BUILD_TYPE}}
+        run: cmake --build build --config ${{env.BUILD_TYPE}}
 
-      # Run Tests
       - name: Run Tests
         working-directory: build
-        run: |
-          ctest -C ${{env.BUILD_TYPE}}
+        run: ctest -C ${{env.BUILD_TYPE}}
 
-      # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
         run: |
           git config user.name "${{ github.actor }}"
@@ -57,17 +52,12 @@ jobs:
           
           git stash || echo "Nothing to stash"
           git pull origin main --rebase || {
-            echo "Merge conflict detected. Resolving automatically using 'theirs'."
             git checkout --theirs .
             git add .
-            git rebase --continue || {
-              git rebase --abort
-              exit 1
-            }
+            git rebase --continue || git rebase --abort
           }
           git stash pop || echo "No stashed changes to apply"
 
-      # Fetch Latest Jenkins Build Number
       - name: Get Latest Jenkins Build Number
         id: get_jenkins_build_number
         run: |
@@ -75,7 +65,6 @@ jobs:
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber")
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
-      # Determine Version
       - name: Determine Version
         id: determine_version
         run: |
@@ -84,36 +73,23 @@ jobs:
           MAJOR=$((BUILD_NUMBER / 60))
           VERSION="v${MAJOR}.${MINOR}.${PATCH}"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "Determined Version: $VERSION"
 
-      # Retrieve Artifacts
       - name: Retrieve Artifacts
-        id: retrieve_artifacts
         run: |
           ARTIFACTS_DIR="artifacts"
           mkdir -p $ARTIFACTS_DIR
-          
           curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/artifact/*zip*/archive.zip" \
             -o $ARTIFACTS_DIR/archive.zip
-          
-          unzip -o $ARTIFACTS_DIR/archive.zip -d $ARTIFACTS_DIR
-          echo "Artifacts retrieved and saved to $ARTIFACTS_DIR"
 
-      # Save Artifacts in Repository
-      - name: Save Artifacts to Repo
+      - name: Track Large Files with Git LFS
         run: |
-          git add artifacts/
-          git commit -S -m "Add artifacts and Incremented the TAG version ${{ env.VERSION }}" || echo "No changes to commit"
+          git lfs track "artifacts/*.zip"
+          git add .gitattributes artifacts/
+          git commit -S -m "Track large artifact files with Git LFS"
 
-      # Create and Push Tag
-      - name: Create and Push Tag
-        run: |
-          TAG_NAME="${{ env.VERSION }}"
-          echo "Incremented the TAG version: $TAG_NAME"
-          git tag -f "$TAG_NAME"
-
-      # Push Changes
-      - name: Push Changes
+      - name: Push Changes and Tags
         run: |
           git push origin main
+          git tag -f "${{ env.VERSION }}"
+          git push origin --tags
