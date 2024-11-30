@@ -3,17 +3,16 @@ name: CMake Build, Test, and Update Tag with Jenkins Build Number
 on:
   workflow_run:
     workflows:
-      - "Trigger Jenkins Build and Update Build Numbers"
+      - "Trigger Jenkins Build and Update Build Numbers"  # Name of the triggering workflow
     types:
       - completed
-    conclusion: success
+    conclusion: success  # Ensure it runs only if trigger-jenkins-build.yml is successful
 
 env:
   BUILD_TYPE: Release
   JENKINS_URL: ${{ secrets.JENKINS_URL }}
   JENKINS_USER: ${{ secrets.JENKINS_USER }}
   JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-  LOG_FILE: "./build_and_test.log"
 
 jobs:
   build-and-tag:
@@ -28,194 +27,93 @@ jobs:
       - name: Set Job Name from config.json
         id: set_job_name
         run: |
-          echo "Setting Job Name from config.json" >> ${{ env.LOG_FILE }}
-          if [ ! -f config.json ]; then
-            echo "config.json not found!" >> ${{ env.LOG_FILE }}
-            exit 1
-          fi
           JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
           echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
-          echo "Job Name set: ${JOB_NAME}" >> ${{ env.LOG_FILE }}
 
       # Configure CMake
       - name: Configure CMake
-        id: configure_cmake
         run: |
-          echo "Configuring CMake..." >> ${{ env.LOG_FILE }}
           mkdir -p build
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} >> ${{ env.LOG_FILE }} 2>&1
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       # Build the project
       - name: Build
-        id: build_project
         run: |
-          echo "Building the project..." >> ${{ env.LOG_FILE }}
-          cmake --build build --config ${{env.BUILD_TYPE}} >> ${{ env.LOG_FILE }} 2>&1
+          cmake --build build --config ${{env.BUILD_TYPE}}
 
-      # Run CMake Tests
-      - name: Run CMake Tests
-        id: run_cmake_tests
+      # Run Tests
+      - name: Run Tests
         working-directory: build
         run: |
-          echo "Running CMake Tests..." >> ../${{ env.LOG_FILE }}
-          ctest -C ${{env.BUILD_TYPE}} --output-on-failure >> ../${{ env.LOG_FILE }} 2>&1
-
-      # Compile and Run C Test Suite
-      - name: Compile and Run C Test Suite
-        id: compile_and_run_tests
-        run: |
-          echo "Compiling and Running C Test Suite..." >> ${{ env.LOG_FILE }}
-          TEST_DIR="subbu_project/test"
-          SRC_DIR="src"
-          for test_file in $TEST_DIR/*.c; do
-            base_name=$(basename "$test_file" .c)
-            source_file="$SRC_DIR/${base_name#test_}.c"
-            if [ ! -f "$source_file" ]; then
-              echo "Source file $source_file not found for test $test_file. Skipping..." >> ${{ env.LOG_FILE }}
-              continue
-            fi
-            echo "Compiling test: $base_name" >> ${{ env.LOG_FILE }}
-            gcc -Wall -Wextra -O2 -o "test_${base_name}" "$test_file" "$source_file" >> ${{ env.LOG_FILE }} 2>&1
-            echo "Running test for ${base_name}" >> ${{ env.LOG_FILE }}
-            ./test_${base_name} >> ${{ env.LOG_FILE }} 2>&1
-          done
+          ctest -C ${{env.BUILD_TYPE}}
 
       # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
-        id: pull_changes
         run: |
-          echo "Pulling latest changes..." >> ${{ env.LOG_FILE }}
-          git config user.name "${{ github.actor }}" >> ${{ env.LOG_FILE }} 2>&1
-          git config user.email "${{ secrets.GIT_EMAIL }}" >> ${{ env.LOG_FILE }} 2>&1
-          git config --global commit.gpgSign true >> ${{ env.LOG_FILE }} 2>&1
-          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}" >> ${{ env.LOG_FILE }} 2>&1
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ secrets.GIT_EMAIL }}"
+          git config --global commit.gpgSign true
+          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
           
-          git stash || echo "Nothing to stash" >> ${{ env.LOG_FILE }}
+          git stash || echo "Nothing to stash"
           git pull origin main --rebase || {
-            echo "Merge conflict detected. Resolving automatically using 'theirs'." >> ${{ env.LOG_FILE }}
-            git checkout --theirs . >> ${{ env.LOG_FILE }} 2>&1
-            git add . >> ${{ env.LOG_FILE }} 2>&1
+            echo "Merge conflict detected. Resolving automatically using 'theirs'."
+            git checkout --theirs .
+            git add .
             git rebase --continue || {
-              git rebase --abort >> ${{ env.LOG_FILE }} 2>&1
+              git rebase --abort
               exit 1
             }
           }
-          git stash pop || echo "No stashed changes to apply" >> ${{ env.LOG_FILE }}
+          git stash pop || echo "No stashed changes to apply"
 
       # Fetch Latest Jenkins Build Number
       - name: Get Latest Jenkins Build Number
         id: get_jenkins_build_number
         run: |
-          echo "Fetching latest Jenkins build number..." >> ${{ env.LOG_FILE }}
           BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber")
-          if [ -z "$BUILD_NUMBER" ]; then
-            echo "Failed to fetch the Jenkins build number!" >> ${{ env.LOG_FILE }}
-            exit 1
-          fi
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
-          echo "Build number fetched: $BUILD_NUMBER" >> ${{ env.LOG_FILE }}
 
       # Determine Version
       - name: Determine Version
         id: determine_version
         run: |
-          echo "Determining version based on build number..." >> ${{ env.LOG_FILE }}
           PATCH=$((BUILD_NUMBER % 10))
           MINOR=$((BUILD_NUMBER / 10 % 6))
           MAJOR=$((BUILD_NUMBER / 60))
           VERSION="v${MAJOR}.${MINOR}.${PATCH}"
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "Determined version: $VERSION" >> ${{ env.LOG_FILE }}
+          echo "Determined Version: $VERSION"
 
       # Retrieve Artifacts
       - name: Retrieve Artifacts
         id: retrieve_artifacts
         run: |
-          echo "Retrieving artifacts..." >> ${{ env.LOG_FILE }}
           ARTIFACTS_DIR="artifacts"
           mkdir -p $ARTIFACTS_DIR
           
           curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/artifact/*zip*/archive.zip" \
-            -o $ARTIFACTS_DIR/archive.zip >> ${{ env.LOG_FILE }} 2>&1
+            -o $ARTIFACTS_DIR/archive.zip
           
-          if [ ! -f "$ARTIFACTS_DIR/archive.zip" ]; then
-            echo "Artifact download failed!" >> ${{ env.LOG_FILE }}
-            exit 1
-          fi
-          unzip -o $ARTIFACTS_DIR/archive.zip -d $ARTIFACTS_DIR >> ${{ env.LOG_FILE }} 2>&1
-          echo "Artifacts retrieved and saved to $ARTIFACTS_DIR" >> ${{ env.LOG_FILE }}
+          unzip -o $ARTIFACTS_DIR/archive.zip -d $ARTIFACTS_DIR
+          echo "Artifacts retrieved and saved to $ARTIFACTS_DIR"
 
       # Save Artifacts in Repository
       - name: Save Artifacts to Repo
-        id: save_artifacts
         run: |
-          echo "Saving artifacts to repository..." >> ${{ env.LOG_FILE }}
-          git add artifacts/ >> ${{ env.LOG_FILE }} 2>&1
-          git commit -S -m "Add artifacts and Incremented the TAG version ${{ env.VERSION }}" || echo "No changes to commit" >> ${{ env.LOG_FILE }} 2>&1
+          git add artifacts/
+          git commit -S -m "Add artifacts and Incremented the TAG version ${{ env.VERSION }}" || echo "No changes to commit"
 
       # Create and Push Tag
       - name: Create and Push Tag
-        id: create_and_push_tag
         run: |
-          set -x
-          echo "Creating and pushing tag..." >> ./build_and_test.log
           TAG_NAME="${{ env.VERSION }}"
+          echo "Incremented the TAG version: $TAG_NAME"
+          git tag -f "$TAG_NAME"
 
-          echo "Repository remote status:" >> ./build_and_test.log
-          git remote -v >> ./build_and_test.log 2>&1
-          echo "Git status before pull:" >> ./build_and_test.log
-          git status >> ./build_and_test.log 2>&1
-
-          # Ensure working directory is clean
-          if ! git diff-index --quiet HEAD --; then
-            echo "Unstaged changes detected. Stashing changes..." >> ./build_and_test.log
-            git stash save "Temporary stash for CI/CD" >> ./build_and_test.log 2>&1
-          fi
-
-          # Fetch latest changes and tags
-          echo "Fetching latest changes and tags..." >> ./build_and_test.log
-          git fetch origin --tags >> ./build_and_test.log 2>&1
-
-          # Pull latest changes with rebase
-          echo "Pulling latest changes..." >> ./build_and_test.log
-          git pull origin main --rebase >> ./build_and_test.log 2>&1 || {
-            echo "Failed to pull latest changes!" >> ./build_and_test.log
-            exit 1
-          }
-
-          # Restore stashed changes if any
-          if git stash list | grep -q "Temporary stash for CI/CD"; then
-            echo "Restoring stashed changes..." >> ./build_and_test.log
-            git stash pop >> ./build_and_test.log 2>&1 || {
-              echo "Failed to restore stashed changes!" >> ./build_and_test.log
-              exit 1
-            }
-          fi
-
-          # Check if the tag exists remotely
-          if git ls-remote --tags origin | grep -qw "refs/tags/$TAG_NAME"; then
-            echo "Tag $TAG_NAME exists remotely. Deleting it first..." >> ./build_and_test.log
-            git push origin :refs/tags/"$TAG_NAME" >> ./build_and_test.log 2>&1 || {
-              echo "Failed to delete remote tag $TAG_NAME!" >> ./build_and_test.log
-              exit 1
-            }
-          fi
-
-          # Create the tag locally
-          echo "Creating tag $TAG_NAME locally..." >> ./build_and_test.log
-          git tag -f "$TAG_NAME" >> ./build_and_test.log 2>&1 || {
-            echo "Failed to create local tag $TAG_NAME!" >> ./build_and_test.log
-            exit 1
-          }
-
-          # Push the tag to the remote repository
-          echo "Pushing tag $TAG_NAME to remote..." >> ./build_and_test.log
-          git push origin --force "$TAG_NAME" >> ./build_and_test.log 2>&1 || {
-            echo "Failed to push tag $TAG_NAME to remote!" >> ./build_and_test.log
-            git log -n 5 --oneline >> ./build_and_test.log
-            exit 1
-          }
-
-          echo "Tag $TAG_NAME successfully created and pushed." >> ./build_and_test.log
+      # Push Changes
+      - name: Push Changes
+        run: |
+          git push origin main
