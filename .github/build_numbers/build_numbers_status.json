@@ -196,6 +196,10 @@
     {
       "build_number": 60,
       "status": "SUCCESS"
+    },
+    {
+      "build_number": 61,
+      "status": "SUCCESS"
     }
   ]
 }
