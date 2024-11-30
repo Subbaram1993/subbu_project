@@ -159,11 +159,10 @@ jobs:
       - name: Create and Push Tag
         id: create_and_push_tag
         run: |
-          set -x  # Enable command tracing for debug purposes
+          set -x
           echo "Creating and pushing tag..." >> ./build_and_test.log
           TAG_NAME="${{ env.VERSION }}"
 
-          # Debugging: Check repository status
           echo "Repository remote status:" >> ./build_and_test.log
           git remote -v >> ./build_and_test.log 2>&1
           echo "Git status before pull:" >> ./build_and_test.log
@@ -175,17 +174,18 @@ jobs:
             git stash save "Temporary stash for CI/CD" >> ./build_and_test.log 2>&1
           fi
 
-          # Fetch and rebase
-          echo "Fetching latest changes..." >> ./build_and_test.log
+          # Fetch latest changes and tags
+          echo "Fetching latest changes and tags..." >> ./build_and_test.log
           git fetch origin --tags >> ./build_and_test.log 2>&1
 
+          # Pull latest changes with rebase
           echo "Pulling latest changes..." >> ./build_and_test.log
           git pull origin main --rebase >> ./build_and_test.log 2>&1 || {
-            echo "Rebase failed!" >> ./build_and_test.log
+            echo "Failed to pull latest changes!" >> ./build_and_test.log
             exit 1
           }
 
-          # Restore stashed changes
+          # Restore stashed changes if any
           if git stash list | grep -q "Temporary stash for CI/CD"; then
             echo "Restoring stashed changes..." >> ./build_and_test.log
             git stash pop >> ./build_and_test.log 2>&1 || {
@@ -194,7 +194,7 @@ jobs:
             }
           fi
 
-          # Check if the tag exists
+          # Check if the tag exists remotely
           if git ls-remote --tags origin | grep -qw "refs/tags/$TAG_NAME"; then
             echo "Tag $TAG_NAME exists remotely. Deleting it first..." >> ./build_and_test.log
             git push origin :refs/tags/"$TAG_NAME" >> ./build_and_test.log 2>&1 || {
@@ -214,15 +214,8 @@ jobs:
           echo "Pushing tag $TAG_NAME to remote..." >> ./build_and_test.log
           git push origin --force "$TAG_NAME" >> ./build_and_test.log 2>&1 || {
             echo "Failed to push tag $TAG_NAME to remote!" >> ./build_and_test.log
+            git log -n 5 --oneline >> ./build_and_test.log
             exit 1
           }
 
           echo "Tag $TAG_NAME successfully created and pushed." >> ./build_and_test.log
-        shell: bash
-
-      # Push Changes
-      - name: Push Changes
-        id: push_changes
-        run: |
-          echo "Pushing changes to the repository..." >> ${{ env.LOG_FILE }}
-          git push origin main >> ${{ env.LOG_FILE }} 2>&1
