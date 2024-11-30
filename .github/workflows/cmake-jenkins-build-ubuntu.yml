@@ -85,16 +85,17 @@ jobs:
           git add .gitattributes
           git commit -S -m "Track large artifact files with Git LFS" || echo "No changes to commit"
 
-      - name: Push Changes and Tags
+      - name: Push Changes and Tags without LFS upload
         run: |
-          git push origin main || {
+          # Temporarily disable Git LFS for this push
+          GIT_LFS_SKIP_SMUDGE=1 git push origin main || {
             echo "Retrying Git push with debug flags..."
-            GIT_TRACE=1 GIT_CURL_VERBOSE=1 git push origin main
+            GIT_TRACE=1 GIT_CURL_VERBOSE=1 GIT_LFS_SKIP_SMUDGE=1 git push origin main
           }
           git tag -f "${{ env.VERSION }}"
           git push origin --tags || {
-            echo "Retrying Git push for tags..."
-            git push origin --tags
+            echo "Retrying Git push for tags without LFS upload..."
+            GIT_LFS_SKIP_SMUDGE=1 git push origin --tags
           }
 
       - name: Verify Push Status
