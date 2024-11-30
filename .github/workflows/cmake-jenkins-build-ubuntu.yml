@@ -87,6 +87,9 @@ jobs:
 
       - name: Push Changes and Tags without LFS upload
         run: |
+          # Increase the Git buffer size to handle large pushes
+          git config --global http.postBuffer 524288000  # 500MB buffer size
+
           # Temporarily disable Git LFS for this push by skipping the smudge filter
           GIT_LFS_SKIP_SMUDGE=1 git push origin main || {
             echo "Retrying Git push with debug flags..."
