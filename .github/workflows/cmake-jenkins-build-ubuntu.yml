@@ -161,18 +161,26 @@ jobs:
         run: |
           echo "Creating and pushing tag..." >> ./build_and_test.log
           TAG_NAME="${{ env.VERSION }}"
-          
-          # Check if the tag exists remotely and delete if necessary
+
+          # Sync with the remote
+          echo "Fetching latest changes..." >> ./build_and_test.log
+          git fetch --tags origin >> ./build_and_test.log 2>&1
+          git pull origin main --rebase >> ./build_and_test.log 2>&1
+
+          # Check if the tag exists remotely and delete it if needed
           if git ls-remote --tags origin | grep -qw "refs/tags/$TAG_NAME"; then
             echo "Tag $TAG_NAME already exists remotely. Deleting it first..." >> ./build_and_test.log
             git push origin :refs/tags/"$TAG_NAME" >> ./build_and_test.log 2>&1
           fi
-          
+
           # Create or overwrite the tag locally
+          echo "Creating tag $TAG_NAME locally..." >> ./build_and_test.log
           git tag -f "$TAG_NAME" >> ./build_and_test.log 2>&1
-          
+
           # Push the tag to the remote
-          git push origin --force "$TAG_NAME" >> ./build_and_test.log 2>&1
+          echo "Pushing tag $TAG_NAME to remote..." >> ./build_and_test.log
+          git push --verbose origin --force "$TAG_NAME" >> ./build_and_test.log 2>&1
+          
         shell: bash
 
       # Push Changes
