@@ -22,8 +22,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Git LFS
-        run: git lfs install
+      - name: Verify Git LFS Installation
+        run: git lfs version
 
       - name: Set Job Name from config.json
         id: set_job_name
