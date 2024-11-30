@@ -53,12 +53,12 @@ jobs:
           git config user.email "${{ secrets.GIT_EMAIL }}"
           git config --global commit.gpgSign true
           git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
-          
+
           git stash || echo "Nothing to stash"
           git pull origin main --rebase || {
             echo "Merge conflict detected. Resolving with 'theirs'."
-            git checkout --theirs .
-            git add .
+            git checkout --theirs . 
+            git add . 
             git rebase --continue || git rebase --abort
           }
           git stash pop || echo "No stashed changes to apply"
@@ -87,11 +87,17 @@ jobs:
 
       - name: Push Changes and Tags without LFS upload
         run: |
-          # Temporarily disable Git LFS for this push
+          # Temporarily disable Git LFS for this push by skipping the smudge filter
           GIT_LFS_SKIP_SMUDGE=1 git push origin main || {
             echo "Retrying Git push with debug flags..."
             GIT_TRACE=1 GIT_CURL_VERBOSE=1 GIT_LFS_SKIP_SMUDGE=1 git push origin main
           }
+
+          # Remove LFS tracked files from commit before pushing
+          git lfs untrack "*.zip"
+          git add .gitattributes
+          git commit -S -m "Remove LFS tracked files from the commit" || echo "No changes to commit"
+
           git tag -f "${{ env.VERSION }}"
           git push origin --tags || {
             echo "Retrying Git push for tags without LFS upload..."
