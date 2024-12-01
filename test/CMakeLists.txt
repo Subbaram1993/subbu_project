@@ -1,23 +1,30 @@
-# Include the project's headers
-include_directories(${PROJECT_SOURCE_DIR}/src)
+# Add the test executable (only include the test files)
+add_executable(run_tests 
+    run_tests.c
+    test_bitwise_add_subtraction.c
+    test_maximum_element.c
+    test_selection_sort.c
+    test_numbers_to_word_conversion.c
+    test_sum_of_unique_array_elements.c
+)
 
-# Collect all source files from the src directory
-file(GLOB SRC_FILES "${PROJECT_SOURCE_DIR}/src/*.c")
+# Add only the necessary logic files for testing (exclude files with main functions)
+file(GLOB TEST_LOGIC_FILES 
+    ../src/bitwise_add_subtraction_operators.c
+    ../src/maximum_element_in_Array.c
+    ../src/selection_sort.c
+    ../src/numbers_to_word_conversion.c
+    ../src/sum_of_unique_array_elements.c
+)
 
-# Collect all test files from the test directory
-file(GLOB TEST_FILES "${PROJECT_SOURCE_DIR}/test/*.c")
+# Link the source files (without main functions) to the test executable
+target_sources(run_tests PRIVATE ${TEST_LOGIC_FILES})
 
-# Iterate through each test file and create an executable
-foreach(TEST_FILE ${TEST_FILES})
-    # Extract the test name (filename without extension)
-    get_filename_component(TEST_NAME ${TEST_FILE} NAME_WE)
+# Link necessary libraries (e.g., math library if required)
+target_link_libraries(run_tests PRIVATE m)
 
-    # Add the executable, linking only the current test file and the common src files
-    add_executable(${TEST_NAME} ${TEST_FILE})
+# Ensure the source files are compiled with the correct flags (if needed)
+target_compile_options(run_tests PRIVATE -Wall -Wextra)  # For example, enable all warnings
 
-    # Link the source files from the src directory and the math library
-    target_link_libraries(${TEST_NAME} PRIVATE ${SRC_FILES} m)
-
-    # Register the test with CTest
-    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
-endforeach()
+# Register the test with CTest
+add_test(NAME run_tests COMMAND run_tests)
