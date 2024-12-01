@@ -62,11 +62,15 @@ jobs:
         run: |
           # Trim trailing slashes from Jenkins URL
           TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
-          # Get Jenkins Crumb for CSRF protection
-          CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
 
-          # Ensure the crumb is valid
-          if [ -z "$CRUMB" ]; then
+          # Fetch Jenkins Crumb for CSRF protection
+          echo "Fetching Jenkins crumb..."
+          CRUMB_RESPONSE=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json")
+          echo "Response: $CRUMB_RESPONSE"  # Output the raw response for debugging
+          CRUMB=$(echo "$CRUMB_RESPONSE" | jq -r '.crumb')
+
+          # Check if the crumb is valid
+          if [ -z "$CRUMB" ] || [ "$CRUMB" == "null" ]; then
             echo "Failed to obtain crumb. Exiting."
             exit 1
           fi
