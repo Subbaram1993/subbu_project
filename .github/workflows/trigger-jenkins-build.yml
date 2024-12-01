@@ -57,16 +57,12 @@ jobs:
 
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
 
-      - name: Trigger Jenkins Build
-        id: trigger-build
+      - name: Fetch Jenkins Crumb for CSRF Protection
         run: |
-          # Trim trailing slashes from Jenkins URL
-          TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
-
           # Fetch Jenkins Crumb for CSRF protection
           echo "Fetching Jenkins crumb..."
-          CRUMB_RESPONSE=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json")
-          echo "Response: $CRUMB_RESPONSE"  # Output the raw response for debugging
+          CRUMB_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+            "${{ secrets.JENKINS_URL }}/crumbIssuer/api/json")
           CRUMB=$(echo "$CRUMB_RESPONSE" | jq -r '.crumb')
 
           # Check if the crumb is valid
@@ -75,11 +71,19 @@ jobs:
             exit 1
           fi
 
+          echo "JENKINS_CRUMB=$CRUMB" >> $GITHUB_ENV
+
+      - name: Trigger Jenkins Build
+        id: trigger-build
+        run: |
+          # Trim trailing slashes from Jenkins URL
+          TRIMMED_JENKINS_URL=$(echo "${{ secrets.JENKINS_URL }}" | sed 's:/*$::')
+
           # Trigger the Jenkins build
-          FULL_URL="${TRIMMED_JENKINS_URL}/job/${JOB_NAME}/build"
+          FULL_URL="${TRIMMED_JENKINS_URL}/job/${{ env.JOB_NAME }}/build"
           response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
-               --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
-               --header "Jenkins-Crumb:$CRUMB" \
+               --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+               --header "Jenkins-Crumb:${{ env.JENKINS_CRUMB }}" \
                --header "Content-Type: application/x-www-form-urlencoded" \
                --request POST)
 
