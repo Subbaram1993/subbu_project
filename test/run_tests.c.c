@@ -1,12 +1,12 @@
 #include <stdio.h>
 
 // Declare all your test functions
-void test_bitwise_operations();
-void test_manage();
-void test_find_maximum();
-void test_number_to_words();
-void test_selection_sort();
-void test_sum_of_unique_elements();
+int test_bitwise_operations();
+int test_manage();
+int test_find_maximum();
+int test_number_to_words();
+int test_selection_sort();
+int test_sum_of_unique_elements();
 
 int main() {
     int test_result;
