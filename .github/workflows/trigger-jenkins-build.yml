@@ -20,9 +20,6 @@ jobs:
         run: |
           # Install Git LFS if not already installed
           git lfs install
-
-      - name: Fetch LFS Objects
-        run: |
           # Fetch LFS objects to ensure they are correctly pulled
           git lfs pull
 
@@ -32,7 +29,7 @@ jobs:
           # Check if config.json exists and read jobName
           if [ -f config.json ]; then
             JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
-            if [ "$JOB_NAME" == "null" ] || [ -z "$JOB_NAME" ]; then
+            if [ -z "$JOB_NAME" ] || [ "$JOB_NAME" == "null" ]; then
               echo "Error: 'jobName' not found in config.json"
               exit 1
             fi
@@ -49,9 +46,6 @@ jobs:
           LATEST_BUILD_NUMBER_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number")
 
-          echo "Raw response from Jenkins:"
-          echo "$LATEST_BUILD_NUMBER_RESPONSE"
-
           # Parse the build number
           LATEST_BUILD_NUMBER=$(echo "$LATEST_BUILD_NUMBER_RESPONSE" | jq -r '.number')
 
@@ -62,19 +56,13 @@ jobs:
           fi
 
           echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
-        shell: bash
 
       - name: Trigger Jenkins Build
         id: trigger-build
-        shell: bash
-        env:
-          JENKINS_URL: ${{ secrets.JENKINS_URL }}
-          JENKINS_USER: ${{ secrets.JENKINS_USER }}
-          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
-          JOB_NAME: ${{ env.JOB_NAME }}
         run: |
           # Trim trailing slashes from Jenkins URL
           TRIMMED_JENKINS_URL=$(echo "$JENKINS_URL" | sed 's:/*$::')
+          # Get Jenkins Crumb for CSRF protection
           CRUMB=$(curl -s -u "$JENKINS_USER:$JENKINS_API_TOKEN" "$TRIMMED_JENKINS_URL/crumbIssuer/api/json" | jq -r '.crumb')
 
           # Ensure the crumb is valid
@@ -98,27 +86,39 @@ jobs:
 
           echo "Jenkins build triggered successfully."
 
-      - name: Re-fetch Latest Jenkins Build Number & Status
-        id: refetch-jenkins-build-number-status
+      - name: Poll Jenkins for Build Status
+        id: poll-jenkins-status
         run: |
-          # Wait for Jenkins to complete the build and update build info
-          sleep 100
-          LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
-          BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$LATEST_BUILD_NUMBER/api/json?tree=result" | jq -r '.result')
+          # Poll Jenkins for the build status every 10 seconds, for up to 5 minutes
+          MAX_RETRIES=30
+          RETRY_INTERVAL=10
+          BUILD_STATUS=""
+          BUILD_NUMBER="${{ env.LATEST_BUILD_NUMBER }}"
 
-          # Set the status to "SUCCESS" if the build succeeded
-          if [ "$BUILD_STATUS" == "SUCCESS" ]; then
-            BUILD_STATUS="SUCCESS"
+          for ((i=0; i<MAX_RETRIES; i++)); do
+            # Fetch the build status
+            BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$BUILD_NUMBER/api/json?tree=result" | jq -r '.result')
+
+            if [ "$BUILD_STATUS" != "null" ]; then
+              break
+            fi
+
+            echo "Waiting for Jenkins build to complete. Retry $((i+1))/$MAX_RETRIES..."
+            sleep $RETRY_INTERVAL
+          done
+
+          if [ "$BUILD_STATUS" == "null" ]; then
+            echo "Error: Build did not complete within the expected time."
+            exit 1
           fi
 
-          echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
+          echo "Build completed with status: $BUILD_STATUS"
 
       - name: Update Build Numbers in JSON and Commit
         run: |
-          # Define JSON file path
+          # Define the JSON file path
           JSON_FILE=".github/build_numbers/build_numbers_status.json"
           mkdir -p .github/build_numbers
 
@@ -162,7 +162,6 @@ jobs:
               echo "Merge conflict occurred. Attempting to resolve automatically."
               git merge --abort
               git stash pop || true
-
               # Check if there's a merge conflict
               if git ls-files -u | grep -q .; then
                 echo "Merge conflicts detected. Please resolve them manually."
