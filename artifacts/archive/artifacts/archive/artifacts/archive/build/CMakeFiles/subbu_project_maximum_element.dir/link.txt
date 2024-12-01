@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/subbu_project_maximum_element.dir/src/maximum_element_in_Array.c.o -o subbu_project_maximum_element  -lm 
