@@ -1,14 +1,23 @@
 # Include the project's headers
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
-# Add tests for each module
-add_executable(test_bitwise test_bitwise.c ../src/bitwise_add_subtraction_operators.c)
-add_executable(test_maximum_element test_maximum_element.c ../src/maximum_element_in_Array.c)
+# Collect all source files from the src directory
+file(GLOB SRC_FILES "${PROJECT_SOURCE_DIR}/src/*.c")
 
-# Link necessary libraries
-target_link_libraries(test_bitwise PUBLIC m)
-target_link_libraries(test_maximum_element PUBLIC m)
+# Collect all test files from the test directory
+file(GLOB TEST_FILES "${PROJECT_SOURCE_DIR}/test/*.c")
 
-# Register tests with CTest
-add_test(NAME TestBitwise COMMAND test_bitwise)
-add_test(NAME TestMaximumElement COMMAND test_maximum_element)
+# Iterate through each test file and create an executable
+foreach(TEST_FILE ${TEST_FILES})
+    # Extract the test name (filename without extension)
+    get_filename_component(TEST_NAME ${TEST_FILE} NAME_WE)
+
+    # Add the executable, linking the source files and test file
+    add_executable(${TEST_NAME} ${TEST_FILE} ${SRC_FILES})
+
+    # Link necessary libraries (e.g., math library)
+    target_link_libraries(${TEST_NAME} PUBLIC m)
+
+    # Register the test with CTest
+    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+endforeach()
