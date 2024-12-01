@@ -45,7 +45,15 @@ jobs:
       - name: Run Tests
         working-directory: build
         run: |
-          ctest -C ${{env.BUILD_TYPE}}
+          ctest -C ${{env.BUILD_TYPE}} --output-on-failure
+
+      # Upload Test Results
+      - name: Upload Test Results
+        if: ${{ always() }} # Ensures upload even on failure
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: build/Testing/Temporary/LastTest.log
 
       # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
