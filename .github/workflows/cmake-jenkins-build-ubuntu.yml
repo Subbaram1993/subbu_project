@@ -34,7 +34,7 @@ jobs:
       - name: Compile the project
         run: |
           mkdir -p build
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DSOURCE_DIR=src
           cmake --build build --config ${{env.BUILD_TYPE}}
 
       # Pull Latest Changes and Handle Conflicts
