@@ -13,6 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          fetch-depth: 0  # Fetch full history for complete operations
           persist-credentials: false  # Disable default GitHub token
 
       - name: Install Git LFS
