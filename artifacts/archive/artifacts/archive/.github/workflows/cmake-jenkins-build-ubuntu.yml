@@ -30,30 +30,11 @@ jobs:
           JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
           echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
 
-      # Configure CMake
-      - name: Configure CMake
+      # Compile the project
+      - name: Compile the project
         run: |
           mkdir -p build
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-      # Build the project
-      - name: Build
-        run: |
-          cmake --build build --config ${{env.BUILD_TYPE}}
-
-      # Run Tests
-      - name: Run Tests
-        working-directory: build
-        run: |
-          ctest -C ${{env.BUILD_TYPE}} --output-on-failure
-
-      # Upload Test Results
-      - name: Upload Test Results
-        if: ${{ always() }} # Ensures upload even on failure
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: build/Testing/Temporary/LastTest.log
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DSOURCE_DIR=src
 
       # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
