@@ -89,6 +89,7 @@ clean: test/clean
 # Directory level rules for directory test
 
 # Recursive "all" directory target.
+test/all: test/CMakeFiles/subbu_project_logic.dir/all
 test/all: test/CMakeFiles/run_tests.dir/all
 .PHONY : test/all
 
@@ -97,6 +98,7 @@ test/preinstall:
 .PHONY : test/preinstall
 
 # Recursive "clean" directory target.
+test/clean: test/CMakeFiles/subbu_project_logic.dir/clean
 test/clean: test/CMakeFiles/run_tests.dir/clean
 .PHONY : test/clean
 
@@ -107,7 +109,7 @@ test/clean: test/CMakeFiles/run_tests.dir/clean
 CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=14,15 "Built target subbu_project_bitwise_add_subtraction_operators"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=9,10 "Built target subbu_project_bitwise_add_subtraction_operators"
 .PHONY : CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/all
 
 # Build rule for subdir invocation for target.
@@ -133,7 +135,7 @@ CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/clean:
 CMakeFiles/subbu_project_maximum_element.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=16,17 "Built target subbu_project_maximum_element"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=17,18 "Built target subbu_project_maximum_element"
 .PHONY : CMakeFiles/subbu_project_maximum_element.dir/all
 
 # Build rule for subdir invocation for target.
@@ -159,7 +161,7 @@ CMakeFiles/subbu_project_maximum_element.dir/clean:
 CMakeFiles/subbu_project_selection_sort.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=20,21 "Built target subbu_project_selection_sort"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=21,22 "Built target subbu_project_selection_sort"
 .PHONY : CMakeFiles/subbu_project_selection_sort.dir/all
 
 # Build rule for subdir invocation for target.
@@ -185,7 +187,7 @@ CMakeFiles/subbu_project_selection_sort.dir/clean:
 CMakeFiles/subbu_project_numbers_to_word_conversion.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=18,19 "Built target subbu_project_numbers_to_word_conversion"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=19,20 "Built target subbu_project_numbers_to_word_conversion"
 .PHONY : CMakeFiles/subbu_project_numbers_to_word_conversion.dir/all
 
 # Build rule for subdir invocation for target.
@@ -211,7 +213,7 @@ CMakeFiles/subbu_project_numbers_to_word_conversion.dir/clean:
 CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=22,23 "Built target subbu_project_sum_of_unique_array_elements"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=23,24 "Built target subbu_project_sum_of_unique_array_elements"
 .PHONY : CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/all
 
 # Build rule for subdir invocation for target.
@@ -257,18 +259,44 @@ CMakeFiles/clean_build.dir/clean:
 .PHONY : CMakeFiles/clean_build.dir/clean
 
 #=============================================================================
+# Target rules for target test/CMakeFiles/subbu_project_logic.dir
+
+# All Build rule for target.
+test/CMakeFiles/subbu_project_logic.dir/all:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/depend
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=11,12,13,14,15,16 "Built target subbu_project_logic"
+.PHONY : test/CMakeFiles/subbu_project_logic.dir/all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/subbu_project_logic.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/subbu_project_logic.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : test/CMakeFiles/subbu_project_logic.dir/rule
+
+# Convenience name for target.
+subbu_project_logic: test/CMakeFiles/subbu_project_logic.dir/rule
+.PHONY : subbu_project_logic
+
+# clean rule for target.
+test/CMakeFiles/subbu_project_logic.dir/clean:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/clean
+.PHONY : test/CMakeFiles/subbu_project_logic.dir/clean
+
+#=============================================================================
 # Target rules for target test/CMakeFiles/run_tests.dir
 
 # All Build rule for target.
-test/CMakeFiles/run_tests.dir/all:
+test/CMakeFiles/run_tests.dir/all: test/CMakeFiles/subbu_project_logic.dir/all
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=2,3,4,5,6,7,8,9,10,11,12,13 "Built target run_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=2,3,4,5,6,7,8 "Built target run_tests"
 .PHONY : test/CMakeFiles/run_tests.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/run_tests.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 13
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/CMakeFiles/run_tests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
 .PHONY : test/CMakeFiles/run_tests.dir/rule

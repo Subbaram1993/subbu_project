@@ -51,5 +51,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/subbu_project_numbers_to_word_conversion.dir/DependInfo.cmake"
   "CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/DependInfo.cmake"
   "CMakeFiles/clean_build.dir/DependInfo.cmake"
+  "test/CMakeFiles/subbu_project_logic.dir/DependInfo.cmake"
   "test/CMakeFiles/run_tests.dir/DependInfo.cmake"
   )

@@ -250,6 +250,19 @@ clean_build/fast:
 .PHONY : clean_build/fast
 
 #=============================================================================
+# Target rules for targets named subbu_project_logic
+
+# Build rule for target.
+subbu_project_logic: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subbu_project_logic
+.PHONY : subbu_project_logic
+
+# fast build rule for target.
+subbu_project_logic/fast:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/build
+.PHONY : subbu_project_logic/fast
+
+#=============================================================================
 # Target rules for targets named run_tests
 
 # Build rule for target.
@@ -398,6 +411,7 @@ help:
 	@echo "... clean_build"
 	@echo "... run_tests"
 	@echo "... subbu_project_bitwise_add_subtraction_operators"
+	@echo "... subbu_project_logic"
 	@echo "... subbu_project_maximum_element"
 	@echo "... subbu_project_numbers_to_word_conversion"
 	@echo "... subbu_project_selection_sort"
