@@ -20,8 +20,15 @@ jobs:
         run: |
           # Install Git LFS if not already installed
           git lfs install
-          # Fetch LFS objects to ensure they are correctly pulled
-          git lfs pull
+
+          # Check if Git LFS objects are available and fetch them
+          echo "Attempting to fetch LFS objects..."
+          if ! git lfs fetch --all; then
+            echo "Git LFS fetch failed. This may be due to quota limits or other errors."
+            # Optionally, exit with a warning but continue the process
+            exit 0  # Proceed without LFS objects if there's an error
+          fi
+          echo "Git LFS fetch completed successfully."
 
       - name: Read JSON Configuration
         id: read-json
