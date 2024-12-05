@@ -30,12 +30,6 @@ jobs:
           JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
           echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
 
-      # Compile the project
-      - name: Compile the project
-        run: |
-          mkdir -p build
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DSOURCE_DIR=src
-
       # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
         run: |
@@ -75,7 +69,36 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "Determined Version: $VERSION"
 
-      # (Removed Artifact Retrieval Step)
+      # Compile, Link, and Run Tests
+      - name: Clean and Build the Project
+        run: |
+          echo "Cleaning up previous build..."
+          rm -rf build
+
+          # Create a new build directory
+          echo "Creating new build directory..."
+          mkdir -p build
+
+          # Run cmake to configure the project
+          echo "Configuring the project with cmake..."
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+          # Compile the project
+          echo "Compiling the project..."
+          cd build
+          make
+
+          # Optional: Run tests using make
+          echo "Running tests with make..."
+          make test
+
+      # Run CTest and display output
+      - name: Run CTest
+        run: |
+          echo "Running tests with ctest..."
+          cd build
+          # Run ctest and display the output directly
+          ctest --output-on-failure
 
       # Save Artifacts in Repository (only if needed for further steps)
       - name: Save Changes to Repo (Without Artifacts)
