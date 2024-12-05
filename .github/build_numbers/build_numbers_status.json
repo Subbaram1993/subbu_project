@@ -288,6 +288,10 @@
     {
       "build_number": 89,
       "status": "FAILURE"
+    },
+    {
+      "build_number": 90,
+      "status": "FAILURE"
     }
   ]
 }
