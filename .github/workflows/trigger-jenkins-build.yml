@@ -38,7 +38,7 @@ jobs:
 
           # Remove all LFS objects from history and export them
           echo "Migrating and removing all LFS objects from the repository history..."
-          git lfs migrate export --include="*"  # Remove all LFS objects from the entire history
+          yes | git lfs migrate export --include="*"  # Force the migration to proceed non-interactively
 
           echo "Git LFS objects cleared."
 
