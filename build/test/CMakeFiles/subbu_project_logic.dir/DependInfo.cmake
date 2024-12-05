@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c" "test/CMakeFiles/subbu_project_logic.dir/__/src/bitwise_add_subtraction_operators.c.o" "gcc" "test/CMakeFiles/subbu_project_logic.dir/__/src/bitwise_add_subtraction_operators.c.o.d"
+  "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/manage.c" "test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o" "gcc" "test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o.d"
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/maximum_element_in_Array.c" "test/CMakeFiles/subbu_project_logic.dir/__/src/maximum_element_in_Array.c.o" "gcc" "test/CMakeFiles/subbu_project_logic.dir/__/src/maximum_element_in_Array.c.o.d"
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/numbers_to_word_conversion.c" "test/CMakeFiles/subbu_project_logic.dir/__/src/numbers_to_word_conversion.c.o" "gcc" "test/CMakeFiles/subbu_project_logic.dir/__/src/numbers_to_word_conversion.c.o.d"
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/selection_sort.c" "test/CMakeFiles/subbu_project_logic.dir/__/src/selection_sort.c.o" "gcc" "test/CMakeFiles/subbu_project_logic.dir/__/src/selection_sort.c.o.d"

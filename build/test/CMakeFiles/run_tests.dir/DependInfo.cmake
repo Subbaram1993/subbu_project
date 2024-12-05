@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/test/run_tests.c" "test/CMakeFiles/run_tests.dir/run_tests.c.o" "gcc" "test/CMakeFiles/run_tests.dir/run_tests.c.o.d"
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/test/test_bitwise_add_subtraction.c" "test/CMakeFiles/run_tests.dir/test_bitwise_add_subtraction.c.o" "gcc" "test/CMakeFiles/run_tests.dir/test_bitwise_add_subtraction.c.o.d"
+  "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/test/test_manage.c" "test/CMakeFiles/run_tests.dir/test_manage.c.o" "gcc" "test/CMakeFiles/run_tests.dir/test_manage.c.o.d"
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/test/test_maximum_element.c" "test/CMakeFiles/run_tests.dir/test_maximum_element.c.o" "gcc" "test/CMakeFiles/run_tests.dir/test_maximum_element.c.o.d"
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/test/test_numbers_to_word_conversion.c" "test/CMakeFiles/run_tests.dir/test_numbers_to_word_conversion.c.o" "gcc" "test/CMakeFiles/run_tests.dir/test_numbers_to_word_conversion.c.o.d"
   "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/test/test_selection_sort.c" "test/CMakeFiles/run_tests.dir/test_selection_sort.c.o" "gcc" "test/CMakeFiles/run_tests.dir/test_selection_sort.c.o.d"

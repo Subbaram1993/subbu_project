@@ -139,13 +139,28 @@ test/CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.s:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.s"
 	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c -o CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.s
 
+test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o: test/CMakeFiles/subbu_project_logic.dir/flags.make
+test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o: ../src/manage.c
+test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o: test/CMakeFiles/subbu_project_logic.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o"
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o -MF CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o.d -o CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o -c /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/manage.c
+
+test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/subbu_project_logic.dir/__/src/manage.c.i"
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/manage.c > CMakeFiles/subbu_project_logic.dir/__/src/manage.c.i
+
+test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/subbu_project_logic.dir/__/src/manage.c.s"
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test && /usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/manage.c -o CMakeFiles/subbu_project_logic.dir/__/src/manage.c.s
+
 # Object files for target subbu_project_logic
 subbu_project_logic_OBJECTS = \
 "CMakeFiles/subbu_project_logic.dir/__/src/bitwise_add_subtraction_operators.c.o" \
 "CMakeFiles/subbu_project_logic.dir/__/src/maximum_element_in_Array.c.o" \
 "CMakeFiles/subbu_project_logic.dir/__/src/selection_sort.c.o" \
 "CMakeFiles/subbu_project_logic.dir/__/src/numbers_to_word_conversion.c.o" \
-"CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.o"
+"CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.o" \
+"CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o"
 
 # External object files for target subbu_project_logic
 subbu_project_logic_EXTERNAL_OBJECTS =
@@ -155,9 +170,10 @@ test/libsubbu_project_logic.a: test/CMakeFiles/subbu_project_logic.dir/__/src/ma
 test/libsubbu_project_logic.a: test/CMakeFiles/subbu_project_logic.dir/__/src/selection_sort.c.o
 test/libsubbu_project_logic.a: test/CMakeFiles/subbu_project_logic.dir/__/src/numbers_to_word_conversion.c.o
 test/libsubbu_project_logic.a: test/CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.o
+test/libsubbu_project_logic.a: test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o
 test/libsubbu_project_logic.a: test/CMakeFiles/subbu_project_logic.dir/build.make
 test/libsubbu_project_logic.a: test/CMakeFiles/subbu_project_logic.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C static library libsubbu_project_logic.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C static library libsubbu_project_logic.a"
 	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test && $(CMAKE_COMMAND) -P CMakeFiles/subbu_project_logic.dir/cmake_clean_target.cmake
 	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/subbu_project_logic.dir/link.txt --verbose=$(VERBOSE)
 

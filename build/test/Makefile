@@ -223,6 +223,30 @@ __/src/bitwise_add_subtraction_operators.c.s:
 	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/bitwise_add_subtraction_operators.c.s
 .PHONY : __/src/bitwise_add_subtraction_operators.c.s
 
+__/src/manage.o: __/src/manage.c.o
+.PHONY : __/src/manage.o
+
+# target to build an object file
+__/src/manage.c.o:
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o
+.PHONY : __/src/manage.c.o
+
+__/src/manage.i: __/src/manage.c.i
+.PHONY : __/src/manage.i
+
+# target to preprocess a source file
+__/src/manage.c.i:
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.i
+.PHONY : __/src/manage.c.i
+
+__/src/manage.s: __/src/manage.c.s
+.PHONY : __/src/manage.s
+
+# target to generate assembly for a file
+__/src/manage.c.s:
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/manage.c.s
+.PHONY : __/src/manage.c.s
+
 __/src/maximum_element_in_Array.o: __/src/maximum_element_in_Array.c.o
 .PHONY : __/src/maximum_element_in_Array.o
 
@@ -367,6 +391,30 @@ test_bitwise_add_subtraction.c.s:
 	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_bitwise_add_subtraction.c.s
 .PHONY : test_bitwise_add_subtraction.c.s
 
+test_manage.o: test_manage.c.o
+.PHONY : test_manage.o
+
+# target to build an object file
+test_manage.c.o:
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_manage.c.o
+.PHONY : test_manage.c.o
+
+test_manage.i: test_manage.c.i
+.PHONY : test_manage.i
+
+# target to preprocess a source file
+test_manage.c.i:
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_manage.c.i
+.PHONY : test_manage.c.i
+
+test_manage.s: test_manage.c.s
+.PHONY : test_manage.s
+
+# target to generate assembly for a file
+test_manage.c.s:
+	cd /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_manage.c.s
+.PHONY : test_manage.c.s
+
 test_maximum_element.o: test_maximum_element.c.o
 .PHONY : test_maximum_element.o
 
@@ -481,6 +529,9 @@ help:
 	@echo "... __/src/bitwise_add_subtraction_operators.o"
 	@echo "... __/src/bitwise_add_subtraction_operators.i"
 	@echo "... __/src/bitwise_add_subtraction_operators.s"
+	@echo "... __/src/manage.o"
+	@echo "... __/src/manage.i"
+	@echo "... __/src/manage.s"
 	@echo "... __/src/maximum_element_in_Array.o"
 	@echo "... __/src/maximum_element_in_Array.i"
 	@echo "... __/src/maximum_element_in_Array.s"
@@ -499,6 +550,9 @@ help:
 	@echo "... test_bitwise_add_subtraction.o"
 	@echo "... test_bitwise_add_subtraction.i"
 	@echo "... test_bitwise_add_subtraction.s"
+	@echo "... test_manage.o"
+	@echo "... test_manage.i"
+	@echo "... test_manage.s"
 	@echo "... test_maximum_element.o"
 	@echo "... test_maximum_element.i"
 	@echo "... test_maximum_element.s"

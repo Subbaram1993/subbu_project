@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/run_tests.dir/run_tests.c.o.d"
   "CMakeFiles/run_tests.dir/test_bitwise_add_subtraction.c.o"
   "CMakeFiles/run_tests.dir/test_bitwise_add_subtraction.c.o.d"
+  "CMakeFiles/run_tests.dir/test_manage.c.o"
+  "CMakeFiles/run_tests.dir/test_manage.c.o.d"
   "CMakeFiles/run_tests.dir/test_maximum_element.c.o"
   "CMakeFiles/run_tests.dir/test_maximum_element.c.o.d"
   "CMakeFiles/run_tests.dir/test_numbers_to_word_conversion.c.o"
