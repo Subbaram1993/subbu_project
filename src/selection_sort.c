@@ -56,6 +56,7 @@ void print_array(int a[], int n){
 	}
 }
 
+#ifndef TESTING
 // Main Functions starts here
 int main(){
 	int *a,i,n;
@@ -80,3 +81,4 @@ int main(){
 
 	return 0;
 }
+#endif

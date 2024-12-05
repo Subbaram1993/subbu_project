@@ -40,6 +40,7 @@ int sum_of_unique_elements(int arr[], int size) {
     return sum;
 }
 
+#ifndef TESTING
 // Main function starts here
 int main() {
     int i, n;
@@ -72,5 +73,5 @@ int main() {
 
     return 0;
 }
-
+#endif
 

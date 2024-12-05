@@ -18,18 +18,25 @@
 
 // Function to find the maximum and minimum elements in the array
 void find_min_max(int a[], int n, int *min, int *max) {
+    if (n <= 0) {
+        printf("Error: Array size must be greater than 0.\n");
+        return;
+    }
+
     *min = a[0];
     *max = a[0];
-    for(int i = 0; i < n; i++) {
-        if(a[i] < *min) {
+
+    for (int i = 1; i < n; i++) { // Start from i = 1 since we already initialized min and max to a[0]
+        if (a[i] < *min) {
             *min = a[i];
         }
-        if(a[i] > *max) {
+        if (a[i] > *max) {
             *max = a[i];
         }
     }
 }
 
+#ifndef TESTING
 //Main Starts Here
 int main() {
     int *a;
@@ -56,3 +63,4 @@ int main() {
     free(a); // Free dynamically allocated memory
     return 0;
 }
+#endif

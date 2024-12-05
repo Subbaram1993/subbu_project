@@ -48,6 +48,7 @@ int subtraction(int x, int y)
 	return x;
 }
 
+#ifndef TESTING
 int main()
 {
 	int a, b;
@@ -62,3 +63,4 @@ int main()
 	printf("\n Subtraction of %d and %d is %d\n", a, b, subtraction(a,b));
 	return 0;
 }
+#endif
