@@ -1,5 +1,5 @@
-CMakeFiles/subbu_project_numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.o: \
- /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/numbers_to_word_conversion.c \
+test/CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.o: \
+ /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -52,9 +52,4 @@ CMakeFiles/subbu_project_numbers_to_word_conversion.dir/src/numbers_to_word_conv
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/strings.h \
- /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
- /usr/include/x86_64-linux-gnu/bits/string_fortified.h
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h

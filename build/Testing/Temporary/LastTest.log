@@ -1,3 +1,24 @@
-Start testing: Nov 19 21:53 IST
+Start testing: Dec 05 14:53 IST
 ----------------------------------------------------------
-End testing: Nov 19 21:53 IST
+1/1 Testing: run_tests
+1/1 Test: run_tests
+Command: "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test/run_tests"
+Directory: /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test
+"run_tests" start time: Dec 05 14:53 IST
+Output:
+----------------------------------------------------------
+test_bitwise_operations: PASSED
+test_find_maximum: PASSED
+test_number_to_words: PASSED
+test_selection_sort: PASSED
+test_sum_of_unique_elements: PASSED
+Current working directory: /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/build/test
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"run_tests" end time: Dec 05 14:53 IST
+"run_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Dec 05 14:53 IST

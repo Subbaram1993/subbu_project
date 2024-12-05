@@ -1,4 +1,4 @@
-CMakeFiles/subbu_project_numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.o: \
+test/CMakeFiles/subbu_project_logic.dir/__/src/numbers_to_word_conversion.c.o: \
  /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/numbers_to_word_conversion.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
