@@ -10,6 +10,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Ensure the repository is clean
+        run: |
+          # Check for uncommitted changes and stash or commit them
+          if ! git diff --quiet; then
+            echo "There are uncommitted changes. Stashing them..."
+            git stash push -m "Stashing uncommitted changes before LFS migration"
+          else
+            echo "No uncommitted changes found."
+          fi
+
       - name: Clear Git LFS Objects
         run: |
           echo "Clearing Git LFS objects..."
