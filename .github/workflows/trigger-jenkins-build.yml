@@ -10,6 +10,28 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Clear Git LFS Objects
+        run: |
+          echo "Clearing Git LFS objects..."
+
+          # Uninstall Git LFS if installed
+          git lfs uninstall
+
+          # Remove all LFS-tracked files from the repository
+          git rm --cached $(git lfs ls-files | awk '{print $3}')
+
+          # Clean up the LFS cache
+          git lfs clean
+
+          # Prune old LFS objects
+          git lfs prune
+
+          # Remove all LFS objects from history and export them
+          echo "Migrating and removing all LFS objects from the repository history..."
+          git lfs migrate export --include="*"  # Remove all LFS objects from the entire history
+
+          echo "Git LFS objects cleared."
+
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
