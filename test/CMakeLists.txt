@@ -1,5 +1,5 @@
-# Create a library for the logic files
-add_library(subbu_project_logic
+# Create a static library for logic files (exclude files with main)
+add_library(subbu_project_logic STATIC
     ../src/bitwise_add_subtraction_operators.c
     ../src/maximum_element_in_Array.c
     ../src/selection_sort.c
@@ -7,8 +7,8 @@ add_library(subbu_project_logic
     ../src/sum_of_unique_array_elements.c
 )
 
-# Add the test executable (only include the test files)
-add_executable(run_tests 
+# Create the test executable (only include test files)
+add_executable(run_tests
     run_tests.c
     test_bitwise_add_subtraction.c
     test_maximum_element.c
@@ -17,11 +17,12 @@ add_executable(run_tests
     test_sum_of_unique_array_elements.c
 )
 
-# Link the logic library to the test executable
+# Link the test executable with the static library (subbu_project_logic) containing all logic files
 target_link_libraries(run_tests PRIVATE subbu_project_logic m)
 
-# Ensure the source files are compiled with the correct flags (if needed)
-target_compile_options(run_tests PRIVATE -Wall -Wextra)  # For example, enable all warnings
+# Add necessary compile options for the tests (e.g., warning flags)
+target_compile_options(run_tests PRIVATE -Wall -Wextra)
 
-# Register the test with CTest
+# Register the test with CTest (optional)
+enable_testing()
 add_test(NAME run_tests COMMAND run_tests)
