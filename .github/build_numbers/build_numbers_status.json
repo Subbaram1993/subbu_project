@@ -300,6 +300,10 @@
     {
       "build_number": 92,
       "status": "FAILURE"
+    },
+    {
+      "build_number": 98,
+      "status": "FAILURE"
     }
   ]
 }
