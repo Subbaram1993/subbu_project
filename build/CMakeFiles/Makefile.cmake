@@ -11,6 +11,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.22.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.22.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.22.1/CMakeSystem.cmake"
+  "../test/CMakeLists.txt"
   "/usr/share/cmake-3.22/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.22/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.22/Modules/CMakeCommonLanguageInclude.cmake"
@@ -39,6 +40,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -49,4 +51,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/subbu_project_numbers_to_word_conversion.dir/DependInfo.cmake"
   "CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/DependInfo.cmake"
   "CMakeFiles/clean_build.dir/DependInfo.cmake"
+  "test/CMakeFiles/run_tests.dir/DependInfo.cmake"
   )

@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_proje
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -239,6 +249,19 @@ clean_build/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/clean_build.dir/build.make CMakeFiles/clean_build.dir/build
 .PHONY : clean_build/fast
 
+#=============================================================================
+# Target rules for targets named run_tests
+
+# Build rule for target.
+run_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 run_tests
+.PHONY : run_tests
+
+# fast build rule for target.
+run_tests/fast:
+	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/build
+.PHONY : run_tests/fast
+
 src/bitwise_add_subtraction_operators.o: src/bitwise_add_subtraction_operators.c.o
 .PHONY : src/bitwise_add_subtraction_operators.o
 
@@ -371,7 +394,9 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... test"
 	@echo "... clean_build"
+	@echo "... run_tests"
 	@echo "... subbu_project_bitwise_add_subtraction_operators"
 	@echo "... subbu_project_maximum_element"
 	@echo "... subbu_project_numbers_to_word_conversion"
