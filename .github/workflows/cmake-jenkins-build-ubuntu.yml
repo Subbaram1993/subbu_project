@@ -58,6 +58,15 @@ jobs:
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber")
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
+      # Fetch Jenkins Build Changes (Commit Messages)
+      - name: Fetch Jenkins Build Changes
+        id: fetch_changes
+        run: |
+          CHANGES=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+            "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$BUILD_NUMBER/api/json" | \
+            jq -r '.changeSet.items[].msg' | tr '\n' ' ' )
+          echo "CHANGES=${CHANGES}" >> $GITHUB_ENV
+
       # Determine Version
       - name: Determine Version
         id: determine_version
@@ -118,3 +127,8 @@ jobs:
       - name: Push Changes
         run: |
           git push origin main
+
+      # Send email notification after Jenkins build completion
+      - name: Send Email Notification
+        run: |
+          python3 scripts/send_email.py "${{ env.PROJECT_NAME }}" "${{ env.BUILD_NUMBER }}" "SUCCESS" "${{ secrets.JENKINS_URL }}/job/${{ env.PROJECT_NAME }}/${{ env.BUILD_NUMBER }}/" "${{ env.CHANGES }}"
