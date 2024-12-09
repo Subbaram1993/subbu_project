@@ -1,5 +1,5 @@
 # First, make sure the logic library is built
-add_library(subbu_project_logic STATIC 
+add_library(subbu_project_logic STATIC
     ../src/bitwise_add_subtraction_operators.c
     ../src/maximum_element_in_Array.c
     ../src/selection_sort.c

@@ -79,12 +79,10 @@ int test_manage() {
 
     // Compare the actual and expected output
     if (compare_output(expected_output, actual_output)) {
-        printf("Test passed successfully.\n");
+        return 1; // Return 1 on success
     } else {
-        printf("Test failed.\n");
-        return 0; // Fail the test if the output doesn't match
+        return 0; // Return 0 on failure
     }
 
     fclose(fp); // Close the file pointer after the test
-    return 1; // Test passed
 }
