@@ -1,5 +1,5 @@
 CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.o: \
- /home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/selection_sort.c \
+ /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/src/selection_sort.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \

@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/subbaramaiah_ch/Runner/actions-runner/_work/subbu_project/subbu_project/src/selection_sort.c" "CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.o" "gcc" "CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.o.d"
+  "/home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/src/selection_sort.c" "CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.o" "gcc" "CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.o.d"
   )
 
 # Targets to which this target links.
