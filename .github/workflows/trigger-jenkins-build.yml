@@ -22,25 +22,27 @@ jobs:
 
       - name: Clear Git LFS Objects
         run: |
-          echo "Clearing Git LFS objects..."
+          echo "Clearing Git LFS objects globally..."
 
-          # Uninstall Git LFS if installed
-          git lfs uninstall
+          # Ensure the repository is checked out to a branch
+          if [ -z "$(git symbolic-ref --short -q HEAD)" ]; then
+              echo "Repository is in detached HEAD state. Checking out to 'main'..."
+              git checkout main || git checkout -b main
+          fi
 
-          # Remove all LFS-tracked files from the repository
-          git rm --cached $(git lfs ls-files | awk '{print $3}')
+          # Uninstall Git LFS and clean up configuration
+          git lfs uninstall --system || true
+          git lfs uninstall --global || true
+          git lfs uninstall --local || true
 
-          # Clean up the LFS cache
-          git lfs clean
+          # Clean up lingering LFS objects
+          git lfs prune || true
 
-          # Prune old LFS objects
-          git lfs prune
+          # Migrate LFS objects if any are left
+          echo "Exporting all LFS objects..."
+          git lfs migrate export --include="*" --yes || true
 
-          # Remove all LFS objects from history and export them
-          echo "Migrating and removing all LFS objects from the repository history..."
-          yes | git lfs migrate export --include="*"  # Force the migration to proceed non-interactively
-
-          echo "Git LFS objects cleared."
+          echo "Git LFS cleanup completed."
 
       - name: Checkout repository
         uses: actions/checkout@v3
