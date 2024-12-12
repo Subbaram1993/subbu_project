@@ -1,19 +1,19 @@
-Start testing: Dec 12 11:39 IST
+Start testing: Dec 12 11:44 IST
 ----------------------------------------------------------
 1/1 Testing: run_tests
 1/1 Test: run_tests
 Command: "/home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build/test/run_tests"
 Directory: /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build/test
-"run_tests" start time: Dec 12 11:39 IST
+"run_tests" start time: Dec 12 11:44 IST
 Output:
 ----------------------------------------------------------
 Current working directory: /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build/test
 <end of output>
-Test time =   0.02 sec
+Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"run_tests" end time: Dec 12 11:39 IST
+"run_tests" end time: Dec 12 11:44 IST
 "run_tests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Dec 12 11:39 IST
+End testing: Dec 12 11:44 IST
