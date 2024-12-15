@@ -1,4 +1,4 @@
-# Install script for directory: /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/test
+# Install script for directory: /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/test
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

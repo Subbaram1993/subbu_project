@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project
+CMAKE_SOURCE_DIR = /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build
+CMAKE_BINARY_DIR = /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build
 
 # Utility rule file for clean_build.
 
@@ -67,9 +67,9 @@ include CMakeFiles/clean_build.dir/compiler_depend.make
 include CMakeFiles/clean_build.dir/progress.make
 
 CMakeFiles/clean_build:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Cleaning and resetting the build directory"
-	/usr/bin/cmake -E remove_directory /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build
-	/usr/bin/cmake -E make_directory /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Cleaning and resetting the build directory"
+	/usr/bin/cmake -E remove_directory /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build
+	/usr/bin/cmake -E make_directory /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build
 
 clean_build: CMakeFiles/clean_build
 clean_build: CMakeFiles/clean_build.dir/build.make
@@ -84,6 +84,6 @@ CMakeFiles/clean_build.dir/clean:
 .PHONY : CMakeFiles/clean_build.dir/clean
 
 CMakeFiles/clean_build.dir/depend:
-	cd /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build/CMakeFiles/clean_build.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/clean_build.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/clean_build.dir/depend
 

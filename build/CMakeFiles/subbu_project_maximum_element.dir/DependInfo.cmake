@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/src/maximum_element_in_Array.c" "CMakeFiles/subbu_project_maximum_element.dir/src/maximum_element_in_Array.c.o" "gcc" "CMakeFiles/subbu_project_maximum_element.dir/src/maximum_element_in_Array.c.o.d"
+  "/home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/maximum_element_in_Array.c" "CMakeFiles/subbu_project_maximum_element.dir/src/maximum_element_in_Array.c.o" "gcc" "CMakeFiles/subbu_project_maximum_element.dir/src/maximum_element_in_Array.c.o.d"
   )
 
 # Targets to which this target links.

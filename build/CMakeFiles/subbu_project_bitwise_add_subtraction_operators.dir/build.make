@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project
+CMAKE_SOURCE_DIR = /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build
+CMAKE_BINARY_DIR = /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/depend.make
@@ -72,16 +72,16 @@ include CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/flags.mak
 CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o: CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/flags.make
 CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o: ../src/bitwise_add_subtraction_operators.c
 CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o: CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o -MF CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o.d -o CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o -c /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o -MF CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o.d -o CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o -c /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c
 
 CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c > CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c > CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.i
 
 CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c -o CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c -o CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.s
 
 # Object files for target subbu_project_bitwise_add_subtraction_operators
 subbu_project_bitwise_add_subtraction_operators_OBJECTS = \
@@ -93,7 +93,7 @@ subbu_project_bitwise_add_subtraction_operators_EXTERNAL_OBJECTS =
 subbu_project_bitwise_add_subtraction_operators: CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o
 subbu_project_bitwise_add_subtraction_operators: CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make
 subbu_project_bitwise_add_subtraction_operators: CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable subbu_project_bitwise_add_subtraction_operators"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable subbu_project_bitwise_add_subtraction_operators"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -105,6 +105,6 @@ CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/clean:
 .PHONY : CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/clean
 
 CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/depend:
-	cd /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/github_runner/project_files/_work/subbu_project/subbu_project/build/CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/depend
 
