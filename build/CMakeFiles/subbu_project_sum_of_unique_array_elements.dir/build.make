@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project
+CMAKE_SOURCE_DIR = /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build
+CMAKE_BINARY_DIR = /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/depend.make
@@ -72,16 +72,16 @@ include CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/flags.make
 CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o: CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/flags.make
 CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o: ../src/sum_of_unique_array_elements.c
 CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o: CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o -MF CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o.d -o CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o -c /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o -MF CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o.d -o CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o -c /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c
 
 CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c > CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c > CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.i
 
 CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c -o CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c -o CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.s
 
 # Object files for target subbu_project_sum_of_unique_array_elements
 subbu_project_sum_of_unique_array_elements_OBJECTS = \
@@ -93,7 +93,7 @@ subbu_project_sum_of_unique_array_elements_EXTERNAL_OBJECTS =
 subbu_project_sum_of_unique_array_elements: CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o
 subbu_project_sum_of_unique_array_elements: CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make
 subbu_project_sum_of_unique_array_elements: CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable subbu_project_sum_of_unique_array_elements"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable subbu_project_sum_of_unique_array_elements"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -105,6 +105,6 @@ CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/clean:
 .PHONY : CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/clean
 
 CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/depend:
-	cd /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build /home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/depend
 

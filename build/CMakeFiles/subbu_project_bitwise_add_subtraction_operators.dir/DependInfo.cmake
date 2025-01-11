@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c" "CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o" "gcc" "CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o.d"
+  "/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/bitwise_add_subtraction_operators.c" "CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o" "gcc" "CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o.d"
   )
 
 # Targets to which this target links.

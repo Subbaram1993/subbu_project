@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/subbaramaiah_ch/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c" "CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o" "gcc" "CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o.d"
+  "/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/src/sum_of_unique_array_elements.c" "CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o" "gcc" "CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o.d"
   )
 
 # Targets to which this target links.
