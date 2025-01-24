@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/subbu_project_logic.dir/__/src/bitwise_add_subtraction_operators.c.o"
   "CMakeFiles/subbu_project_logic.dir/__/src/bitwise_add_subtraction_operators.c.o.d"
+  "CMakeFiles/subbu_project_logic.dir/__/src/bubble_sort_and_binary_search_array.c.o"
+  "CMakeFiles/subbu_project_logic.dir/__/src/bubble_sort_and_binary_search_array.c.o.d"
   "CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o"
   "CMakeFiles/subbu_project_logic.dir/__/src/manage.c.o.d"
   "CMakeFiles/subbu_project_logic.dir/__/src/maximum_element_in_Array.c.o"

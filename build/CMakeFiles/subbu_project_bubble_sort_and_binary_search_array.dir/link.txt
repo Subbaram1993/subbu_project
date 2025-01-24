@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.o -o subbu_project_bubble_sort_and_binary_search_array  -lm 

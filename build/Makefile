@@ -237,6 +237,19 @@ subbu_project_sum_of_unique_array_elements/fast:
 .PHONY : subbu_project_sum_of_unique_array_elements/fast
 
 #=============================================================================
+# Target rules for targets named subbu_project_bubble_sort_and_binary_search_array
+
+# Build rule for target.
+subbu_project_bubble_sort_and_binary_search_array: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subbu_project_bubble_sort_and_binary_search_array
+.PHONY : subbu_project_bubble_sort_and_binary_search_array
+
+# fast build rule for target.
+subbu_project_bubble_sort_and_binary_search_array/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build
+.PHONY : subbu_project_bubble_sort_and_binary_search_array/fast
+
+#=============================================================================
 # Target rules for targets named clean_build
 
 # Build rule for target.
@@ -298,6 +311,30 @@ src/bitwise_add_subtraction_operators.s: src/bitwise_add_subtraction_operators.c
 src/bitwise_add_subtraction_operators.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.s
 .PHONY : src/bitwise_add_subtraction_operators.c.s
+
+src/bubble_sort_and_binary_search_array.o: src/bubble_sort_and_binary_search_array.c.o
+.PHONY : src/bubble_sort_and_binary_search_array.o
+
+# target to build an object file
+src/bubble_sort_and_binary_search_array.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.o
+.PHONY : src/bubble_sort_and_binary_search_array.c.o
+
+src/bubble_sort_and_binary_search_array.i: src/bubble_sort_and_binary_search_array.c.i
+.PHONY : src/bubble_sort_and_binary_search_array.i
+
+# target to preprocess a source file
+src/bubble_sort_and_binary_search_array.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.i
+.PHONY : src/bubble_sort_and_binary_search_array.c.i
+
+src/bubble_sort_and_binary_search_array.s: src/bubble_sort_and_binary_search_array.c.s
+.PHONY : src/bubble_sort_and_binary_search_array.s
+
+# target to generate assembly for a file
+src/bubble_sort_and_binary_search_array.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.s
+.PHONY : src/bubble_sort_and_binary_search_array.c.s
 
 src/maximum_element_in_Array.o: src/maximum_element_in_Array.c.o
 .PHONY : src/maximum_element_in_Array.o
@@ -411,6 +448,7 @@ help:
 	@echo "... clean_build"
 	@echo "... run_tests"
 	@echo "... subbu_project_bitwise_add_subtraction_operators"
+	@echo "... subbu_project_bubble_sort_and_binary_search_array"
 	@echo "... subbu_project_logic"
 	@echo "... subbu_project_maximum_element"
 	@echo "... subbu_project_numbers_to_word_conversion"
@@ -419,6 +457,9 @@ help:
 	@echo "... src/bitwise_add_subtraction_operators.o"
 	@echo "... src/bitwise_add_subtraction_operators.i"
 	@echo "... src/bitwise_add_subtraction_operators.s"
+	@echo "... src/bubble_sort_and_binary_search_array.o"
+	@echo "... src/bubble_sort_and_binary_search_array.i"
+	@echo "... src/bubble_sort_and_binary_search_array.s"
 	@echo "... src/maximum_element_in_Array.o"
 	@echo "... src/maximum_element_in_Array.i"
 	@echo "... src/maximum_element_in_Array.s"

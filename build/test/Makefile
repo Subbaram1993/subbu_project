@@ -223,6 +223,30 @@ __/src/bitwise_add_subtraction_operators.c.s:
 	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/bitwise_add_subtraction_operators.c.s
 .PHONY : __/src/bitwise_add_subtraction_operators.c.s
 
+__/src/bubble_sort_and_binary_search_array.o: __/src/bubble_sort_and_binary_search_array.c.o
+.PHONY : __/src/bubble_sort_and_binary_search_array.o
+
+# target to build an object file
+__/src/bubble_sort_and_binary_search_array.c.o:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/bubble_sort_and_binary_search_array.c.o
+.PHONY : __/src/bubble_sort_and_binary_search_array.c.o
+
+__/src/bubble_sort_and_binary_search_array.i: __/src/bubble_sort_and_binary_search_array.c.i
+.PHONY : __/src/bubble_sort_and_binary_search_array.i
+
+# target to preprocess a source file
+__/src/bubble_sort_and_binary_search_array.c.i:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/bubble_sort_and_binary_search_array.c.i
+.PHONY : __/src/bubble_sort_and_binary_search_array.c.i
+
+__/src/bubble_sort_and_binary_search_array.s: __/src/bubble_sort_and_binary_search_array.c.s
+.PHONY : __/src/bubble_sort_and_binary_search_array.s
+
+# target to generate assembly for a file
+__/src/bubble_sort_and_binary_search_array.c.s:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/bubble_sort_and_binary_search_array.c.s
+.PHONY : __/src/bubble_sort_and_binary_search_array.c.s
+
 __/src/manage.o: __/src/manage.c.o
 .PHONY : __/src/manage.o
 
@@ -391,6 +415,30 @@ test_bitwise_add_subtraction.c.s:
 	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_bitwise_add_subtraction.c.s
 .PHONY : test_bitwise_add_subtraction.c.s
 
+test_bubble_sort_and_binary_search.o: test_bubble_sort_and_binary_search.c.o
+.PHONY : test_bubble_sort_and_binary_search.o
+
+# target to build an object file
+test_bubble_sort_and_binary_search.c.o:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_bubble_sort_and_binary_search.c.o
+.PHONY : test_bubble_sort_and_binary_search.c.o
+
+test_bubble_sort_and_binary_search.i: test_bubble_sort_and_binary_search.c.i
+.PHONY : test_bubble_sort_and_binary_search.i
+
+# target to preprocess a source file
+test_bubble_sort_and_binary_search.c.i:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_bubble_sort_and_binary_search.c.i
+.PHONY : test_bubble_sort_and_binary_search.c.i
+
+test_bubble_sort_and_binary_search.s: test_bubble_sort_and_binary_search.c.s
+.PHONY : test_bubble_sort_and_binary_search.s
+
+# target to generate assembly for a file
+test_bubble_sort_and_binary_search.c.s:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_bubble_sort_and_binary_search.c.s
+.PHONY : test_bubble_sort_and_binary_search.c.s
+
 test_manage.o: test_manage.c.o
 .PHONY : test_manage.o
 
@@ -529,6 +577,9 @@ help:
 	@echo "... __/src/bitwise_add_subtraction_operators.o"
 	@echo "... __/src/bitwise_add_subtraction_operators.i"
 	@echo "... __/src/bitwise_add_subtraction_operators.s"
+	@echo "... __/src/bubble_sort_and_binary_search_array.o"
+	@echo "... __/src/bubble_sort_and_binary_search_array.i"
+	@echo "... __/src/bubble_sort_and_binary_search_array.s"
 	@echo "... __/src/manage.o"
 	@echo "... __/src/manage.i"
 	@echo "... __/src/manage.s"
@@ -550,6 +601,9 @@ help:
 	@echo "... test_bitwise_add_subtraction.o"
 	@echo "... test_bitwise_add_subtraction.i"
 	@echo "... test_bitwise_add_subtraction.s"
+	@echo "... test_bubble_sort_and_binary_search.o"
+	@echo "... test_bubble_sort_and_binary_search.i"
+	@echo "... test_bubble_sort_and_binary_search.s"
 	@echo "... test_manage.o"
 	@echo "... test_manage.i"
 	@echo "... test_manage.s"
