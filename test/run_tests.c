@@ -7,6 +7,7 @@ int test_find_maximum();
 int test_number_to_words();
 int test_selection_sort();
 int test_sum_of_unique_elements();
+int test_bubble_sort_and_binary_search();
 
 int main() {
     int test_result;
@@ -40,6 +41,11 @@ int main() {
     // Run test_sum_of_unique_elements
     test_result = test_sum_of_unique_elements();
     printf("test_sum_of_unique_elements: %s\n", test_result ? "PASSED" : "FAILED");
+    if (!test_result) overall_result = 0;
+
+    // Run test_bubble_sort_and_binary_search
+    test_result = test_bubble_sort_and_binary_search();
+    printf("test_bubble_sort_and_binary_search: %s\n", test_result ? "PASSED" : "FAILED");
     if (!test_result) overall_result = 0;
 
     // Return 0 for success, 1 for failure
