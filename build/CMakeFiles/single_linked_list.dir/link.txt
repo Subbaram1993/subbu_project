@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/single_linked_list.dir/src/single_linked_list.c.o -o single_linked_list  -lm 

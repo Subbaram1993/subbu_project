@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o -o bitwise_add_subtraction_operators  -lm 

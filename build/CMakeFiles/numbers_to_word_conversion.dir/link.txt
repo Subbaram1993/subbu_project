@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.o -o numbers_to_word_conversion  -lm 

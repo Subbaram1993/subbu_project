@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/print_char_indexing_string.dir/src/print_char_indexing_string.c.o -o print_char_indexing_string  -lm 

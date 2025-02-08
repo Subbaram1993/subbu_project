@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/pattern_gen.dir/src/pattern_gen.c.o -o pattern_gen  -lm 

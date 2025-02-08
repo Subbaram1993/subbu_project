@@ -63,12 +63,18 @@ CMAKE_BINARY_DIR = /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runne
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/all
-all: CMakeFiles/subbu_project_maximum_element.dir/all
-all: CMakeFiles/subbu_project_selection_sort.dir/all
-all: CMakeFiles/subbu_project_numbers_to_word_conversion.dir/all
-all: CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/all
-all: CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/all
+all: CMakeFiles/bitwise_add_subtraction_operators.dir/all
+all: CMakeFiles/bubble_sort_and_binary_search_array.dir/all
+all: CMakeFiles/manage.dir/all
+all: CMakeFiles/maximum_element_in_Array.dir/all
+all: CMakeFiles/numbers_to_word_conversion.dir/all
+all: CMakeFiles/pattern_gen.dir/all
+all: CMakeFiles/print_char_indexing_string.dir/all
+all: CMakeFiles/selection_sort.dir/all
+all: CMakeFiles/single_linked_list.dir/all
+all: CMakeFiles/single_linked_list_v2.dir/all
+all: CMakeFiles/sum_of_unique_array_elements.dir/all
+all: CMakeFiles/sum_the_ip_addr_octets.dir/all
 all: test/all
 .PHONY : all
 
@@ -77,12 +83,18 @@ preinstall: test/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/clean
-clean: CMakeFiles/subbu_project_maximum_element.dir/clean
-clean: CMakeFiles/subbu_project_selection_sort.dir/clean
-clean: CMakeFiles/subbu_project_numbers_to_word_conversion.dir/clean
-clean: CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/clean
-clean: CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/clean
+clean: CMakeFiles/bitwise_add_subtraction_operators.dir/clean
+clean: CMakeFiles/bubble_sort_and_binary_search_array.dir/clean
+clean: CMakeFiles/manage.dir/clean
+clean: CMakeFiles/maximum_element_in_Array.dir/clean
+clean: CMakeFiles/numbers_to_word_conversion.dir/clean
+clean: CMakeFiles/pattern_gen.dir/clean
+clean: CMakeFiles/print_char_indexing_string.dir/clean
+clean: CMakeFiles/selection_sort.dir/clean
+clean: CMakeFiles/single_linked_list.dir/clean
+clean: CMakeFiles/single_linked_list_v2.dir/clean
+clean: CMakeFiles/sum_of_unique_array_elements.dir/clean
+clean: CMakeFiles/sum_the_ip_addr_octets.dir/clean
 clean: CMakeFiles/clean_build.dir/clean
 clean: test/clean
 .PHONY : clean
@@ -105,160 +117,316 @@ test/clean: test/CMakeFiles/run_tests.dir/clean
 .PHONY : test/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir
+# Target rules for target CMakeFiles/bitwise_add_subtraction_operators.dir
 
 # All Build rule for target.
-CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=11,12 "Built target subbu_project_bitwise_add_subtraction_operators"
-.PHONY : CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/all
+CMakeFiles/bitwise_add_subtraction_operators.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bitwise_add_subtraction_operators.dir/build.make CMakeFiles/bitwise_add_subtraction_operators.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bitwise_add_subtraction_operators.dir/build.make CMakeFiles/bitwise_add_subtraction_operators.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=1,2 "Built target bitwise_add_subtraction_operators"
+.PHONY : CMakeFiles/bitwise_add_subtraction_operators.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/rule: cmake_check_build_system
+CMakeFiles/bitwise_add_subtraction_operators.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/bitwise_add_subtraction_operators.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
-.PHONY : CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/rule
+.PHONY : CMakeFiles/bitwise_add_subtraction_operators.dir/rule
 
 # Convenience name for target.
-subbu_project_bitwise_add_subtraction_operators: CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/rule
-.PHONY : subbu_project_bitwise_add_subtraction_operators
+bitwise_add_subtraction_operators: CMakeFiles/bitwise_add_subtraction_operators.dir/rule
+.PHONY : bitwise_add_subtraction_operators
 
 # clean rule for target.
-CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/clean
-.PHONY : CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/clean
+CMakeFiles/bitwise_add_subtraction_operators.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bitwise_add_subtraction_operators.dir/build.make CMakeFiles/bitwise_add_subtraction_operators.dir/clean
+.PHONY : CMakeFiles/bitwise_add_subtraction_operators.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/subbu_project_maximum_element.dir
+# Target rules for target CMakeFiles/bubble_sort_and_binary_search_array.dir
 
 # All Build rule for target.
-CMakeFiles/subbu_project_maximum_element.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=23,24 "Built target subbu_project_maximum_element"
-.PHONY : CMakeFiles/subbu_project_maximum_element.dir/all
+CMakeFiles/bubble_sort_and_binary_search_array.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/bubble_sort_and_binary_search_array.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/bubble_sort_and_binary_search_array.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=3,4 "Built target bubble_sort_and_binary_search_array"
+.PHONY : CMakeFiles/bubble_sort_and_binary_search_array.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/subbu_project_maximum_element.dir/rule: cmake_check_build_system
+CMakeFiles/bubble_sort_and_binary_search_array.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/subbu_project_maximum_element.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/bubble_sort_and_binary_search_array.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
-.PHONY : CMakeFiles/subbu_project_maximum_element.dir/rule
+.PHONY : CMakeFiles/bubble_sort_and_binary_search_array.dir/rule
 
 # Convenience name for target.
-subbu_project_maximum_element: CMakeFiles/subbu_project_maximum_element.dir/rule
-.PHONY : subbu_project_maximum_element
+bubble_sort_and_binary_search_array: CMakeFiles/bubble_sort_and_binary_search_array.dir/rule
+.PHONY : bubble_sort_and_binary_search_array
 
 # clean rule for target.
-CMakeFiles/subbu_project_maximum_element.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/clean
-.PHONY : CMakeFiles/subbu_project_maximum_element.dir/clean
+CMakeFiles/bubble_sort_and_binary_search_array.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/bubble_sort_and_binary_search_array.dir/clean
+.PHONY : CMakeFiles/bubble_sort_and_binary_search_array.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/subbu_project_selection_sort.dir
+# Target rules for target CMakeFiles/manage.dir
 
 # All Build rule for target.
-CMakeFiles/subbu_project_selection_sort.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=27,28 "Built target subbu_project_selection_sort"
-.PHONY : CMakeFiles/subbu_project_selection_sort.dir/all
+CMakeFiles/manage.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/manage.dir/build.make CMakeFiles/manage.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/manage.dir/build.make CMakeFiles/manage.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=6,7 "Built target manage"
+.PHONY : CMakeFiles/manage.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/subbu_project_selection_sort.dir/rule: cmake_check_build_system
+CMakeFiles/manage.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/subbu_project_selection_sort.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/manage.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
-.PHONY : CMakeFiles/subbu_project_selection_sort.dir/rule
+.PHONY : CMakeFiles/manage.dir/rule
 
 # Convenience name for target.
-subbu_project_selection_sort: CMakeFiles/subbu_project_selection_sort.dir/rule
-.PHONY : subbu_project_selection_sort
+manage: CMakeFiles/manage.dir/rule
+.PHONY : manage
 
 # clean rule for target.
-CMakeFiles/subbu_project_selection_sort.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/clean
-.PHONY : CMakeFiles/subbu_project_selection_sort.dir/clean
+CMakeFiles/manage.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/manage.dir/build.make CMakeFiles/manage.dir/clean
+.PHONY : CMakeFiles/manage.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/subbu_project_numbers_to_word_conversion.dir
+# Target rules for target CMakeFiles/maximum_element_in_Array.dir
 
 # All Build rule for target.
-CMakeFiles/subbu_project_numbers_to_word_conversion.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=25,26 "Built target subbu_project_numbers_to_word_conversion"
-.PHONY : CMakeFiles/subbu_project_numbers_to_word_conversion.dir/all
+CMakeFiles/maximum_element_in_Array.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/maximum_element_in_Array.dir/build.make CMakeFiles/maximum_element_in_Array.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/maximum_element_in_Array.dir/build.make CMakeFiles/maximum_element_in_Array.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=8,9 "Built target maximum_element_in_Array"
+.PHONY : CMakeFiles/maximum_element_in_Array.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/subbu_project_numbers_to_word_conversion.dir/rule: cmake_check_build_system
+CMakeFiles/maximum_element_in_Array.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/subbu_project_numbers_to_word_conversion.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/maximum_element_in_Array.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
-.PHONY : CMakeFiles/subbu_project_numbers_to_word_conversion.dir/rule
+.PHONY : CMakeFiles/maximum_element_in_Array.dir/rule
 
 # Convenience name for target.
-subbu_project_numbers_to_word_conversion: CMakeFiles/subbu_project_numbers_to_word_conversion.dir/rule
-.PHONY : subbu_project_numbers_to_word_conversion
+maximum_element_in_Array: CMakeFiles/maximum_element_in_Array.dir/rule
+.PHONY : maximum_element_in_Array
 
 # clean rule for target.
-CMakeFiles/subbu_project_numbers_to_word_conversion.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/clean
-.PHONY : CMakeFiles/subbu_project_numbers_to_word_conversion.dir/clean
+CMakeFiles/maximum_element_in_Array.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/maximum_element_in_Array.dir/build.make CMakeFiles/maximum_element_in_Array.dir/clean
+.PHONY : CMakeFiles/maximum_element_in_Array.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/subbu_project_sum_of_unique_array_elements.dir
+# Target rules for target CMakeFiles/numbers_to_word_conversion.dir
 
 # All Build rule for target.
-CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=29,30 "Built target subbu_project_sum_of_unique_array_elements"
-.PHONY : CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/all
+CMakeFiles/numbers_to_word_conversion.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/numbers_to_word_conversion.dir/build.make CMakeFiles/numbers_to_word_conversion.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/numbers_to_word_conversion.dir/build.make CMakeFiles/numbers_to_word_conversion.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=10,11 "Built target numbers_to_word_conversion"
+.PHONY : CMakeFiles/numbers_to_word_conversion.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/rule: cmake_check_build_system
+CMakeFiles/numbers_to_word_conversion.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/numbers_to_word_conversion.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
-.PHONY : CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/rule
+.PHONY : CMakeFiles/numbers_to_word_conversion.dir/rule
 
 # Convenience name for target.
-subbu_project_sum_of_unique_array_elements: CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/rule
-.PHONY : subbu_project_sum_of_unique_array_elements
+numbers_to_word_conversion: CMakeFiles/numbers_to_word_conversion.dir/rule
+.PHONY : numbers_to_word_conversion
 
 # clean rule for target.
-CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/clean
-.PHONY : CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/clean
+CMakeFiles/numbers_to_word_conversion.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/numbers_to_word_conversion.dir/build.make CMakeFiles/numbers_to_word_conversion.dir/clean
+.PHONY : CMakeFiles/numbers_to_word_conversion.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir
+# Target rules for target CMakeFiles/pattern_gen.dir
 
 # All Build rule for target.
-CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=13,14 "Built target subbu_project_bubble_sort_and_binary_search_array"
-.PHONY : CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/all
+CMakeFiles/pattern_gen.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pattern_gen.dir/build.make CMakeFiles/pattern_gen.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pattern_gen.dir/build.make CMakeFiles/pattern_gen.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=12,13 "Built target pattern_gen"
+.PHONY : CMakeFiles/pattern_gen.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/rule: cmake_check_build_system
+CMakeFiles/pattern_gen.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/pattern_gen.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
-.PHONY : CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/rule
+.PHONY : CMakeFiles/pattern_gen.dir/rule
 
 # Convenience name for target.
-subbu_project_bubble_sort_and_binary_search_array: CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/rule
-.PHONY : subbu_project_bubble_sort_and_binary_search_array
+pattern_gen: CMakeFiles/pattern_gen.dir/rule
+.PHONY : pattern_gen
 
 # clean rule for target.
-CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/clean
-.PHONY : CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/clean
+CMakeFiles/pattern_gen.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pattern_gen.dir/build.make CMakeFiles/pattern_gen.dir/clean
+.PHONY : CMakeFiles/pattern_gen.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/print_char_indexing_string.dir
+
+# All Build rule for target.
+CMakeFiles/print_char_indexing_string.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/print_char_indexing_string.dir/build.make CMakeFiles/print_char_indexing_string.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/print_char_indexing_string.dir/build.make CMakeFiles/print_char_indexing_string.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=14,15 "Built target print_char_indexing_string"
+.PHONY : CMakeFiles/print_char_indexing_string.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/print_char_indexing_string.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/print_char_indexing_string.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : CMakeFiles/print_char_indexing_string.dir/rule
+
+# Convenience name for target.
+print_char_indexing_string: CMakeFiles/print_char_indexing_string.dir/rule
+.PHONY : print_char_indexing_string
+
+# clean rule for target.
+CMakeFiles/print_char_indexing_string.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/print_char_indexing_string.dir/build.make CMakeFiles/print_char_indexing_string.dir/clean
+.PHONY : CMakeFiles/print_char_indexing_string.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/selection_sort.dir
+
+# All Build rule for target.
+CMakeFiles/selection_sort.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/selection_sort.dir/build.make CMakeFiles/selection_sort.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/selection_sort.dir/build.make CMakeFiles/selection_sort.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=25,26 "Built target selection_sort"
+.PHONY : CMakeFiles/selection_sort.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/selection_sort.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/selection_sort.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : CMakeFiles/selection_sort.dir/rule
+
+# Convenience name for target.
+selection_sort: CMakeFiles/selection_sort.dir/rule
+.PHONY : selection_sort
+
+# clean rule for target.
+CMakeFiles/selection_sort.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/selection_sort.dir/build.make CMakeFiles/selection_sort.dir/clean
+.PHONY : CMakeFiles/selection_sort.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/single_linked_list.dir
+
+# All Build rule for target.
+CMakeFiles/single_linked_list.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=27,28 "Built target single_linked_list"
+.PHONY : CMakeFiles/single_linked_list.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/single_linked_list.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/single_linked_list.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : CMakeFiles/single_linked_list.dir/rule
+
+# Convenience name for target.
+single_linked_list: CMakeFiles/single_linked_list.dir/rule
+.PHONY : single_linked_list
+
+# clean rule for target.
+CMakeFiles/single_linked_list.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/clean
+.PHONY : CMakeFiles/single_linked_list.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/single_linked_list_v2.dir
+
+# All Build rule for target.
+CMakeFiles/single_linked_list_v2.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=29,30 "Built target single_linked_list_v2"
+.PHONY : CMakeFiles/single_linked_list_v2.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/single_linked_list_v2.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/single_linked_list_v2.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : CMakeFiles/single_linked_list_v2.dir/rule
+
+# Convenience name for target.
+single_linked_list_v2: CMakeFiles/single_linked_list_v2.dir/rule
+.PHONY : single_linked_list_v2
+
+# clean rule for target.
+CMakeFiles/single_linked_list_v2.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/clean
+.PHONY : CMakeFiles/single_linked_list_v2.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/sum_of_unique_array_elements.dir
+
+# All Build rule for target.
+CMakeFiles/sum_of_unique_array_elements.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=39,40 "Built target sum_of_unique_array_elements"
+.PHONY : CMakeFiles/sum_of_unique_array_elements.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/sum_of_unique_array_elements.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/sum_of_unique_array_elements.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : CMakeFiles/sum_of_unique_array_elements.dir/rule
+
+# Convenience name for target.
+sum_of_unique_array_elements: CMakeFiles/sum_of_unique_array_elements.dir/rule
+.PHONY : sum_of_unique_array_elements
+
+# clean rule for target.
+CMakeFiles/sum_of_unique_array_elements.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/clean
+.PHONY : CMakeFiles/sum_of_unique_array_elements.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/sum_the_ip_addr_octets.dir
+
+# All Build rule for target.
+CMakeFiles/sum_the_ip_addr_octets.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=41,42 "Built target sum_the_ip_addr_octets"
+.PHONY : CMakeFiles/sum_the_ip_addr_octets.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/sum_the_ip_addr_octets.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/sum_the_ip_addr_octets.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : CMakeFiles/sum_the_ip_addr_octets.dir/rule
+
+# Convenience name for target.
+sum_the_ip_addr_octets: CMakeFiles/sum_the_ip_addr_octets.dir/rule
+.PHONY : sum_the_ip_addr_octets
+
+# clean rule for target.
+CMakeFiles/sum_the_ip_addr_octets.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/clean
+.PHONY : CMakeFiles/sum_the_ip_addr_octets.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/clean_build.dir
@@ -267,7 +435,7 @@ CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/clean:
 CMakeFiles/clean_build.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/clean_build.dir/build.make CMakeFiles/clean_build.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/clean_build.dir/build.make CMakeFiles/clean_build.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=1 "Built target clean_build"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=5 "Built target clean_build"
 .PHONY : CMakeFiles/clean_build.dir/all
 
 # Build rule for subdir invocation for target.
@@ -293,7 +461,7 @@ CMakeFiles/clean_build.dir/clean:
 test/CMakeFiles/subbu_project_logic.dir/all:
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/depend
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=15,16,17,18,19,20,21,22 "Built target subbu_project_logic"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=31,32,33,34,35,36,37,38 "Built target subbu_project_logic"
 .PHONY : test/CMakeFiles/subbu_project_logic.dir/all
 
 # Build rule for subdir invocation for target.
@@ -319,7 +487,7 @@ test/CMakeFiles/subbu_project_logic.dir/clean:
 test/CMakeFiles/run_tests.dir/all: test/CMakeFiles/subbu_project_logic.dir/all
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=2,3,4,5,6,7,8,9,10 "Built target run_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=16,17,18,19,20,21,22,23,24 "Built target run_tests"
 .PHONY : test/CMakeFiles/run_tests.dir/all
 
 # Build rule for subdir invocation for target.

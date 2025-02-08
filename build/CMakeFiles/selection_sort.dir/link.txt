@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/selection_sort.dir/src/selection_sort.c.o -o selection_sort  -lm 

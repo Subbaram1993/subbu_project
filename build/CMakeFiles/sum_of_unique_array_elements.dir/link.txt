@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o -o sum_of_unique_array_elements  -lm 

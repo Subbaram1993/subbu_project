@@ -172,82 +172,160 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named subbu_project_bitwise_add_subtraction_operators
+# Target rules for targets named bitwise_add_subtraction_operators
 
 # Build rule for target.
-subbu_project_bitwise_add_subtraction_operators: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subbu_project_bitwise_add_subtraction_operators
-.PHONY : subbu_project_bitwise_add_subtraction_operators
+bitwise_add_subtraction_operators: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 bitwise_add_subtraction_operators
+.PHONY : bitwise_add_subtraction_operators
 
 # fast build rule for target.
-subbu_project_bitwise_add_subtraction_operators/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build
-.PHONY : subbu_project_bitwise_add_subtraction_operators/fast
+bitwise_add_subtraction_operators/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bitwise_add_subtraction_operators.dir/build.make CMakeFiles/bitwise_add_subtraction_operators.dir/build
+.PHONY : bitwise_add_subtraction_operators/fast
 
 #=============================================================================
-# Target rules for targets named subbu_project_maximum_element
+# Target rules for targets named bubble_sort_and_binary_search_array
 
 # Build rule for target.
-subbu_project_maximum_element: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subbu_project_maximum_element
-.PHONY : subbu_project_maximum_element
+bubble_sort_and_binary_search_array: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 bubble_sort_and_binary_search_array
+.PHONY : bubble_sort_and_binary_search_array
 
 # fast build rule for target.
-subbu_project_maximum_element/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/build
-.PHONY : subbu_project_maximum_element/fast
+bubble_sort_and_binary_search_array/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/bubble_sort_and_binary_search_array.dir/build
+.PHONY : bubble_sort_and_binary_search_array/fast
 
 #=============================================================================
-# Target rules for targets named subbu_project_selection_sort
+# Target rules for targets named manage
 
 # Build rule for target.
-subbu_project_selection_sort: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subbu_project_selection_sort
-.PHONY : subbu_project_selection_sort
+manage: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 manage
+.PHONY : manage
 
 # fast build rule for target.
-subbu_project_selection_sort/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/build
-.PHONY : subbu_project_selection_sort/fast
+manage/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/manage.dir/build.make CMakeFiles/manage.dir/build
+.PHONY : manage/fast
 
 #=============================================================================
-# Target rules for targets named subbu_project_numbers_to_word_conversion
+# Target rules for targets named maximum_element_in_Array
 
 # Build rule for target.
-subbu_project_numbers_to_word_conversion: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subbu_project_numbers_to_word_conversion
-.PHONY : subbu_project_numbers_to_word_conversion
+maximum_element_in_Array: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 maximum_element_in_Array
+.PHONY : maximum_element_in_Array
 
 # fast build rule for target.
-subbu_project_numbers_to_word_conversion/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build
-.PHONY : subbu_project_numbers_to_word_conversion/fast
+maximum_element_in_Array/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/maximum_element_in_Array.dir/build.make CMakeFiles/maximum_element_in_Array.dir/build
+.PHONY : maximum_element_in_Array/fast
 
 #=============================================================================
-# Target rules for targets named subbu_project_sum_of_unique_array_elements
+# Target rules for targets named numbers_to_word_conversion
 
 # Build rule for target.
-subbu_project_sum_of_unique_array_elements: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subbu_project_sum_of_unique_array_elements
-.PHONY : subbu_project_sum_of_unique_array_elements
+numbers_to_word_conversion: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 numbers_to_word_conversion
+.PHONY : numbers_to_word_conversion
 
 # fast build rule for target.
-subbu_project_sum_of_unique_array_elements/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build
-.PHONY : subbu_project_sum_of_unique_array_elements/fast
+numbers_to_word_conversion/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/numbers_to_word_conversion.dir/build.make CMakeFiles/numbers_to_word_conversion.dir/build
+.PHONY : numbers_to_word_conversion/fast
 
 #=============================================================================
-# Target rules for targets named subbu_project_bubble_sort_and_binary_search_array
+# Target rules for targets named pattern_gen
 
 # Build rule for target.
-subbu_project_bubble_sort_and_binary_search_array: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subbu_project_bubble_sort_and_binary_search_array
-.PHONY : subbu_project_bubble_sort_and_binary_search_array
+pattern_gen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pattern_gen
+.PHONY : pattern_gen
 
 # fast build rule for target.
-subbu_project_bubble_sort_and_binary_search_array/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build
-.PHONY : subbu_project_bubble_sort_and_binary_search_array/fast
+pattern_gen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pattern_gen.dir/build.make CMakeFiles/pattern_gen.dir/build
+.PHONY : pattern_gen/fast
+
+#=============================================================================
+# Target rules for targets named print_char_indexing_string
+
+# Build rule for target.
+print_char_indexing_string: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 print_char_indexing_string
+.PHONY : print_char_indexing_string
+
+# fast build rule for target.
+print_char_indexing_string/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/print_char_indexing_string.dir/build.make CMakeFiles/print_char_indexing_string.dir/build
+.PHONY : print_char_indexing_string/fast
+
+#=============================================================================
+# Target rules for targets named selection_sort
+
+# Build rule for target.
+selection_sort: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 selection_sort
+.PHONY : selection_sort
+
+# fast build rule for target.
+selection_sort/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/selection_sort.dir/build.make CMakeFiles/selection_sort.dir/build
+.PHONY : selection_sort/fast
+
+#=============================================================================
+# Target rules for targets named single_linked_list
+
+# Build rule for target.
+single_linked_list: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 single_linked_list
+.PHONY : single_linked_list
+
+# fast build rule for target.
+single_linked_list/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/build
+.PHONY : single_linked_list/fast
+
+#=============================================================================
+# Target rules for targets named single_linked_list_v2
+
+# Build rule for target.
+single_linked_list_v2: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 single_linked_list_v2
+.PHONY : single_linked_list_v2
+
+# fast build rule for target.
+single_linked_list_v2/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/build
+.PHONY : single_linked_list_v2/fast
+
+#=============================================================================
+# Target rules for targets named sum_of_unique_array_elements
+
+# Build rule for target.
+sum_of_unique_array_elements: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sum_of_unique_array_elements
+.PHONY : sum_of_unique_array_elements
+
+# fast build rule for target.
+sum_of_unique_array_elements/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/build
+.PHONY : sum_of_unique_array_elements/fast
+
+#=============================================================================
+# Target rules for targets named sum_the_ip_addr_octets
+
+# Build rule for target.
+sum_the_ip_addr_octets: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sum_the_ip_addr_octets
+.PHONY : sum_the_ip_addr_octets
+
+# fast build rule for target.
+sum_the_ip_addr_octets/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/build
+.PHONY : sum_the_ip_addr_octets/fast
 
 #=============================================================================
 # Target rules for targets named clean_build
@@ -293,7 +371,7 @@ src/bitwise_add_subtraction_operators.o: src/bitwise_add_subtraction_operators.c
 
 # target to build an object file
 src/bitwise_add_subtraction_operators.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bitwise_add_subtraction_operators.dir/build.make CMakeFiles/bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.o
 .PHONY : src/bitwise_add_subtraction_operators.c.o
 
 src/bitwise_add_subtraction_operators.i: src/bitwise_add_subtraction_operators.c.i
@@ -301,7 +379,7 @@ src/bitwise_add_subtraction_operators.i: src/bitwise_add_subtraction_operators.c
 
 # target to preprocess a source file
 src/bitwise_add_subtraction_operators.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bitwise_add_subtraction_operators.dir/build.make CMakeFiles/bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.i
 .PHONY : src/bitwise_add_subtraction_operators.c.i
 
 src/bitwise_add_subtraction_operators.s: src/bitwise_add_subtraction_operators.c.s
@@ -309,7 +387,7 @@ src/bitwise_add_subtraction_operators.s: src/bitwise_add_subtraction_operators.c
 
 # target to generate assembly for a file
 src/bitwise_add_subtraction_operators.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/build.make CMakeFiles/subbu_project_bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bitwise_add_subtraction_operators.dir/build.make CMakeFiles/bitwise_add_subtraction_operators.dir/src/bitwise_add_subtraction_operators.c.s
 .PHONY : src/bitwise_add_subtraction_operators.c.s
 
 src/bubble_sort_and_binary_search_array.o: src/bubble_sort_and_binary_search_array.c.o
@@ -317,7 +395,7 @@ src/bubble_sort_and_binary_search_array.o: src/bubble_sort_and_binary_search_arr
 
 # target to build an object file
 src/bubble_sort_and_binary_search_array.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.o
 .PHONY : src/bubble_sort_and_binary_search_array.c.o
 
 src/bubble_sort_and_binary_search_array.i: src/bubble_sort_and_binary_search_array.c.i
@@ -325,7 +403,7 @@ src/bubble_sort_and_binary_search_array.i: src/bubble_sort_and_binary_search_arr
 
 # target to preprocess a source file
 src/bubble_sort_and_binary_search_array.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.i
 .PHONY : src/bubble_sort_and_binary_search_array.c.i
 
 src/bubble_sort_and_binary_search_array.s: src/bubble_sort_and_binary_search_array.c.s
@@ -333,15 +411,39 @@ src/bubble_sort_and_binary_search_array.s: src/bubble_sort_and_binary_search_arr
 
 # target to generate assembly for a file
 src/bubble_sort_and_binary_search_array.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/subbu_project_bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.s
 .PHONY : src/bubble_sort_and_binary_search_array.c.s
+
+src/manage.o: src/manage.c.o
+.PHONY : src/manage.o
+
+# target to build an object file
+src/manage.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/manage.dir/build.make CMakeFiles/manage.dir/src/manage.c.o
+.PHONY : src/manage.c.o
+
+src/manage.i: src/manage.c.i
+.PHONY : src/manage.i
+
+# target to preprocess a source file
+src/manage.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/manage.dir/build.make CMakeFiles/manage.dir/src/manage.c.i
+.PHONY : src/manage.c.i
+
+src/manage.s: src/manage.c.s
+.PHONY : src/manage.s
+
+# target to generate assembly for a file
+src/manage.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/manage.dir/build.make CMakeFiles/manage.dir/src/manage.c.s
+.PHONY : src/manage.c.s
 
 src/maximum_element_in_Array.o: src/maximum_element_in_Array.c.o
 .PHONY : src/maximum_element_in_Array.o
 
 # target to build an object file
 src/maximum_element_in_Array.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/src/maximum_element_in_Array.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/maximum_element_in_Array.dir/build.make CMakeFiles/maximum_element_in_Array.dir/src/maximum_element_in_Array.c.o
 .PHONY : src/maximum_element_in_Array.c.o
 
 src/maximum_element_in_Array.i: src/maximum_element_in_Array.c.i
@@ -349,7 +451,7 @@ src/maximum_element_in_Array.i: src/maximum_element_in_Array.c.i
 
 # target to preprocess a source file
 src/maximum_element_in_Array.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/src/maximum_element_in_Array.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/maximum_element_in_Array.dir/build.make CMakeFiles/maximum_element_in_Array.dir/src/maximum_element_in_Array.c.i
 .PHONY : src/maximum_element_in_Array.c.i
 
 src/maximum_element_in_Array.s: src/maximum_element_in_Array.c.s
@@ -357,7 +459,7 @@ src/maximum_element_in_Array.s: src/maximum_element_in_Array.c.s
 
 # target to generate assembly for a file
 src/maximum_element_in_Array.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_maximum_element.dir/build.make CMakeFiles/subbu_project_maximum_element.dir/src/maximum_element_in_Array.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/maximum_element_in_Array.dir/build.make CMakeFiles/maximum_element_in_Array.dir/src/maximum_element_in_Array.c.s
 .PHONY : src/maximum_element_in_Array.c.s
 
 src/numbers_to_word_conversion.o: src/numbers_to_word_conversion.c.o
@@ -365,7 +467,7 @@ src/numbers_to_word_conversion.o: src/numbers_to_word_conversion.c.o
 
 # target to build an object file
 src/numbers_to_word_conversion.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/numbers_to_word_conversion.dir/build.make CMakeFiles/numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.o
 .PHONY : src/numbers_to_word_conversion.c.o
 
 src/numbers_to_word_conversion.i: src/numbers_to_word_conversion.c.i
@@ -373,7 +475,7 @@ src/numbers_to_word_conversion.i: src/numbers_to_word_conversion.c.i
 
 # target to preprocess a source file
 src/numbers_to_word_conversion.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/numbers_to_word_conversion.dir/build.make CMakeFiles/numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.i
 .PHONY : src/numbers_to_word_conversion.c.i
 
 src/numbers_to_word_conversion.s: src/numbers_to_word_conversion.c.s
@@ -381,15 +483,63 @@ src/numbers_to_word_conversion.s: src/numbers_to_word_conversion.c.s
 
 # target to generate assembly for a file
 src/numbers_to_word_conversion.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_numbers_to_word_conversion.dir/build.make CMakeFiles/subbu_project_numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/numbers_to_word_conversion.dir/build.make CMakeFiles/numbers_to_word_conversion.dir/src/numbers_to_word_conversion.c.s
 .PHONY : src/numbers_to_word_conversion.c.s
+
+src/pattern_gen.o: src/pattern_gen.c.o
+.PHONY : src/pattern_gen.o
+
+# target to build an object file
+src/pattern_gen.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pattern_gen.dir/build.make CMakeFiles/pattern_gen.dir/src/pattern_gen.c.o
+.PHONY : src/pattern_gen.c.o
+
+src/pattern_gen.i: src/pattern_gen.c.i
+.PHONY : src/pattern_gen.i
+
+# target to preprocess a source file
+src/pattern_gen.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pattern_gen.dir/build.make CMakeFiles/pattern_gen.dir/src/pattern_gen.c.i
+.PHONY : src/pattern_gen.c.i
+
+src/pattern_gen.s: src/pattern_gen.c.s
+.PHONY : src/pattern_gen.s
+
+# target to generate assembly for a file
+src/pattern_gen.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pattern_gen.dir/build.make CMakeFiles/pattern_gen.dir/src/pattern_gen.c.s
+.PHONY : src/pattern_gen.c.s
+
+src/print_char_indexing_string.o: src/print_char_indexing_string.c.o
+.PHONY : src/print_char_indexing_string.o
+
+# target to build an object file
+src/print_char_indexing_string.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/print_char_indexing_string.dir/build.make CMakeFiles/print_char_indexing_string.dir/src/print_char_indexing_string.c.o
+.PHONY : src/print_char_indexing_string.c.o
+
+src/print_char_indexing_string.i: src/print_char_indexing_string.c.i
+.PHONY : src/print_char_indexing_string.i
+
+# target to preprocess a source file
+src/print_char_indexing_string.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/print_char_indexing_string.dir/build.make CMakeFiles/print_char_indexing_string.dir/src/print_char_indexing_string.c.i
+.PHONY : src/print_char_indexing_string.c.i
+
+src/print_char_indexing_string.s: src/print_char_indexing_string.c.s
+.PHONY : src/print_char_indexing_string.s
+
+# target to generate assembly for a file
+src/print_char_indexing_string.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/print_char_indexing_string.dir/build.make CMakeFiles/print_char_indexing_string.dir/src/print_char_indexing_string.c.s
+.PHONY : src/print_char_indexing_string.c.s
 
 src/selection_sort.o: src/selection_sort.c.o
 .PHONY : src/selection_sort.o
 
 # target to build an object file
 src/selection_sort.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/selection_sort.dir/build.make CMakeFiles/selection_sort.dir/src/selection_sort.c.o
 .PHONY : src/selection_sort.c.o
 
 src/selection_sort.i: src/selection_sort.c.i
@@ -397,7 +547,7 @@ src/selection_sort.i: src/selection_sort.c.i
 
 # target to preprocess a source file
 src/selection_sort.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/selection_sort.dir/build.make CMakeFiles/selection_sort.dir/src/selection_sort.c.i
 .PHONY : src/selection_sort.c.i
 
 src/selection_sort.s: src/selection_sort.c.s
@@ -405,15 +555,63 @@ src/selection_sort.s: src/selection_sort.c.s
 
 # target to generate assembly for a file
 src/selection_sort.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_selection_sort.dir/build.make CMakeFiles/subbu_project_selection_sort.dir/src/selection_sort.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/selection_sort.dir/build.make CMakeFiles/selection_sort.dir/src/selection_sort.c.s
 .PHONY : src/selection_sort.c.s
+
+src/single_linked_list.o: src/single_linked_list.c.o
+.PHONY : src/single_linked_list.o
+
+# target to build an object file
+src/single_linked_list.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/src/single_linked_list.c.o
+.PHONY : src/single_linked_list.c.o
+
+src/single_linked_list.i: src/single_linked_list.c.i
+.PHONY : src/single_linked_list.i
+
+# target to preprocess a source file
+src/single_linked_list.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/src/single_linked_list.c.i
+.PHONY : src/single_linked_list.c.i
+
+src/single_linked_list.s: src/single_linked_list.c.s
+.PHONY : src/single_linked_list.s
+
+# target to generate assembly for a file
+src/single_linked_list.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/src/single_linked_list.c.s
+.PHONY : src/single_linked_list.c.s
+
+src/single_linked_list_v2.o: src/single_linked_list_v2.c.o
+.PHONY : src/single_linked_list_v2.o
+
+# target to build an object file
+src/single_linked_list_v2.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/src/single_linked_list_v2.c.o
+.PHONY : src/single_linked_list_v2.c.o
+
+src/single_linked_list_v2.i: src/single_linked_list_v2.c.i
+.PHONY : src/single_linked_list_v2.i
+
+# target to preprocess a source file
+src/single_linked_list_v2.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/src/single_linked_list_v2.c.i
+.PHONY : src/single_linked_list_v2.c.i
+
+src/single_linked_list_v2.s: src/single_linked_list_v2.c.s
+.PHONY : src/single_linked_list_v2.s
+
+# target to generate assembly for a file
+src/single_linked_list_v2.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/src/single_linked_list_v2.c.s
+.PHONY : src/single_linked_list_v2.c.s
 
 src/sum_of_unique_array_elements.o: src/sum_of_unique_array_elements.c.o
 .PHONY : src/sum_of_unique_array_elements.o
 
 # target to build an object file
 src/sum_of_unique_array_elements.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.o
 .PHONY : src/sum_of_unique_array_elements.c.o
 
 src/sum_of_unique_array_elements.i: src/sum_of_unique_array_elements.c.i
@@ -421,7 +619,7 @@ src/sum_of_unique_array_elements.i: src/sum_of_unique_array_elements.c.i
 
 # target to preprocess a source file
 src/sum_of_unique_array_elements.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.i
 .PHONY : src/sum_of_unique_array_elements.c.i
 
 src/sum_of_unique_array_elements.s: src/sum_of_unique_array_elements.c.s
@@ -429,8 +627,32 @@ src/sum_of_unique_array_elements.s: src/sum_of_unique_array_elements.c.s
 
 # target to generate assembly for a file
 src/sum_of_unique_array_elements.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/build.make CMakeFiles/subbu_project_sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/src/sum_of_unique_array_elements.c.s
 .PHONY : src/sum_of_unique_array_elements.c.s
+
+src/sum_the_ip_addr_octets.o: src/sum_the_ip_addr_octets.c.o
+.PHONY : src/sum_the_ip_addr_octets.o
+
+# target to build an object file
+src/sum_the_ip_addr_octets.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/src/sum_the_ip_addr_octets.c.o
+.PHONY : src/sum_the_ip_addr_octets.c.o
+
+src/sum_the_ip_addr_octets.i: src/sum_the_ip_addr_octets.c.i
+.PHONY : src/sum_the_ip_addr_octets.i
+
+# target to preprocess a source file
+src/sum_the_ip_addr_octets.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/src/sum_the_ip_addr_octets.c.i
+.PHONY : src/sum_the_ip_addr_octets.c.i
+
+src/sum_the_ip_addr_octets.s: src/sum_the_ip_addr_octets.c.s
+.PHONY : src/sum_the_ip_addr_octets.s
+
+# target to generate assembly for a file
+src/sum_the_ip_addr_octets.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/src/sum_the_ip_addr_octets.c.s
+.PHONY : src/sum_the_ip_addr_octets.c.s
 
 # Help Target
 help:
@@ -446,32 +668,56 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... clean_build"
+	@echo "... bitwise_add_subtraction_operators"
+	@echo "... bubble_sort_and_binary_search_array"
+	@echo "... manage"
+	@echo "... maximum_element_in_Array"
+	@echo "... numbers_to_word_conversion"
+	@echo "... pattern_gen"
+	@echo "... print_char_indexing_string"
 	@echo "... run_tests"
-	@echo "... subbu_project_bitwise_add_subtraction_operators"
-	@echo "... subbu_project_bubble_sort_and_binary_search_array"
+	@echo "... selection_sort"
+	@echo "... single_linked_list"
+	@echo "... single_linked_list_v2"
 	@echo "... subbu_project_logic"
-	@echo "... subbu_project_maximum_element"
-	@echo "... subbu_project_numbers_to_word_conversion"
-	@echo "... subbu_project_selection_sort"
-	@echo "... subbu_project_sum_of_unique_array_elements"
+	@echo "... sum_of_unique_array_elements"
+	@echo "... sum_the_ip_addr_octets"
 	@echo "... src/bitwise_add_subtraction_operators.o"
 	@echo "... src/bitwise_add_subtraction_operators.i"
 	@echo "... src/bitwise_add_subtraction_operators.s"
 	@echo "... src/bubble_sort_and_binary_search_array.o"
 	@echo "... src/bubble_sort_and_binary_search_array.i"
 	@echo "... src/bubble_sort_and_binary_search_array.s"
+	@echo "... src/manage.o"
+	@echo "... src/manage.i"
+	@echo "... src/manage.s"
 	@echo "... src/maximum_element_in_Array.o"
 	@echo "... src/maximum_element_in_Array.i"
 	@echo "... src/maximum_element_in_Array.s"
 	@echo "... src/numbers_to_word_conversion.o"
 	@echo "... src/numbers_to_word_conversion.i"
 	@echo "... src/numbers_to_word_conversion.s"
+	@echo "... src/pattern_gen.o"
+	@echo "... src/pattern_gen.i"
+	@echo "... src/pattern_gen.s"
+	@echo "... src/print_char_indexing_string.o"
+	@echo "... src/print_char_indexing_string.i"
+	@echo "... src/print_char_indexing_string.s"
 	@echo "... src/selection_sort.o"
 	@echo "... src/selection_sort.i"
 	@echo "... src/selection_sort.s"
+	@echo "... src/single_linked_list.o"
+	@echo "... src/single_linked_list.i"
+	@echo "... src/single_linked_list.s"
+	@echo "... src/single_linked_list_v2.o"
+	@echo "... src/single_linked_list_v2.i"
+	@echo "... src/single_linked_list_v2.s"
 	@echo "... src/sum_of_unique_array_elements.o"
 	@echo "... src/sum_of_unique_array_elements.i"
 	@echo "... src/sum_of_unique_array_elements.s"
+	@echo "... src/sum_the_ip_addr_octets.o"
+	@echo "... src/sum_the_ip_addr_octets.i"
+	@echo "... src/sum_the_ip_addr_octets.s"
 .PHONY : help
 
 

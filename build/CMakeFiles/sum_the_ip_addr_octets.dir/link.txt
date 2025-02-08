@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/sum_the_ip_addr_octets.dir/src/sum_the_ip_addr_octets.c.o -o sum_the_ip_addr_octets  -lm 
