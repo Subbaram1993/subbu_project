@@ -1,31 +1,24 @@
-cmake_minimum_required(VERSION "3.19.0")
+cmake_minimum_required(VERSION 3.22.1)
 
 project(subbu_project)
 
-# Collect source files for each executable
-add_executable(subbu_project_bitwise_add_subtraction_operators "src/bitwise_add_subtraction_operators.c")
-add_executable(subbu_project_maximum_element "src/maximum_element_in_Array.c")
-add_executable(subbu_project_selection_sort "src/selection_sort.c")
-add_executable(subbu_project_numbers_to_word_conversion "src/numbers_to_word_conversion.c")
-add_executable(subbu_project_sum_of_unique_array_elements "src/sum_of_unique_array_elements.c")
-add_executable(subbu_project_bubble_sort_and_binary_search_array "src/bubble_sort_and_binary_search_array.c")
+# Collect all .c source files in the src directory
+file(GLOB SRC_FILES "src/*.c")
 
-# Link necessary libraries
-target_link_libraries(subbu_project_bitwise_add_subtraction_operators PUBLIC m)
-target_link_libraries(subbu_project_maximum_element PUBLIC m)
-target_link_libraries(subbu_project_selection_sort PUBLIC m)
-target_link_libraries(subbu_project_numbers_to_word_conversion PUBLIC m)
-target_link_libraries(subbu_project_sum_of_unique_array_elements PUBLIC m)
-target_link_libraries(subbu_project_bubble_sort_and_binary_search_array PUBLIC m)
+# Create executables for each source file
+foreach(SRC_FILE ${SRC_FILES})
+    # Extract the executable name from the source file name (without the .c extension)
+    get_filename_component(EXEC_NAME ${SRC_FILE} NAME_WE)
+
+    # Add executable for the current source file
+    add_executable(${EXEC_NAME} ${SRC_FILE})
+
+    # Link necessary libraries
+    target_link_libraries(${EXEC_NAME} PUBLIC m)
+endforeach()
 
 # Install all executables
-install(TARGETS subbu_project_bitwise_add_subtraction_operators
-        subbu_project_maximum_element
-        subbu_project_selection_sort
-        subbu_project_numbers_to_word_conversion
-        subbu_project_sum_of_unique_array_elements
-	subbu_project_bubble_sort_and_binary_search_array
-        DESTINATION bin)
+install(TARGETS ${EXEC_NAME} DESTINATION bin)
 
 # Install all source files from the src directory
 install(DIRECTORY "src/" DESTINATION src)

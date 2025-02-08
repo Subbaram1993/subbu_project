@@ -69,15 +69,17 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "Determined Version: $VERSION"
 
-      # Compile, Link, and Run Tests
+      # Clean and Build the Project
       - name: Clean and Build the Project
         run: |
           echo "Cleaning up previous build..."
+          # Remove the old build directory if it exists
           rm -rf build
-
-          # Create a new build directory
-          echo "Creating new build directory..."
+          # Create a fresh build directory
           mkdir -p build
+
+          # Remove any existing CMakeCache.txt file that might cause issues
+          rm -rf build/CMakeCache.txt
 
           # Run cmake to configure the project
           echo "Configuring the project with cmake..."
