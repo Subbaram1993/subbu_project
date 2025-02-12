@@ -38,17 +38,20 @@ jobs:
           git config --global commit.gpgSign true
           git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
 
-          git stash || echo "Nothing to stash"
+          if [[ -n $(git status --porcelain) ]]; then
+            git stash
+          fi
+
           git pull origin main --rebase || {
             echo "Merge conflict detected. Resolving automatically using 'theirs'."
             git checkout --theirs .
             git add .
-            git rebase --continue || {
-              git rebase --abort
-              exit 1
-            }
+            git rebase --continue || git rebase --abort
           }
-          git stash pop || echo "No stashed changes to apply"
+
+          if git stash list | grep -q "stash@{0}"; then
+            git stash pop
+          fi
 
       # Fetch Latest Jenkins Build Number
       - name: Get Latest Jenkins Build Number
@@ -56,6 +59,12 @@ jobs:
         run: |
           BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber")
+
+          if [[ -z "$BUILD_NUMBER" ]]; then
+            echo "Error: Failed to retrieve build number from Jenkins"
+            exit 1
+          fi
+
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
 
       # Determine Version
@@ -66,55 +75,46 @@ jobs:
           MINOR=$((BUILD_NUMBER / 10 % 6))
           MAJOR=$((BUILD_NUMBER / 60))
           VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "Determined Version: $VERSION"
 
-      # Clean and Build the Project
+      # Clean and Build the project
       - name: Clean and Build the Project
         run: |
           echo "Cleaning up previous build..."
-          # Remove the old build directory if it exists
-          rm -rf build
-          # Create a fresh build directory
-          mkdir -p build
+          rm -rf build && mkdir -p build
 
-          # Remove any existing CMakeCache.txt file that might cause issues
-          rm -rf build/CMakeCache.txt
-
-          # Run cmake to configure the project
-          echo "Configuring the project with cmake..."
+          echo "Configuring project with cmake..."
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
-          # Compile the project
           echo "Compiling the project..."
           cd build
           make
 
-          # Optional: Run tests using make
-          echo "Running tests with make..."
-          make test
+          echo "Running tests..."
+          make test || exit 1  # Ensure test failures halt execution
 
-      # Run CTest and display output
+      # Run CTest and Display Output
       - name: Run CTest
         run: |
-          echo "Running tests with ctest..."
+          echo "Running ctest..."
           cd build
-          # Run ctest and display the output directly
-          ctest --output-on-failure
+          ctest --output-on-failure || exit 1
 
       # Save Artifacts in Repository (only if needed for further steps)
       - name: Save Changes to Repo (Without Artifacts)
         run: |
-          git add . # Add all changed files, skipping artifacts
+          git add .
           git commit -S -m "Add updated version ${{ env.VERSION }}" || echo "No changes to commit"
 
       # Create and Push Tag
       - name: Create and Push Tag
         run: |
           TAG_NAME="${{ env.VERSION }}"
-          echo "Incremented the TAG version: $TAG_NAME"
-          git tag -f "$TAG_NAME"
-          git push origin --force "$TAG_NAME"
+          git push origin :refs/tags/${TAG_NAME} 2>/dev/null || true
+          git tag -a "$TAG_NAME"
+          git push origin "$TAG_NAME"
 
       # Push Changes
       - name: Push Changes
