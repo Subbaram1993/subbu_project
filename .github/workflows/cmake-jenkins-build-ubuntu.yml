@@ -30,6 +30,12 @@ jobs:
           JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
           echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
 
+      # Clean build directory before pulling latest changes
+      - name: Clean Build Directory
+        run: |
+          echo "Cleaning up build directory to prevent merge conflicts..."
+          rm -rf build
+
       # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
         run: |
@@ -79,11 +85,11 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "Determined Version: $VERSION"
 
-      # Clean and Build the project
-      - name: Clean and Build the Project
+      # Build the project
+      - name: Build the Project
         run: |
-          echo "Cleaning up previous build..."
-          rm -rf build && mkdir -p build
+          echo "Creating a fresh build directory..."
+          mkdir -p build
 
           echo "Configuring project with cmake..."
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
