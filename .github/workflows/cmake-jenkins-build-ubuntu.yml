@@ -119,7 +119,7 @@ jobs:
         run: |
           TAG_NAME="${{ env.VERSION }}"
           git push origin :refs/tags/${TAG_NAME} 2>/dev/null || true
-          git tag -a "$TAG_NAME"
+          git tag -a "$TAG_NAME" -m "$TAG_NAME"  # Use the derived version as the message
           git push origin "$TAG_NAME"
 
       # Push Changes
