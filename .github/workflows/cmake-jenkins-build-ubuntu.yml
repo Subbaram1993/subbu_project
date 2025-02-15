@@ -92,7 +92,7 @@ jobs:
           mkdir -p build
 
           echo "Configuring project with cmake..."
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DENABLE_VALGRIND=ON
 
           echo "Compiling the project..."
           cd build
@@ -107,6 +107,12 @@ jobs:
           echo "Running ctest..."
           cd build
           ctest --output-on-failure || exit 1
+
+      - name: Run Tests with Valgrind
+        run: |
+          echo "Running tests with Valgrind..."
+          cd build
+          valgrind --leak-check=full --show-leak-kinds=all ./test/run_tests
 
       # Save Artifacts in Repository (only if needed for further steps)
       - name: Save Changes to Repo (Without Artifacts)
