@@ -67,9 +67,8 @@ include CMakeFiles/clean_build.dir/compiler_depend.make
 include CMakeFiles/clean_build.dir/progress.make
 
 CMakeFiles/clean_build:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Cleaning and resetting the build directory"
-	/usr/bin/cmake -E remove_directory /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build
-	/usr/bin/cmake -E make_directory /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Cleaning the build directory"
+	/usr/bin/cmake --build . --target clean
 
 clean_build: CMakeFiles/clean_build
 clean_build: CMakeFiles/clean_build.dir/build.make
