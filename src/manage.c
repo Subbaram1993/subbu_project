@@ -44,7 +44,7 @@ int main() {
     float total = 0;
     char month[10];
     FILE *fp;
-    fp = fopen("../Output_Files/cheeti.txt", "w+");
+    fp = fopen("cheeti.txt", "w+");
     printf("\nEnter the number of Months:\n");
     scanf("%d", &n);
     if (fp == NULL)

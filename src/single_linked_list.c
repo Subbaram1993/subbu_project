@@ -32,7 +32,7 @@ void create_list()
 	char ch = 'y';
 	do
 	{
-		p = (struct LinkedList*)malloc(sizeof(struct LinkedList*));
+		p = (struct LinkedList*)malloc(sizeof(struct LinkedList));
 		if(p == NULL)
 		{
 			printf("\nMemory Allocation failed....!\n");
@@ -50,7 +50,7 @@ void create_list()
 			q->list = p;
 		}
 		q =p;
-		scanf("%c", &ch);
+		scanf(" %c", &ch);
 	}while(ch != 'n');
 
 }
@@ -60,7 +60,7 @@ void create_list()
 //the message create the list first and the print.
 void print_list()
 {
-	struct LinkedList *r=head ,*s;
+	struct LinkedList *r=head;
 	if(head == NULL)
 	{
 		printf("\nLinked List is Empty....! No Elements in the List...! Please make A list by calling the func: \"create_list()\"\n");
@@ -68,10 +68,10 @@ void print_list()
 	}
 	else
 	{
-		while(r!=NULL && r->data > 0)
+		while(r!=NULL)
 		{
 			printf("%d", r->data);
-			if(r->list != NULL && r->list->data > 0)
+			if(r->list != NULL)
 			{
 				printf("->");
 			}
@@ -100,6 +100,16 @@ int menu()
 	return opt;
 }
 
+// Free allocated memory to avoid memory leaks
+void free_list() {
+    struct LinkedList *temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->list;
+        free(temp);
+    }
+}
+
 //Main function starts from here
 int main()
 {
@@ -119,6 +129,7 @@ int main()
 				break;
 			default:
 				printf("\n Nothing was selected ......Exiting.....!!!\n");
+				free_list();
 				exit(0);
 		}
 	}

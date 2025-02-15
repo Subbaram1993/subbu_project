@@ -66,6 +66,7 @@ int main()
 	scanf("%d", &target);
 	pos = binary_search(a, n, target);
 	(pos>0)?printf("\nThe element %d is present at %d position.\n",target,pos+1):printf("\nThe element %d is not found in the array.\n", target);
+	free(a);
 	return 0;
 }
 #endif
