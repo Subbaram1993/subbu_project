@@ -6,7 +6,8 @@ on:
       - "Trigger Jenkins Build and Update Build Numbers"  # Name of the triggering workflow
     types:
       - completed
-    conclusion: success  # Ensure it runs only if trigger-jenkins-build.yml is successful
+    conclusions:
+      - success  # Ensure it runs only if trigger-jenkins-build.yml is successful
 
 env:
   BUILD_TYPE: Release
@@ -23,6 +24,22 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # Install required dependencies only if not available
+      - name: Install jq and Valgrind if not available
+        run: |
+          for pkg in jq valgrind; do
+            if ! command -v $pkg &> /dev/null; then
+              echo "$pkg not found. Installing..."
+              sudo apt-get update && sudo apt-get install -y $pkg
+            else
+              echo "$pkg is already installed."
+            fi
+          done
+
+      # Import GPG key for signing commits
+      - name: Setup GPG Key
+        run: echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import
+
       # Read the config.json and set the jobName as an environment variable
       - name: Set Job Name from config.json
         id: set_job_name
@@ -33,7 +50,7 @@ jobs:
       # Clean build directory before pulling latest changes
       - name: Clean Build Directory
         run: |
-          echo "Cleaning up build directory to prevent merge conflicts..."
+          echo "Cleaning up build directory..."
           rm -rf build
 
       # Pull Latest Changes and Handle Conflicts
@@ -44,17 +61,19 @@ jobs:
           git config --global commit.gpgSign true
           git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
 
+          # Stash local changes if any
           if [[ -n $(git status --porcelain) ]]; then
             git stash
           fi
 
-          git pull origin main --rebase || {
-            echo "Merge conflict detected. Resolving automatically using 'theirs'."
-            git checkout --theirs .
-            git add .
-            git rebase --continue || git rebase --abort
+          # Attempt rebase, resolve conflicts automatically if detected
+          git pull --rebase origin main || {
+            echo "Merge conflict detected. Resolving using 'theirs' strategy."
+            git rebase --abort
+            git pull --strategy=recursive -X theirs origin main
           }
 
+          # Restore stashed changes if any
           if git stash list | grep -q "stash@{0}"; then
             git stash pop
           fi
@@ -64,16 +83,17 @@ jobs:
         id: get_jenkins_build_number
         run: |
           BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-            "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber")
+            "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber" | tr -d '\n')
 
-          if [[ -z "$BUILD_NUMBER" ]]; then
-            echo "Error: Failed to retrieve build number from Jenkins"
+          if [[ -z "$BUILD_NUMBER" || "$BUILD_NUMBER" == "null" ]]; then
+            echo "Error: Failed to retrieve valid build number from Jenkins"
             exit 1
           fi
 
           echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
+          echo "Jenkins Build Number: $BUILD_NUMBER"
 
-      # Determine Version
+      # Determine version number based on build number
       - name: Determine Version
         id: determine_version
         run: |
@@ -81,7 +101,6 @@ jobs:
           MINOR=$((BUILD_NUMBER / 10 % 6))
           MAJOR=$((BUILD_NUMBER / 60))
           VERSION="v${MAJOR}.${MINOR}.${PATCH}"
-
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "Determined Version: $VERSION"
 
@@ -91,7 +110,7 @@ jobs:
           echo "Creating a fresh build directory..."
           mkdir -p build
 
-          echo "Configuring project with cmake..."
+          echo "Configuring project with CMake..."
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DENABLE_VALGRIND=ON
 
           echo "Compiling the project..."
@@ -101,34 +120,45 @@ jobs:
           echo "Running tests..."
           make test || exit 1  # Ensure test failures halt execution
 
-      # Run CTest and Display Output
+      # Run CTest and display output
       - name: Run CTest
         run: |
           echo "Running ctest..."
           cd build
           ctest --output-on-failure || exit 1
 
+      # Run tests with Valgrind
       - name: Run Tests with Valgrind
         run: |
           echo "Running tests with Valgrind..."
           cd build
           valgrind --leak-check=full --show-leak-kinds=all ./test/run_tests
 
-      # Save Artifacts in Repository (only if needed for further steps)
-      - name: Save Changes to Repo (Without Artifacts)
+      # Save changes to the repository (excluding artifacts)
+      - name: Save Changes to Repo
         run: |
           git add .
-          git commit -S -m "Add updated version ${{ env.VERSION }}" || echo "No changes to commit"
+          git commit -S -m "Update version to ${{ env.VERSION }}" || echo "No changes to commit"
 
-      # Create and Push Tag
+      # Create and push tag
       - name: Create and Push Tag
         run: |
           TAG_NAME="${{ env.VERSION }}"
-          git push origin :refs/tags/${TAG_NAME} 2>/dev/null || true
-          git tag -a "$TAG_NAME" -m "$TAG_NAME"  # Use the derived version as the message
-          git push origin "$TAG_NAME"
 
-      # Push Changes
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists. Updating it."
+            git tag -f "$TAG_NAME"
+          else
+            git tag -a "$TAG_NAME" -m "$TAG_NAME"
+          fi
+
+          git push origin "$TAG_NAME" --force
+
+      # Push changes to the repository
       - name: Push Changes
         run: |
           git push origin main
+
+      # Final success message
+      - name: Success Message
+        run: echo "Build, test, and tagging process completed successfully!"
