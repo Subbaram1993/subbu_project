@@ -384,6 +384,10 @@
     {
       "build_number": 20,
       "status": "SUCCESS"
+    },
+    {
+      "build_number": 21,
+      "status": "FAILURE"
     }
   ]
 }
