@@ -134,38 +134,6 @@ jobs:
           cd build
           valgrind --leak-check=full --show-leak-kinds=all ./test/run_tests
 
-      # ✅ Download Test Results from Jenkins
-      - name: Download Test Results from Jenkins
-        run: |
-          # Set the Jenkins artifact URL
-          ARTIFACT_URL="${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/artifact"
-
-          echo "Downloading test_results.txt..."
-          curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-               -o test_results.txt "$ARTIFACT_URL/test_results.txt"
-
-          echo "Downloading test_results.xml..."
-          curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-               -o test_results.xml "$ARTIFACT_URL/test_results.xml"
-
-          # Verify if files were successfully downloaded
-          if [[ -f "test_results.txt" && -f "test_results.xml" ]]; then
-            echo "✅ Test results downloaded successfully."
-          else
-            echo "❌ Test result files not found!"
-            exit 1
-          fi
-
-      # ✅ Archive the downloaded test results
-      - name: Archive Test Results as GitHub Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Jenkins-Test-Results
-          path: |
-            test_results.txt
-            test_results.xml
-          retention-days: 7  # Store artifacts for 7 days
-
       # Save changes to the repository (excluding artifacts)
       - name: Save Changes to Repo
         run: |
