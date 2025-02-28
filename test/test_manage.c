@@ -46,20 +46,27 @@ int test_manage() {
         printf("Failed to open the output file.\n");
         return 0; // Fail the test if the file cannot be opened
     }
+
+    int stdout_fd = dup(fileno(stdout)); // Save original stdout
     freopen("test_output.txt", "w", stdout);  // Redirect stdout to a file
 
     // Open the input file for printing
     FILE *fp = fopen("../Output_Files/cheeti.txt", "r");
     if (fp == NULL) {
         printf("Failed to open the file for reading.\n");
+        fclose(output_file);
         return 0; // Fail the test if the file cannot be opened
     }
 
     // Call the function to test it
     print_list(fp);
+    fclose(fp); // Close the file pointer after the test
 
     // Restore stdout to the console
-    freopen("/dev/tty", "w", stdout);
+    fflush(stdout);
+    dup2(stdout_fd, fileno(stdout)); // Restore stdout
+    close(stdout_fd);
+    fclose(output_file); // Close the output file properly
 
     // Read the content of the output file
     FILE *result_file = fopen("test_output.txt", "r");
@@ -72,17 +79,11 @@ int test_manage() {
     char actual_output[1024];
     size_t n = fread(actual_output, sizeof(char), sizeof(actual_output) - 1, result_file);
     actual_output[n] = '\0';  // Null-terminate the string
-    fclose(result_file);
+    fclose(result_file); // Properly close the result file
 
     // Define the expected output
     const char *expected_output = "January\t: 1000\nFebruary\t: 1200\nTotal :2200.00";
 
     // Compare the actual and expected output
-    if (compare_output(expected_output, actual_output)) {
-        return 1; // Return 1 on success
-    } else {
-        return 0; // Return 0 on failure
-    }
-
-    fclose(fp); // Close the file pointer after the test
+    return compare_output(expected_output, actual_output) ? 1 : 0;
 }
