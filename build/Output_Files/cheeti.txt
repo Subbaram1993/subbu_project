@@ -1,3 +1,0 @@
-January	: 1000
-February	: 1200
-Total :2200.00
