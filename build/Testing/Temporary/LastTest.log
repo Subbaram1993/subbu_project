@@ -1,13 +1,23 @@
-Start testing: Feb 28 19:17 IST
+Start testing: Mar 01 07:43 IST
 ----------------------------------------------------------
 1/1 Testing: run_tests
 1/1 Test: run_tests
 Command: "/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test/run_tests"
 Directory: /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test
-"run_tests" start time: Feb 28 19:17 IST
+"run_tests" start time: Mar 01 07:43 IST
 Output:
 ----------------------------------------------------------
 Current working directory: /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test
+Expected Output:
+January	: 1000
+February	: 1200
+Total :2200.00
+
+Actual Output:
+January	: 1000
+February	: 1200
+Total :2200.00
+
 test_manage: PASSED
 test_bitwise_operations: PASSED
 test_find_maximum: PASSED
@@ -21,8 +31,8 @@ test_bubble_sort_and_binary_search: PASSED
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"run_tests" end time: Feb 28 19:17 IST
+"run_tests" end time: Mar 01 07:43 IST
 "run_tests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Feb 28 19:17 IST
+End testing: Mar 01 07:43 IST
