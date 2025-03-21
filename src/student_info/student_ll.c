@@ -1,4 +1,23 @@
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
+//		Program Name	:	Student Information Application		//
+//		Author		:	Subbaramaiah Chevuru			//
+//		Email		: 	ram.subaram@gmail.com			//
+//										//
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 
+
+//==============================================================================//
+//				REVISON LOG					//
+//==============================================================================//
+//	Date 		-	History	and Updates				//
+//==============================================================================//
+//	2025/03/21	-	Added the Initial Draft of the Student 		//
+//				Information Application using C. It implements	//
+//				the Create, Update, Search and Display the 	//
+//				Student information by searching with Name or 	//
+//				Roll number. 					//
+//										//
+//==============================================================================//
 
 //Header Files (Standard)
 #include<stdio.h>

@@ -1,0 +1,303 @@
+subbaramaiah_chevuru@SUBBARAMAIAH:~/subbu/subbu_project/src/student_info$ ./student_ll
+
+$====================================================$
+$        WELCOME TO STUDENT INFORMATION              $
+$====================================================$
+$  1. Create New Student Details.                    $
+$  2. Search Student Details.                        $
+$  3. Update Student details.                        $
+$  4. Display.                                       $
+$  5. Close the Application.                         $
+$====================================================$
+
+Enter the Choice (1-5) ?
+1
+
+Enter the Roll Number:
+1
+
+Enter the Name of the Student:
+Student-1
+
+Enter the Marks for 6 Subjects:
+45
+54
+65
+34
+76
+56
+
+Student Details added Successfully.
+
+Enter the Roll Number:
+2
+
+Enter the Name of the Student:
+Student-2
+
+Enter the Marks for 6 Subjects:
+65
+76
+87
+56
+45
+98
+
+Student Details added Successfully.
+
+Enter the Roll Number:
+3
+
+Enter the Name of the Student:
+Student-3
+
+Enter the Marks for 6 Subjects:
+65
+67
+87
+56
+87
+78
+
+Student Details added Successfully.
+
+Enter the Roll Number:
+0
+
+$====================================================$
+$        WELCOME TO STUDENT INFORMATION              $
+$====================================================$
+$  1. Create New Student Details.                    $
+$  2. Search Student Details.                        $
+$  3. Update Student details.                        $
+$  4. Display.                                       $
+$  5. Close the Application.                         $
+$====================================================$
+
+Enter the Choice (1-5) ?
+4
+
+=== Displaying All Student Records ===
+
++========================================+
+|        STUDENT DETAILS (Roll No: 1)    |
++========================================+
+| Name   : Student-1                     |
++----------------------------------------+
+| Subject |   Marks  |  Result           |
++----------------------------------------+
+|  1      |   45.00  |    PASS           |
+|  2      |   54.00  |    PASS           |
+|  3      |   65.00  |    PASS           |
+|  4      |   34.00  |    FAIL           |
+|  5      |   76.00  |    PASS           |
+|  6      |   56.00  |    PASS           |
++----------------------------------------+
+| Total : 330.00 | Grade: C              |
++========================================+
+
++========================================+
+|        STUDENT DETAILS (Roll No: 2)    |
++========================================+
+| Name   : Student-2                     |
++----------------------------------------+
+| Subject |   Marks  |  Result           |
++----------------------------------------+
+|  1      |   65.00  |    PASS           |
+|  2      |   76.00  |    PASS           |
+|  3      |   87.00  |    PASS           |
+|  4      |   56.00  |    PASS           |
+|  5      |   45.00  |    PASS           |
+|  6      |   98.00  |    PASS           |
++----------------------------------------+
+| Total : 427.00 | Grade: B              |
++========================================+
+
++========================================+
+|        STUDENT DETAILS (Roll No: 3)    |
++========================================+
+| Name   : Student-3                     |
++----------------------------------------+
+| Subject |   Marks  |  Result           |
++----------------------------------------+
+|  1      |   65.00  |    PASS           |
+|  2      |   67.00  |    PASS           |
+|  3      |   87.00  |    PASS           |
+|  4      |   56.00  |    PASS           |
+|  5      |   87.00  |    PASS           |
+|  6      |   78.00  |    PASS           |
++----------------------------------------+
+| Total : 440.00 | Grade: B              |
++========================================+
+
++==============================================================+
+| TOTAL STUDENTS: 3  |  PASS:  2 (66.67%)  |  FAIL: 1 (33.33%) |
+| AVERAGE SCORE:  66.50                                        |
++==============================================================+
+
+$====================================================$
+$        WELCOME TO STUDENT INFORMATION              $
+$====================================================$
+$  1. Create New Student Details.                    $
+$  2. Search Student Details.                        $
+$  3. Update Student details.                        $
+$  4. Display.                                       $
+$  5. Close the Application.                         $
+$====================================================$
+
+Enter the Choice (1-5) ?
+2
+
+Enter the option to search by RollNo or Name (1 or 2) ?
+2
+
+Enter Student Name to Search: Student-3
+
+Student Details Found:
+
++========================================+
+|        STUDENT DETAILS (Roll No: 3)    |
++========================================+
+| Name   : Student-3                     |
++----------------------------------------+
+| Subject |   Marks  |  Result           |
++----------------------------------------+
+|  1      |   65.00  |    PASS           |
+|  2      |   67.00  |    PASS           |
+|  3      |   87.00  |    PASS           |
+|  4      |   56.00  |    PASS           |
+|  5      |   87.00  |    PASS           |
+|  6      |   78.00  |    PASS           |
++----------------------------------------+
+| Total : 440.00 | Grade: B              |
++========================================+
+
+
+$====================================================$
+$        WELCOME TO STUDENT INFORMATION              $
+$====================================================$
+$  1. Create New Student Details.                    $
+$  2. Search Student Details.                        $
+$  3. Update Student details.                        $
+$  4. Display.                                       $
+$  5. Close the Application.                         $
+$====================================================$
+
+Enter the Choice (1-5) ?
+3
+
+What do you want update(1-Name, 2-Marks) in Student Records.
+2
+
+Enter the Student RollNo to update the marks:
+1
+
+Enter the Subject(0-5) and Marks to update:
+3
+48
+
+Marks for the Student with RollNo:1 successfully updated.
+
++========================================+
+|        STUDENT DETAILS (Roll No: 1)    |
++========================================+
+| Name   : Student-1                     |
++----------------------------------------+
+| Subject |   Marks  |  Result           |
++----------------------------------------+
+|  1      |   45.00  |    PASS           |
+|  2      |   54.00  |    PASS           |
+|  3      |   65.00  |    PASS           |
+|  4      |   48.00  |    PASS           |
+|  5      |   76.00  |    PASS           |
+|  6      |   56.00  |    PASS           |
++----------------------------------------+
+| Total : 344.00 | Grade: C              |
++========================================+
+
+$====================================================$
+$        WELCOME TO STUDENT INFORMATION              $
+$====================================================$
+$  1. Create New Student Details.                    $
+$  2. Search Student Details.                        $
+$  3. Update Student details.                        $
+$  4. Display.                                       $
+$  5. Close the Application.                         $
+$====================================================$
+
+Enter the Choice (1-5) ?
+4
+
+=== Displaying All Student Records ===
+
++========================================+
+|        STUDENT DETAILS (Roll No: 1)    |
++========================================+
+| Name   : Student-1                     |
++----------------------------------------+
+| Subject |   Marks  |  Result           |
++----------------------------------------+
+|  1      |   45.00  |    PASS           |
+|  2      |   54.00  |    PASS           |
+|  3      |   65.00  |    PASS           |
+|  4      |   48.00  |    PASS           |
+|  5      |   76.00  |    PASS           |
+|  6      |   56.00  |    PASS           |
++----------------------------------------+
+| Total : 344.00 | Grade: C              |
++========================================+
+
++========================================+
+|        STUDENT DETAILS (Roll No: 2)    |
++========================================+
+| Name   : Student-2                     |
++----------------------------------------+
+| Subject |   Marks  |  Result           |
++----------------------------------------+
+|  1      |   65.00  |    PASS           |
+|  2      |   76.00  |    PASS           |
+|  3      |   87.00  |    PASS           |
+|  4      |   56.00  |    PASS           |
+|  5      |   45.00  |    PASS           |
+|  6      |   98.00  |    PASS           |
++----------------------------------------+
+| Total : 427.00 | Grade: B              |
++========================================+
+
++========================================+
+|        STUDENT DETAILS (Roll No: 3)    |
++========================================+
+| Name   : Student-3                     |
++----------------------------------------+
+| Subject |   Marks  |  Result           |
++----------------------------------------+
+|  1      |   65.00  |    PASS           |
+|  2      |   67.00  |    PASS           |
+|  3      |   87.00  |    PASS           |
+|  4      |   56.00  |    PASS           |
+|  5      |   87.00  |    PASS           |
+|  6      |   78.00  |    PASS           |
++----------------------------------------+
+| Total : 440.00 | Grade: B              |
++========================================+
+
++==============================================================+
+| TOTAL STUDENTS: 3  |  PASS:  3 (100.00%)  |  FAIL: 0 (0.00%) |
+| AVERAGE SCORE:  67.28                                        |
++==============================================================+
+
+$====================================================$
+$        WELCOME TO STUDENT INFORMATION              $
+$====================================================$
+$  1. Create New Student Details.                    $
+$  2. Search Student Details.                        $
+$  3. Update Student details.                        $
+$  4. Display.                                       $
+$  5. Close the Application.                         $
+$====================================================$
+
+Enter the Choice (1-5) ?
+5
+
+Freeing the records before exit....!
+subbaramaiah_chevuru@SUBBARAMAIAH:~/subbu/subbu_project/src/student_info$
