@@ -1,10 +1,10 @@
-Start testing: Mar 21 21:32 IST
+Start testing: Mar 21 21:49 IST
 ----------------------------------------------------------
 1/1 Testing: run_tests
 1/1 Test: run_tests
 Command: "/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test/run_tests"
 Directory: /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test
-"run_tests" start time: Mar 21 21:32 IST
+"run_tests" start time: Mar 21 21:49 IST
 Output:
 ----------------------------------------------------------
 Current working directory: /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test
@@ -28,11 +28,11 @@ test_sum_of_unique_elements: PASSED
 
 test_bubble_sort_and_binary_search: PASSED
 <end of output>
-Test time =   0.02 sec
+Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"run_tests" end time: Mar 21 21:32 IST
+"run_tests" end time: Mar 21 21:49 IST
 "run_tests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Mar 21 21:32 IST
+End testing: Mar 21 21:49 IST
