@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 // ANSI color codes for formatted output
 #define RESET   "\033[0m"
@@ -26,7 +27,7 @@ void save_to_file(Student *s);
 Student* load_from_file(Student *s);
 Student* create_details(Student *s);
 char* grade(float percent, bool use_color);
-void display(Student *s, int search_mode);
+void display_student(Student *s, int search_mode);
 void rollno_search(Student *s);
 void name_search(Student *s);
 void search_student(Student *s);

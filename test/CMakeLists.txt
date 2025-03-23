@@ -7,6 +7,7 @@ add_library(subbu_project_logic STATIC
     ../src/sum_of_unique_array_elements.c
     ../src/manage.c
     ../src/bubble_sort_and_binary_search_array.c
+    ../src/student_info/student_ll.c
 )
 
 # Define the TESTING macro so main() isn't included in the logic files
@@ -25,6 +26,7 @@ add_executable(run_tests
     test_sum_of_unique_array_elements.c
     test_manage.c
     test_bubble_sort_and_binary_search.c
+    test_student_info.c
 )
 
 # Link the test executable with the logic library (which doesn't have main() due to TESTING)

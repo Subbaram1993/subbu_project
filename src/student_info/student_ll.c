@@ -16,6 +16,8 @@
 //				the Create, Update, Search and Display the 	//
 //				Student information by searching with Name or 	//
 //				Roll number. 					//
+//	2025/03/23	-	Updated the display() to display_student() for	//
+//				testing purpose.				//
 //										//
 //==============================================================================//
 
@@ -39,7 +41,7 @@ void save_to_file(Student *s);
 Student* load_from_file(Student *s);
 Student* create_details(Student *s);
 char* grade(float percent, bool use_color);
-void display(Student *s, int search_mode);
+void display_student(Student *s, int search_mode);
 void rollno_search(Student *s);
 void name_search(Student *s);
 void search_student(Student *s);
@@ -230,7 +232,7 @@ char* grade(float percent, bool use_color)
 // 1 -> Displays Only one Student Information or Details while Search 
 //      or Update.
 // 0 -> Displays the information or details for all Students.
-void display(Student *s, int search_mode) {
+void display_student(Student *s, int search_mode) {
     int i, totalStudents = 0, passCount = 0, failCount = 0;
     float total, percentage, grand_total = 0;
     Student *r = s;
@@ -312,7 +314,7 @@ void rollno_search(Student *s)
 				printf("\nStudent Details are Found as below:.....\n");
 			}
 			found=1;
-			display(r, 1);
+			display_student(r, 1);
 		}
 		r = r->next;
 	}
@@ -340,7 +342,7 @@ void name_search(Student *s) {
     while (temp != NULL) {
         if (strcmp(temp->name, search_name) == 0) {
             printf("\nStudent Details Found:\n");
-            display(temp, 1);
+            display_student(temp, 1);
             return;
         }
         temp = temp->next;
@@ -417,7 +419,7 @@ void update_marks(Student *um)
 			upm->marks[sub] = umarks;
 			save_to_file(um);
 			printf("\nMarks for the Student with RollNo:%d successfully updated.\n", upm->rollno);
-			display(upm, 1);
+			display_student(upm, 1);
 			return;
 		}
 		upm = upm->next;
@@ -478,6 +480,7 @@ void free_memory(Student *s)
  * This function helps to do the tasks for create, search, update and 
  * display the student details like RollNo, Name and Marks for 6 Subjects.
 */
+#ifndef TESTING
 int main()
 {
 	int choice;
@@ -493,7 +496,7 @@ int main()
 				break;
 			case 3: update_details(s);
 				break;
-			case 4: display(s,0);
+			case 4: display_student(s,0);
 				break;
 			case 5: free_memory(s);
 				exit(1);
@@ -503,3 +506,4 @@ int main()
 	}
 	return 0;
 }
+#endif
