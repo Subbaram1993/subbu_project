@@ -165,29 +165,35 @@ jobs:
             echo '{"last_successful_build_number": 0, "build_history": []}' > "$JSON_FILE"
           fi
 
-          # Fetch the last successful build number
+          # Fetch the last successful build number from Jenkins API
           FULL_URL="${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/api/json"
           LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" "$FULL_URL" | jq -r '.number')
 
           # Generate timestamp in UTC
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-          # Update the last successful build number in JSON
-          jq ".last_successful_build_number = $LAST_SUCCESSFUL_BUILD_NUMBER" "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
-          echo "Updated last successful build number to $LAST_SUCCESSFUL_BUILD_NUMBER"
+          # Update the JSON file with the last successful build number and the latest timestamp
+          jq --argjson lastBuild "$LAST_SUCCESSFUL_BUILD_NUMBER" \
+             --arg timestamp "$TIMESTAMP" \
+             '.last_successful_build_number = $lastBuild | .last_updated = $timestamp' \
+             "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
+
+          echo "Updated last successful build number ($LAST_SUCCESSFUL_BUILD_NUMBER) and timestamp ($TIMESTAMP) in $JSON_FILE"
 
           # Append the latest successful build number, status, and timestamp to build_history in JSON
           jq --argjson latestBuildNumber "${{ env.LATEST_BUILD_NUMBER }}" \
              --arg buildStatus "${{ env.BUILD_STATUS }}" \
              --arg timestamp "$TIMESTAMP" \
              '.build_history += [{"build_number": $latestBuildNumber, "status": $buildStatus, "timestamp": $timestamp}]' \
-            "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
+             "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
 
           echo "Build history updated in $JSON_FILE"
 
-          # Import GPG private key and configure Git
+          # Import GPG private key for signed commits
           mkdir -p ~/.gnupg
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+
+          # Configure Git user details for signing commits
           git config user.name "${{ github.actor }}"
           git config user.email "${{ secrets.GIT_EMAIL }}"
           git config --global commit.gpgSign true
@@ -197,14 +203,17 @@ jobs:
           if ! git diff --quiet; then
             echo "Changes detected, preparing to commit."
 
-            # Attempt to pull with rebase
+            # Fetch latest changes from remote repository
             git fetch origin
             git stash push -m "Stashing untracked files"
+
+            # Attempt to pull with rebase to avoid conflicts
             git pull --rebase origin main || {
               echo "Merge conflict occurred. Attempting to resolve automatically."
               git merge --abort
               git stash pop || true
-	       # Check if there's a merge conflict
+
+              # Check if there are still unresolved merge conflicts
               if git ls-files -u | grep -q .; then
                 echo "Merge conflicts detected. Please resolve them manually."
                 exit 1
@@ -213,7 +222,11 @@ jobs:
 
             git stash pop || true
             git add "$JSON_FILE"
+
+            # Commit the updated JSON file with the latest build info
             git commit -S -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
+
+            # Push changes to the repository using GitHub PAT Token
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
