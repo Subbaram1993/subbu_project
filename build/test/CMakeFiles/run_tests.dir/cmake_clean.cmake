@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/run_tests.dir/test_numbers_to_word_conversion.c.o.d"
   "CMakeFiles/run_tests.dir/test_selection_sort.c.o"
   "CMakeFiles/run_tests.dir/test_selection_sort.c.o.d"
+  "CMakeFiles/run_tests.dir/test_student_info.c.o"
+  "CMakeFiles/run_tests.dir/test_student_info.c.o.d"
   "CMakeFiles/run_tests.dir/test_sum_of_unique_array_elements.c.o"
   "CMakeFiles/run_tests.dir/test_sum_of_unique_array_elements.c.o.d"
   "run_tests"

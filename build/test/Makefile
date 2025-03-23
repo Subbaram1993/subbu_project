@@ -343,6 +343,30 @@ __/src/selection_sort.c.s:
 	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/selection_sort.c.s
 .PHONY : __/src/selection_sort.c.s
 
+__/src/student_info/student_ll.o: __/src/student_info/student_ll.c.o
+.PHONY : __/src/student_info/student_ll.o
+
+# target to build an object file
+__/src/student_info/student_ll.c.o:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/student_info/student_ll.c.o
+.PHONY : __/src/student_info/student_ll.c.o
+
+__/src/student_info/student_ll.i: __/src/student_info/student_ll.c.i
+.PHONY : __/src/student_info/student_ll.i
+
+# target to preprocess a source file
+__/src/student_info/student_ll.c.i:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/student_info/student_ll.c.i
+.PHONY : __/src/student_info/student_ll.c.i
+
+__/src/student_info/student_ll.s: __/src/student_info/student_ll.c.s
+.PHONY : __/src/student_info/student_ll.s
+
+# target to generate assembly for a file
+__/src/student_info/student_ll.c.s:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/__/src/student_info/student_ll.c.s
+.PHONY : __/src/student_info/student_ll.c.s
+
 __/src/sum_of_unique_array_elements.o: __/src/sum_of_unique_array_elements.c.o
 .PHONY : __/src/sum_of_unique_array_elements.o
 
@@ -535,6 +559,30 @@ test_selection_sort.c.s:
 	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_selection_sort.c.s
 .PHONY : test_selection_sort.c.s
 
+test_student_info.o: test_student_info.c.o
+.PHONY : test_student_info.o
+
+# target to build an object file
+test_student_info.c.o:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_student_info.c.o
+.PHONY : test_student_info.c.o
+
+test_student_info.i: test_student_info.c.i
+.PHONY : test_student_info.i
+
+# target to preprocess a source file
+test_student_info.c.i:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_student_info.c.i
+.PHONY : test_student_info.c.i
+
+test_student_info.s: test_student_info.c.s
+.PHONY : test_student_info.s
+
+# target to generate assembly for a file
+test_student_info.c.s:
+	cd /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build && $(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/test_student_info.c.s
+.PHONY : test_student_info.c.s
+
 test_sum_of_unique_array_elements.o: test_sum_of_unique_array_elements.c.o
 .PHONY : test_sum_of_unique_array_elements.o
 
@@ -592,6 +640,9 @@ help:
 	@echo "... __/src/selection_sort.o"
 	@echo "... __/src/selection_sort.i"
 	@echo "... __/src/selection_sort.s"
+	@echo "... __/src/student_info/student_ll.o"
+	@echo "... __/src/student_info/student_ll.i"
+	@echo "... __/src/student_info/student_ll.s"
 	@echo "... __/src/sum_of_unique_array_elements.o"
 	@echo "... __/src/sum_of_unique_array_elements.i"
 	@echo "... __/src/sum_of_unique_array_elements.s"
@@ -616,6 +667,9 @@ help:
 	@echo "... test_selection_sort.o"
 	@echo "... test_selection_sort.i"
 	@echo "... test_selection_sort.s"
+	@echo "... test_student_info.o"
+	@echo "... test_student_info.i"
+	@echo "... test_student_info.s"
 	@echo "... test_sum_of_unique_array_elements.o"
 	@echo "... test_sum_of_unique_array_elements.i"
 	@echo "... test_sum_of_unique_array_elements.s"

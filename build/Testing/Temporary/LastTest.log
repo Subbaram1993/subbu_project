@@ -1,10 +1,10 @@
-Start testing: Mar 21 21:49 IST
+Start testing: Mar 23 07:59 IST
 ----------------------------------------------------------
 1/1 Testing: run_tests
 1/1 Test: run_tests
 Command: "/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test/run_tests"
 Directory: /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test
-"run_tests" start time: Mar 21 21:49 IST
+"run_tests" start time: Mar 23 07:59 IST
 Output:
 ----------------------------------------------------------
 Current working directory: /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test
@@ -27,12 +27,74 @@ test_sum_of_unique_elements: PASSED
 
 
 test_bubble_sort_and_binary_search: PASSED
+
+Freeing the records before exit....!
+test_file_operations: PASSED
+test_search_operations: PASSED
+test_update_operations: PASSED
+
+=== Displaying All Student Records ===
+
++========================================+
+|        STUDENT DETAILS (Roll No: [34m104[0m)    |
++========================================+
+| Name   : [34mDavid                         [0m|
++----------------------------------------+
+| Subject |   Marks  |  Result  	 |
++----------------------------------------+
+|  1      |   88.00  |    [32mPASS[0m    	 |
+|  2      |   88.00  |    [32mPASS[0m    	 |
+|  3      |   88.00  |    [32mPASS[0m    	 |
+|  4      |   88.00  |    [32mPASS[0m    	 |
+|  5      |   88.00  |    [32mPASS[0m    	 |
+|  6      |   88.00  |    [32mPASS[0m    	 |
++----------------------------------------+
+| Total : 528.00 | Grade: [32mA+[0m 		 |
++========================================+
+
++==============================================================+
+|[34m TOTAL STUDENTS:[0m 1  | [32m PASS: [0m 1 (100.00%)  | [31m FAIL:[0m 0 (0.00%) |
+|[34m AVERAGE SCORE:[0m  88.00 				       |
++==============================================================+
+test_display_operations: PASSED
+test_student_operations: PASSED
+
+Freeing the records before exit....!
+test_file_operations: PASSED
+test_search_operations: PASSED
+test_update_operations: PASSED
+
+=== Displaying All Student Records ===
+
++========================================+
+|        STUDENT DETAILS (Roll No: [34m104[0m)    |
++========================================+
+| Name   : [34mDavid                         [0m|
++----------------------------------------+
+| Subject |   Marks  |  Result  	 |
++----------------------------------------+
+|  1      |   88.00  |    [32mPASS[0m    	 |
+|  2      |   88.00  |    [32mPASS[0m    	 |
+|  3      |   88.00  |    [32mPASS[0m    	 |
+|  4      |   88.00  |    [32mPASS[0m    	 |
+|  5      |   88.00  |    [32mPASS[0m    	 |
+|  6      |   88.00  |    [32mPASS[0m    	 |
++----------------------------------------+
+| Total : 528.00 | Grade: [32mA+[0m 		 |
++========================================+
+
++==============================================================+
+|[34m TOTAL STUDENTS:[0m 1  | [32m PASS: [0m 1 (100.00%)  | [31m FAIL:[0m 0 (0.00%) |
+|[34m AVERAGE SCORE:[0m  88.00 				       |
++==============================================================+
+test_display_operations: PASSED
+test_student_operations: PASSED
 <end of output>
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"run_tests" end time: Mar 21 21:49 IST
+"run_tests" end time: Mar 23 07:59 IST
 "run_tests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Mar 21 21:49 IST
+End testing: Mar 23 07:59 IST

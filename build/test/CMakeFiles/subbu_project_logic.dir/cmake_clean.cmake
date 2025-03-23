@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/subbu_project_logic.dir/__/src/numbers_to_word_conversion.c.o.d"
   "CMakeFiles/subbu_project_logic.dir/__/src/selection_sort.c.o"
   "CMakeFiles/subbu_project_logic.dir/__/src/selection_sort.c.o.d"
+  "CMakeFiles/subbu_project_logic.dir/__/src/student_info/student_ll.c.o"
+  "CMakeFiles/subbu_project_logic.dir/__/src/student_info/student_ll.c.o.d"
   "CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.o"
   "CMakeFiles/subbu_project_logic.dir/__/src/sum_of_unique_array_elements.c.o.d"
   "libsubbu_project_logic.a"
