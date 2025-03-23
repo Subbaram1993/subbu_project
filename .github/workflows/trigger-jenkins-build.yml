@@ -169,14 +169,18 @@ jobs:
           FULL_URL="${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/api/json"
           LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" "$FULL_URL" | jq -r '.number')
 
+          # Generate timestamp in UTC
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
           # Update the last successful build number in JSON
           jq ".last_successful_build_number = $LAST_SUCCESSFUL_BUILD_NUMBER" "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
           echo "Updated last successful build number to $LAST_SUCCESSFUL_BUILD_NUMBER"
 
-          # Append the latest successful build number and status to build_history in JSON
+          # Append the latest successful build number, status, and timestamp to build_history in JSON
           jq --argjson latestBuildNumber "${{ env.LATEST_BUILD_NUMBER }}" \
              --arg buildStatus "${{ env.BUILD_STATUS }}" \
-             '.build_history += [{"build_number": $latestBuildNumber, "status": $buildStatus}]' \
+             --arg timestamp "$TIMESTAMP" \
+             '.build_history += [{"build_number": $latestBuildNumber, "status": $buildStatus, "timestamp": $timestamp}]' \
             "$JSON_FILE" > tmp.$$.json && mv tmp.$$.json "$JSON_FILE"
 
           echo "Build history updated in $JSON_FILE"
@@ -200,7 +204,7 @@ jobs:
               echo "Merge conflict occurred. Attempting to resolve automatically."
               git merge --abort
               git stash pop || true
-              # Check if there's a merge conflict
+	       # Check if there's a merge conflict
               if git ls-files -u | grep -q .; then
                 echo "Merge conflicts detected. Please resolve them manually."
                 exit 1
@@ -209,7 +213,7 @@ jobs:
 
             git stash pop || true
             git add "$JSON_FILE"
-            git commit -S -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} [skip ci]"
+            git commit -S -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
