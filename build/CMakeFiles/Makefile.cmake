@@ -128,8 +128,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/pattern_gen.dir/DependInfo.cmake"
   "CMakeFiles/print_char_indexing_string.dir/DependInfo.cmake"
   "CMakeFiles/selection_sort.dir/DependInfo.cmake"
-  "CMakeFiles/single_linked_list.dir/DependInfo.cmake"
-  "CMakeFiles/single_linked_list_v2.dir/DependInfo.cmake"
   "CMakeFiles/sum_of_unique_array_elements.dir/DependInfo.cmake"
   "CMakeFiles/sum_the_ip_addr_octets.dir/DependInfo.cmake"
   "CMakeFiles/clean_build.dir/DependInfo.cmake"

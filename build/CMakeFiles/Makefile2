@@ -71,8 +71,6 @@ all: CMakeFiles/numbers_to_word_conversion.dir/all
 all: CMakeFiles/pattern_gen.dir/all
 all: CMakeFiles/print_char_indexing_string.dir/all
 all: CMakeFiles/selection_sort.dir/all
-all: CMakeFiles/single_linked_list.dir/all
-all: CMakeFiles/single_linked_list_v2.dir/all
 all: CMakeFiles/sum_of_unique_array_elements.dir/all
 all: CMakeFiles/sum_the_ip_addr_octets.dir/all
 all: test/all
@@ -91,8 +89,6 @@ clean: CMakeFiles/numbers_to_word_conversion.dir/clean
 clean: CMakeFiles/pattern_gen.dir/clean
 clean: CMakeFiles/print_char_indexing_string.dir/clean
 clean: CMakeFiles/selection_sort.dir/clean
-clean: CMakeFiles/single_linked_list.dir/clean
-clean: CMakeFiles/single_linked_list_v2.dir/clean
 clean: CMakeFiles/sum_of_unique_array_elements.dir/clean
 clean: CMakeFiles/sum_the_ip_addr_octets.dir/clean
 clean: CMakeFiles/clean_build.dir/clean
@@ -325,65 +321,13 @@ CMakeFiles/selection_sort.dir/clean:
 .PHONY : CMakeFiles/selection_sort.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/single_linked_list.dir
-
-# All Build rule for target.
-CMakeFiles/single_linked_list.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=28,29 "Built target single_linked_list"
-.PHONY : CMakeFiles/single_linked_list.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/single_linked_list.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/single_linked_list.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
-.PHONY : CMakeFiles/single_linked_list.dir/rule
-
-# Convenience name for target.
-single_linked_list: CMakeFiles/single_linked_list.dir/rule
-.PHONY : single_linked_list
-
-# clean rule for target.
-CMakeFiles/single_linked_list.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/clean
-.PHONY : CMakeFiles/single_linked_list.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/single_linked_list_v2.dir
-
-# All Build rule for target.
-CMakeFiles/single_linked_list_v2.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=30,31 "Built target single_linked_list_v2"
-.PHONY : CMakeFiles/single_linked_list_v2.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/single_linked_list_v2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/single_linked_list_v2.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
-.PHONY : CMakeFiles/single_linked_list_v2.dir/rule
-
-# Convenience name for target.
-single_linked_list_v2: CMakeFiles/single_linked_list_v2.dir/rule
-.PHONY : single_linked_list_v2
-
-# clean rule for target.
-CMakeFiles/single_linked_list_v2.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/clean
-.PHONY : CMakeFiles/single_linked_list_v2.dir/clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/sum_of_unique_array_elements.dir
 
 # All Build rule for target.
 CMakeFiles/sum_of_unique_array_elements.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=41,42 "Built target sum_of_unique_array_elements"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=37,38 "Built target sum_of_unique_array_elements"
 .PHONY : CMakeFiles/sum_of_unique_array_elements.dir/all
 
 # Build rule for subdir invocation for target.
@@ -409,7 +353,7 @@ CMakeFiles/sum_of_unique_array_elements.dir/clean:
 CMakeFiles/sum_the_ip_addr_octets.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=43,44 "Built target sum_the_ip_addr_octets"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=39,40 "Built target sum_the_ip_addr_octets"
 .PHONY : CMakeFiles/sum_the_ip_addr_octets.dir/all
 
 # Build rule for subdir invocation for target.
@@ -461,7 +405,7 @@ CMakeFiles/clean_build.dir/clean:
 test/CMakeFiles/subbu_project_logic.dir/all:
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/depend
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=32,33,34,35,36,37,38,39,40 "Built target subbu_project_logic"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=28,29,30,31,32,33,34,35,36 "Built target subbu_project_logic"
 .PHONY : test/CMakeFiles/subbu_project_logic.dir/all
 
 # Build rule for subdir invocation for target.

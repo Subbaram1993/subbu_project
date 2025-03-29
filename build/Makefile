@@ -276,32 +276,6 @@ selection_sort/fast:
 .PHONY : selection_sort/fast
 
 #=============================================================================
-# Target rules for targets named single_linked_list
-
-# Build rule for target.
-single_linked_list: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 single_linked_list
-.PHONY : single_linked_list
-
-# fast build rule for target.
-single_linked_list/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/build
-.PHONY : single_linked_list/fast
-
-#=============================================================================
-# Target rules for targets named single_linked_list_v2
-
-# Build rule for target.
-single_linked_list_v2: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 single_linked_list_v2
-.PHONY : single_linked_list_v2
-
-# fast build rule for target.
-single_linked_list_v2/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/build
-.PHONY : single_linked_list_v2/fast
-
-#=============================================================================
 # Target rules for targets named sum_of_unique_array_elements
 
 # Build rule for target.
@@ -558,54 +532,6 @@ src/selection_sort.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/selection_sort.dir/build.make CMakeFiles/selection_sort.dir/src/selection_sort.c.s
 .PHONY : src/selection_sort.c.s
 
-src/single_linked_list.o: src/single_linked_list.c.o
-.PHONY : src/single_linked_list.o
-
-# target to build an object file
-src/single_linked_list.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/src/single_linked_list.c.o
-.PHONY : src/single_linked_list.c.o
-
-src/single_linked_list.i: src/single_linked_list.c.i
-.PHONY : src/single_linked_list.i
-
-# target to preprocess a source file
-src/single_linked_list.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/src/single_linked_list.c.i
-.PHONY : src/single_linked_list.c.i
-
-src/single_linked_list.s: src/single_linked_list.c.s
-.PHONY : src/single_linked_list.s
-
-# target to generate assembly for a file
-src/single_linked_list.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/src/single_linked_list.c.s
-.PHONY : src/single_linked_list.c.s
-
-src/single_linked_list_v2.o: src/single_linked_list_v2.c.o
-.PHONY : src/single_linked_list_v2.o
-
-# target to build an object file
-src/single_linked_list_v2.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/src/single_linked_list_v2.c.o
-.PHONY : src/single_linked_list_v2.c.o
-
-src/single_linked_list_v2.i: src/single_linked_list_v2.c.i
-.PHONY : src/single_linked_list_v2.i
-
-# target to preprocess a source file
-src/single_linked_list_v2.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/src/single_linked_list_v2.c.i
-.PHONY : src/single_linked_list_v2.c.i
-
-src/single_linked_list_v2.s: src/single_linked_list_v2.c.s
-.PHONY : src/single_linked_list_v2.s
-
-# target to generate assembly for a file
-src/single_linked_list_v2.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list_v2.dir/build.make CMakeFiles/single_linked_list_v2.dir/src/single_linked_list_v2.c.s
-.PHONY : src/single_linked_list_v2.c.s
-
 src/sum_of_unique_array_elements.o: src/sum_of_unique_array_elements.c.o
 .PHONY : src/sum_of_unique_array_elements.o
 
@@ -677,8 +603,6 @@ help:
 	@echo "... print_char_indexing_string"
 	@echo "... run_tests"
 	@echo "... selection_sort"
-	@echo "... single_linked_list"
-	@echo "... single_linked_list_v2"
 	@echo "... subbu_project_logic"
 	@echo "... sum_of_unique_array_elements"
 	@echo "... sum_the_ip_addr_octets"
@@ -706,12 +630,6 @@ help:
 	@echo "... src/selection_sort.o"
 	@echo "... src/selection_sort.i"
 	@echo "... src/selection_sort.s"
-	@echo "... src/single_linked_list.o"
-	@echo "... src/single_linked_list.i"
-	@echo "... src/single_linked_list.s"
-	@echo "... src/single_linked_list_v2.o"
-	@echo "... src/single_linked_list_v2.i"
-	@echo "... src/single_linked_list_v2.s"
 	@echo "... src/sum_of_unique_array_elements.o"
 	@echo "... src/sum_of_unique_array_elements.i"
 	@echo "... src/sum_of_unique_array_elements.s"
