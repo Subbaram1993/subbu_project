@@ -56,11 +56,6 @@ int main() {
     printf("test_student_operations: %s\n", test_result ? "PASSED" : "FAILED");
     if (!test_result) overall_result = 0;
 
-    // Run student information tests
-    test_result = test_student_operations();
-    printf("test_student_operations: %s\n", test_result ? "PASSED" : "FAILED");
-    if (!test_result) overall_result = 0;
-    
     // Return 0 for success, 1 for failure
     return overall_result ? 0 : 1;
 }
