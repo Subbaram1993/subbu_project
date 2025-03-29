@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/binary_linked_list.dir/src/binary_linked_list.c.o -o binary_linked_list  -lm 

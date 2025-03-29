@@ -172,6 +172,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named binary_linked_list
+
+# Build rule for target.
+binary_linked_list: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 binary_linked_list
+.PHONY : binary_linked_list
+
+# fast build rule for target.
+binary_linked_list/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/binary_linked_list.dir/build.make CMakeFiles/binary_linked_list.dir/build
+.PHONY : binary_linked_list/fast
+
+#=============================================================================
 # Target rules for targets named bitwise_add_subtraction_operators
 
 # Build rule for target.
@@ -352,6 +365,30 @@ run_tests: cmake_check_build_system
 run_tests/fast:
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/run_tests.dir/build.make test/CMakeFiles/run_tests.dir/build
 .PHONY : run_tests/fast
+
+src/binary_linked_list.o: src/binary_linked_list.c.o
+.PHONY : src/binary_linked_list.o
+
+# target to build an object file
+src/binary_linked_list.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/binary_linked_list.dir/build.make CMakeFiles/binary_linked_list.dir/src/binary_linked_list.c.o
+.PHONY : src/binary_linked_list.c.o
+
+src/binary_linked_list.i: src/binary_linked_list.c.i
+.PHONY : src/binary_linked_list.i
+
+# target to preprocess a source file
+src/binary_linked_list.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/binary_linked_list.dir/build.make CMakeFiles/binary_linked_list.dir/src/binary_linked_list.c.i
+.PHONY : src/binary_linked_list.c.i
+
+src/binary_linked_list.s: src/binary_linked_list.c.s
+.PHONY : src/binary_linked_list.s
+
+# target to generate assembly for a file
+src/binary_linked_list.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/binary_linked_list.dir/build.make CMakeFiles/binary_linked_list.dir/src/binary_linked_list.c.s
+.PHONY : src/binary_linked_list.c.s
 
 src/bitwise_add_subtraction_operators.o: src/bitwise_add_subtraction_operators.c.o
 .PHONY : src/bitwise_add_subtraction_operators.o
@@ -631,6 +668,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... clean_build"
+	@echo "... binary_linked_list"
 	@echo "... bitwise_add_subtraction_operators"
 	@echo "... bubble_sort_and_binary_search_array"
 	@echo "... manage"
@@ -644,6 +682,9 @@ help:
 	@echo "... subbu_project_logic"
 	@echo "... sum_of_unique_array_elements"
 	@echo "... sum_the_ip_addr_octets"
+	@echo "... src/binary_linked_list.o"
+	@echo "... src/binary_linked_list.i"
+	@echo "... src/binary_linked_list.s"
 	@echo "... src/bitwise_add_subtraction_operators.o"
 	@echo "... src/bitwise_add_subtraction_operators.i"
 	@echo "... src/bitwise_add_subtraction_operators.s"
