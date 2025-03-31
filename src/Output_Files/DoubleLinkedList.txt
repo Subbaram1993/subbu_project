@@ -1,0 +1,221 @@
+subbaramaiah_chevuru@SUBBARAMAIAH:~/personal$ ./double_linked_list
+
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+1
+
+Enter the data into Doubly Linked List:
+2
+7
+4
+1
+9
+6
+8
+5
+3
+0
+-1
+
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+2
+
+Forward Traversal:
+2<===>7<===>4<===>1<===>9<===>6<===>8<===>5<===>3<===>0<===>
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+3
+
+Enter the data to be inserted.
+10
+
+Enter the position to be inserted.
+4
+
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+2
+
+Forward Traversal:
+2<===>7<===>4<===>10<===>1<===>9<===>6<===>8<===>5<===>3<===>0<===>
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+4
+
+Enter the choice :
+1. Search
+2. Sort
+1
+
+Enter the data to be search:
+6
+
+The Data 6 is  at 7 position in List.
+
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+4
+
+Enter the choice :
+1. Search
+2. Sort
+2
+
+
+After Sorting the Data in the List....
+
+Forward Traversal:
+0<===>1<===>2<===>3<===>4<===>5<===>6<===>7<===>8<===>9<===>10<===>
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+2
+
+Forward Traversal:
+0<===>1<===>2<===>3<===>4<===>5<===>6<===>7<===>8<===>9<===>10<===>
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+6
+
+Enter the position to be deleted in DLL.
+10
+
+Forward Traversal:
+0<===>1<===>2<===>3<===>4<===>5<===>6<===>7<===>8<===>10<===>
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+7
+
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+2
+
+Forward Traversal:
+10<===>8<===>7<===>6<===>5<===>4<===>3<===>2<===>1<===>0<===>
+<=================================>
+< Double Linked List Operations..=>
+<=================================>
+<= 1. Create.                    =>
+<= 2. Display.                   =>
+<= 3. Insert.                    =>
+<= 4. Search and Sort.           =>
+<= 5. Middle.                    =>
+<= 6. Delete.                    =>
+<= 7. Reverse.                   =>
+<= 0. Exit.                      =>
+<=================================>
+Select the Operation (1-7)..!!!
+0
+
+Freeing the Linked List....
+subbaramaiah_chevuru@SUBBARAMAIAH:~/personal$

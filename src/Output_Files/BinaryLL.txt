@@ -1,0 +1,16 @@
+subbaramaiah_chevuru@SUBBARAMAIAH:~/personal$ ./binary_ll
+
+Enter the Decimal Number:
+58
+
+The Binary Linked List is :
+1---> 1---> 1---> 0---> 1---> 0--->
+
+Pushing the bits into Stack...
+
+Poping the bits from Stack and calculate decimal...
+
+After converting into decimal, value :58:
+
+Freeing the memory......
+subbaramaiah_chevuru@SUBBARAMAIAH:~/personal$
