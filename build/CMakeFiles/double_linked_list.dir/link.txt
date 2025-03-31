@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/double_linked_list.dir/src/double_linked_list.c.o -o double_linked_list  -lm 

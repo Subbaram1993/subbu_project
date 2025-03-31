@@ -211,6 +211,19 @@ bubble_sort_and_binary_search_array/fast:
 .PHONY : bubble_sort_and_binary_search_array/fast
 
 #=============================================================================
+# Target rules for targets named double_linked_list
+
+# Build rule for target.
+double_linked_list: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 double_linked_list
+.PHONY : double_linked_list
+
+# fast build rule for target.
+double_linked_list/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/double_linked_list.dir/build.make CMakeFiles/double_linked_list.dir/build
+.PHONY : double_linked_list/fast
+
+#=============================================================================
 # Target rules for targets named manage
 
 # Build rule for target.
@@ -437,6 +450,30 @@ src/bubble_sort_and_binary_search_array.s: src/bubble_sort_and_binary_search_arr
 src/bubble_sort_and_binary_search_array.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/bubble_sort_and_binary_search_array.dir/build.make CMakeFiles/bubble_sort_and_binary_search_array.dir/src/bubble_sort_and_binary_search_array.c.s
 .PHONY : src/bubble_sort_and_binary_search_array.c.s
+
+src/double_linked_list.o: src/double_linked_list.c.o
+.PHONY : src/double_linked_list.o
+
+# target to build an object file
+src/double_linked_list.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/double_linked_list.dir/build.make CMakeFiles/double_linked_list.dir/src/double_linked_list.c.o
+.PHONY : src/double_linked_list.c.o
+
+src/double_linked_list.i: src/double_linked_list.c.i
+.PHONY : src/double_linked_list.i
+
+# target to preprocess a source file
+src/double_linked_list.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/double_linked_list.dir/build.make CMakeFiles/double_linked_list.dir/src/double_linked_list.c.i
+.PHONY : src/double_linked_list.c.i
+
+src/double_linked_list.s: src/double_linked_list.c.s
+.PHONY : src/double_linked_list.s
+
+# target to generate assembly for a file
+src/double_linked_list.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/double_linked_list.dir/build.make CMakeFiles/double_linked_list.dir/src/double_linked_list.c.s
+.PHONY : src/double_linked_list.c.s
 
 src/manage.o: src/manage.c.o
 .PHONY : src/manage.o
@@ -671,6 +708,7 @@ help:
 	@echo "... binary_linked_list"
 	@echo "... bitwise_add_subtraction_operators"
 	@echo "... bubble_sort_and_binary_search_array"
+	@echo "... double_linked_list"
 	@echo "... manage"
 	@echo "... maximum_element_in_Array"
 	@echo "... numbers_to_word_conversion"
@@ -691,6 +729,9 @@ help:
 	@echo "... src/bubble_sort_and_binary_search_array.o"
 	@echo "... src/bubble_sort_and_binary_search_array.i"
 	@echo "... src/bubble_sort_and_binary_search_array.s"
+	@echo "... src/double_linked_list.o"
+	@echo "... src/double_linked_list.i"
+	@echo "... src/double_linked_list.s"
 	@echo "... src/manage.o"
 	@echo "... src/manage.i"
 	@echo "... src/manage.s"
