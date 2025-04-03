@@ -140,16 +140,16 @@ jobs:
           git add .
           git commit -S -m "Update version to ${{ env.VERSION }}" || echo "No changes to commit"
 
-      # Create and push tag
+      # Create and Push Tag
       - name: Create and Push Tag
         run: |
           TAG_NAME="${{ env.VERSION }}"
 
           if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
             echo "Tag $TAG_NAME already exists. Updating it."
-            git tag -f "$TAG_NAME"
+            git tag -fa "$TAG_NAME" -m "Updating tag to $TAG_NAME"
           else
-            git tag -a "$TAG_NAME" -m "$TAG_NAME"
+            git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
           fi
 
           git push origin "$TAG_NAME" --force
