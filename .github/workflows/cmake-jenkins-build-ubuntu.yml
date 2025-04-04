@@ -44,7 +44,11 @@ jobs:
       - name: Set Job Name from config.json
         id: set_job_name
         run: |
-          JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
+          JOB_NAME=$(jq -r '.buildConfig.jobName // empty' config.json)
+          if [[ -z "$JOB_NAME" ]]; then
+            echo "Error: Job name not found in config.json"
+            exit 1
+          fi
           echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
 
       # Clean build directory before pulling latest changes
@@ -61,21 +65,20 @@ jobs:
           git config --global commit.gpgSign true
           git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
 
-          # Stash local changes if any
+          STASH_NEEDED=false
           if [[ -n $(git status --porcelain) ]]; then
-            git stash
+            git stash push -m "Auto-stash before pulling changes"
+            STASH_NEEDED=true
           fi
 
-          # Attempt rebase, resolve conflicts automatically if detected
           git pull --rebase origin main || {
             echo "Merge conflict detected. Resolving using 'theirs' strategy."
             git rebase --abort
             git pull --strategy=recursive -X theirs origin main
           }
 
-          # Restore stashed changes if any
-          if git stash list | grep -q "stash@{0}"; then
-            git stash pop
+          if [[ "$STASH_NEEDED" == "true" ]]; then
+            git stash pop || echo "Warning: Stash pop resulted in conflicts."
           fi
 
       # Fetch Latest Jenkins Build Number
@@ -104,25 +107,26 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "Determined Version: $VERSION"
 
+      # Ensure required directories exist
+      - name: Ensure Required Directories Exist
+        run: |
+          mkdir -p include tools obj build
+
       # Generate header files using Makefile rule
       - name: Generate Header Files
-        run: |
-          make generate_headers
+        run: make generate_headers
 
       # Build the project
       - name: Build the Project
         run: |
-          echo "Creating a fresh build directory..."
-          mkdir -p build
-
           echo "Configuring project with CMake..."
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DENABLE_VALGRIND=ON
 
           echo "Compiling the project..."
-          cd build
-          make
+          cmake --build build
 
           echo "Running tests..."
+          cd build
           make test || exit 1  # Ensure test failures halt execution
 
       # Run CTest and display output
@@ -152,12 +156,12 @@ jobs:
 
           if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
             echo "Tag $TAG_NAME already exists. Updating it."
-            git tag -fa "$TAG_NAME" -m "Updating tag to $TAG_NAME"
-          else
-            git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+            git tag -d "$TAG_NAME"
+            git push --delete origin "$TAG_NAME"
           fi
 
-          git push origin "$TAG_NAME" --force
+          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+          git push origin "$TAG_NAME"
 
       # Push changes to the repository
       - name: Push Changes

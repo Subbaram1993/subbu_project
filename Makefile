@@ -6,6 +6,7 @@ CFLAGS = -Wall -g
 SRC_DIR = src
 OBJ_DIR = obj
 INCLUDE_DIR = include
+TOOLS_DIR = tools
 
 # Find all C source files in the SRC_DIR
 SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
@@ -27,16 +28,23 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 # Header Generation Tool
-generate_headers: generate_headers.c | $(INCLUDE_DIR)
+generate_headers: $(TOOLS_DIR)/generate_headers | $(INCLUDE_DIR)
 	@echo "Generating header files..."
-	$(CXX) $(CFLAGS) generate_headers.c -o generate_headers
-	@./generate_headers
+	@./tools/generate_headers
 
-# Ensure INCLUDE_DIR exists
+# Compile header generator tool
+$(TOOLS_DIR)/generate_headers: $(TOOLS_DIR)/generate_headers.c | $(TOOLS_DIR)
+	@echo "Compiling generate_headers tool..."
+	$(CXX) $(CFLAGS) $< -o $@
+
+# Ensure INCLUDE_DIR and TOOLS_DIR exist
 $(INCLUDE_DIR):
 	@mkdir -p $(INCLUDE_DIR)
 
+$(TOOLS_DIR):
+	@mkdir -p $(TOOLS_DIR)
+
 # Clean up generated files
 clean:
-	@rm -rf $(OBJ_DIR) generate_headers
+	@rm -rf $(OBJ_DIR) $(INCLUDE_DIR) $(TOOLS_DIR)/generate_headers
 	@echo "Clean complete!"
