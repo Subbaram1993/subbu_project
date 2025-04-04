@@ -104,6 +104,11 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "Determined Version: $VERSION"
 
+      # Generate header files using Makefile rule
+      - name: Generate Header Files
+        run: |
+          make generate_headers
+
       # Build the project
       - name: Build the Project
         run: |
