@@ -1,20 +1,17 @@
-
----
-
 ### ✅ `SUPPORT.md`
 
-```markdown
 # Support
 
-Thank you for using or exploring **subbu_project**!
+Thank you for using or exploring **subbu_project**! 🙌
 
 ## 📬 How to Get Help
 
 If you're having trouble or want to ask questions, here are a few options:
 
-- **GitHub Issues:** [Open an issue](https://github.com/your-username/subbu_project/issues) for bugs, questions, or feature requests.
+- **GitHub Issues:** [Open an issue](https://github.com/Subbaram1993/subbu_project/issues) for bugs, questions, or feature requests.
 - **Discussions:** Use the GitHub Discussions tab (if enabled) for open conversations.
-- **Email:** You can reach out to me at subbaramaiah@example.com.
+- **Email:** You can reach out to me at:  
+  `chevuri.rama7 [at] gmail [dot] com` (obfuscated to reduce spam)
 
 ## 🛠 Troubleshooting Tips
 
@@ -24,9 +21,14 @@ If you're having trouble or want to ask questions, here are a few options:
 
 ## 🤝 Contributions Welcome
 
-If you'd like to improve this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) guide and submit a pull request.
+If you'd like to improve this project, please read the [`CONTRIBUTING.md`](CONTRIBUTING.md) guide and submit a pull request.
 
 ---
+<div align="center">
+  
+## 🙏 Thank You for Visiting...!!!
 
-🙏 Thanks for your interest and support!  
-🎉 Happy Coding!
+### 🎉 Happy Coding! 😊
+
+</div>
+

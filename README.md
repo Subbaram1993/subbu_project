@@ -28,17 +28,20 @@ To build:
 mkdir build && cd build
 cmake ..
 make
+```
 To run:
-
-bash
-Copy
-Edit
+```bash
 ./your_binary_name
-📢 Contribution
-Want to help improve this project? Great! See CONTRIBUTING.md for how to start.
+```
 
-🧰 Support
-Need help? Please check out the SUPPORT.md file.
+## 📢 Contribution
+Want to help improve this project? Great! See ***[CONTRIBUTING.md](https://github.com/Subbaram1993/subbu_project/blob/main/CONTRIBUTING.md)*** for how to start.
 
-🙏 Thank You for Visiting...!!! 😊
-🎉 Happy Coding...!
+## 🧰 Support
+Need help? Please check out the ***[SUPPORT.md](https://github.com/Subbaram1993/subbu_project/blob/main/README.md)*** file.
+
+## 
+<p align="center">
+  🙏 <strong>Thank You for Visiting...!!! 😊</strong><br>
+  🎉 <strong>Happy Coding!</strong>
+</p>
