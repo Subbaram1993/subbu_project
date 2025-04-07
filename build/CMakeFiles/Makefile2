@@ -74,6 +74,7 @@ all: CMakeFiles/pattern_gen.dir/all
 all: CMakeFiles/print_char_indexing_string.dir/all
 all: CMakeFiles/selection_sort.dir/all
 all: CMakeFiles/single_linked_list.dir/all
+all: CMakeFiles/sll_with_bsts.dir/all
 all: CMakeFiles/sum_of_unique_array_elements.dir/all
 all: CMakeFiles/sum_the_ip_addr_octets.dir/all
 all: test/all
@@ -95,6 +96,7 @@ clean: CMakeFiles/pattern_gen.dir/clean
 clean: CMakeFiles/print_char_indexing_string.dir/clean
 clean: CMakeFiles/selection_sort.dir/clean
 clean: CMakeFiles/single_linked_list.dir/clean
+clean: CMakeFiles/sll_with_bsts.dir/clean
 clean: CMakeFiles/sum_of_unique_array_elements.dir/clean
 clean: CMakeFiles/sum_the_ip_addr_octets.dir/clean
 clean: CMakeFiles/clean_build.dir/clean
@@ -405,13 +407,39 @@ CMakeFiles/single_linked_list.dir/clean:
 .PHONY : CMakeFiles/single_linked_list.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/sll_with_bsts.dir
+
+# All Build rule for target.
+CMakeFiles/sll_with_bsts.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sll_with_bsts.dir/build.make CMakeFiles/sll_with_bsts.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sll_with_bsts.dir/build.make CMakeFiles/sll_with_bsts.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=34,35 "Built target sll_with_bsts"
+.PHONY : CMakeFiles/sll_with_bsts.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/sll_with_bsts.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/sll_with_bsts.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : CMakeFiles/sll_with_bsts.dir/rule
+
+# Convenience name for target.
+sll_with_bsts: CMakeFiles/sll_with_bsts.dir/rule
+.PHONY : sll_with_bsts
+
+# clean rule for target.
+CMakeFiles/sll_with_bsts.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sll_with_bsts.dir/build.make CMakeFiles/sll_with_bsts.dir/clean
+.PHONY : CMakeFiles/sll_with_bsts.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/sum_of_unique_array_elements.dir
 
 # All Build rule for target.
 CMakeFiles/sum_of_unique_array_elements.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_of_unique_array_elements.dir/build.make CMakeFiles/sum_of_unique_array_elements.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=43,44 "Built target sum_of_unique_array_elements"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=45,46 "Built target sum_of_unique_array_elements"
 .PHONY : CMakeFiles/sum_of_unique_array_elements.dir/all
 
 # Build rule for subdir invocation for target.
@@ -437,7 +465,7 @@ CMakeFiles/sum_of_unique_array_elements.dir/clean:
 CMakeFiles/sum_the_ip_addr_octets.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=45,46 "Built target sum_the_ip_addr_octets"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=47,48 "Built target sum_the_ip_addr_octets"
 .PHONY : CMakeFiles/sum_the_ip_addr_octets.dir/all
 
 # Build rule for subdir invocation for target.
@@ -489,7 +517,7 @@ CMakeFiles/clean_build.dir/clean:
 test/CMakeFiles/subbu_project_logic.dir/all:
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/depend
 	$(MAKE) $(MAKESILENT) -f test/CMakeFiles/subbu_project_logic.dir/build.make test/CMakeFiles/subbu_project_logic.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=34,35,36,37,38,39,40,41,42 "Built target subbu_project_logic"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=36,37,38,39,40,41,42,43,44 "Built target subbu_project_logic"
 .PHONY : test/CMakeFiles/subbu_project_logic.dir/all
 
 # Build rule for subdir invocation for target.

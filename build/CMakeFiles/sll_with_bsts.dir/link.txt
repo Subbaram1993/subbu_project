@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/sll_with_bsts.dir/src/sll_with_bsts.c.o -o sll_with_bsts  -lm 

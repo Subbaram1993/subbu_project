@@ -315,6 +315,19 @@ single_linked_list/fast:
 .PHONY : single_linked_list/fast
 
 #=============================================================================
+# Target rules for targets named sll_with_bsts
+
+# Build rule for target.
+sll_with_bsts: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sll_with_bsts
+.PHONY : sll_with_bsts
+
+# fast build rule for target.
+sll_with_bsts/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sll_with_bsts.dir/build.make CMakeFiles/sll_with_bsts.dir/build
+.PHONY : sll_with_bsts/fast
+
+#=============================================================================
 # Target rules for targets named sum_of_unique_array_elements
 
 # Build rule for target.
@@ -643,6 +656,30 @@ src/single_linked_list.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/single_linked_list.dir/build.make CMakeFiles/single_linked_list.dir/src/single_linked_list.c.s
 .PHONY : src/single_linked_list.c.s
 
+src/sll_with_bsts.o: src/sll_with_bsts.c.o
+.PHONY : src/sll_with_bsts.o
+
+# target to build an object file
+src/sll_with_bsts.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sll_with_bsts.dir/build.make CMakeFiles/sll_with_bsts.dir/src/sll_with_bsts.c.o
+.PHONY : src/sll_with_bsts.c.o
+
+src/sll_with_bsts.i: src/sll_with_bsts.c.i
+.PHONY : src/sll_with_bsts.i
+
+# target to preprocess a source file
+src/sll_with_bsts.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sll_with_bsts.dir/build.make CMakeFiles/sll_with_bsts.dir/src/sll_with_bsts.c.i
+.PHONY : src/sll_with_bsts.c.i
+
+src/sll_with_bsts.s: src/sll_with_bsts.c.s
+.PHONY : src/sll_with_bsts.s
+
+# target to generate assembly for a file
+src/sll_with_bsts.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/sll_with_bsts.dir/build.make CMakeFiles/sll_with_bsts.dir/src/sll_with_bsts.c.s
+.PHONY : src/sll_with_bsts.c.s
+
 src/sum_of_unique_array_elements.o: src/sum_of_unique_array_elements.c.o
 .PHONY : src/sum_of_unique_array_elements.o
 
@@ -717,6 +754,7 @@ help:
 	@echo "... run_tests"
 	@echo "... selection_sort"
 	@echo "... single_linked_list"
+	@echo "... sll_with_bsts"
 	@echo "... subbu_project_logic"
 	@echo "... sum_of_unique_array_elements"
 	@echo "... sum_the_ip_addr_octets"
@@ -753,6 +791,9 @@ help:
 	@echo "... src/single_linked_list.o"
 	@echo "... src/single_linked_list.i"
 	@echo "... src/single_linked_list.s"
+	@echo "... src/sll_with_bsts.o"
+	@echo "... src/sll_with_bsts.i"
+	@echo "... src/sll_with_bsts.s"
 	@echo "... src/sum_of_unique_array_elements.o"
 	@echo "... src/sum_of_unique_array_elements.i"
 	@echo "... src/sum_of_unique_array_elements.s"
