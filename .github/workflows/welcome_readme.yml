@@ -1,0 +1,20 @@
+#.github/workflows/welcome_readme.yml
+name: Welcome and Print README
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+      -name: Checkout the repo
+       uses: actions/checkout@v3
+
+      -name: Print Welcome Message
+       run: echo "Thanks for Pull my Repo! Here's the README:"
+
+      -name: Print README.md content
+       run: cat README.md
