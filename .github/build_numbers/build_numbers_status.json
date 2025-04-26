@@ -1,5 +1,5 @@
 {
-  "last_successful_build_number": 59,
+  "last_successful_build_number": 60,
   "build_history": [
     {
       "build_number": 3,
@@ -504,7 +504,12 @@
       "build_number": 59,
       "status": "SUCCESS",
       "timestamp": "2025-04-26T11:35:26+0530"
+    },
+    {
+      "build_number": 60,
+      "status": "SUCCESS",
+      "timestamp": "2025-04-26T11:41:44+0530"
     }
   ],
-  "last_updated": "2025-04-26T11:35:26+0530"
+  "last_updated": "2025-04-26T11:41:44+0530"
 }
