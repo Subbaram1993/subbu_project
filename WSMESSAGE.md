@@ -10,5 +10,28 @@
 //==========================================================================================//
 // 				WELCOME TO THE REPOSITORY 				    //
 //==========================================================================================//
+// A growing collection of C programs and tools built with passion and purpose!		    //
+//											    //
+// This repository includes:								    //
+// - 🧠 Core C programming utilities and logic						    //
+// - 🛠️ Build support via Make and CMake						    //
+// - 🔄 CI/CD integration with Jenkins							    //
+// - 📂 File-based storage for student or telecom-related data				    //
+// - 💻 Test and simulation scripts (e.g., Diameter, S1AP, etc.)			    //
+//											    //
+// ## 📦 Project Structure								    //
+//											    //
+// - `src/` – Source files								    //
+// - `include/` – Header files								    //
+// - `test/` – Test cases								    //
+// - `tools/` – Helper scripts								    //
+// - `Output_Files/` – Output logs or binaries						    //
+// - `OtherFiles/` – Miscellaneous files						    //
+// - `config.json` – Configurations							    //
+// - `agent.jar` – Java agent or tool (used in test harnessing?)			    //
+//											    //		
+// ## 🚀 Getting Started							            //
+//											    //
+//==========================================================================================//
 
 
