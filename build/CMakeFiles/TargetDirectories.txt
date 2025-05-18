@@ -4,6 +4,7 @@
 /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/double_linked_list.dir
 /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/manage.dir
 /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/maximum_element_in_Array.dir
+/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/morse_conversion_viceversa.dir
 /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/numbers_to_word_conversion.dir
 /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/pattern_gen.dir
 /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles/print_char_indexing_string.dir

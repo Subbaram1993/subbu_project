@@ -126,6 +126,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/double_linked_list.dir/DependInfo.cmake"
   "CMakeFiles/manage.dir/DependInfo.cmake"
   "CMakeFiles/maximum_element_in_Array.dir/DependInfo.cmake"
+  "CMakeFiles/morse_conversion_viceversa.dir/DependInfo.cmake"
   "CMakeFiles/numbers_to_word_conversion.dir/DependInfo.cmake"
   "CMakeFiles/pattern_gen.dir/DependInfo.cmake"
   "CMakeFiles/print_char_indexing_string.dir/DependInfo.cmake"

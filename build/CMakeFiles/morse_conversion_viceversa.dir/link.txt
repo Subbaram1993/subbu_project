@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/morse_conversion_viceversa.dir/src/morse_conversion_viceversa.c.o -o morse_conversion_viceversa  -lm 

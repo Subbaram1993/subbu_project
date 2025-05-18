@@ -250,6 +250,19 @@ maximum_element_in_Array/fast:
 .PHONY : maximum_element_in_Array/fast
 
 #=============================================================================
+# Target rules for targets named morse_conversion_viceversa
+
+# Build rule for target.
+morse_conversion_viceversa: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 morse_conversion_viceversa
+.PHONY : morse_conversion_viceversa
+
+# fast build rule for target.
+morse_conversion_viceversa/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/morse_conversion_viceversa.dir/build.make CMakeFiles/morse_conversion_viceversa.dir/build
+.PHONY : morse_conversion_viceversa/fast
+
+#=============================================================================
 # Target rules for targets named numbers_to_word_conversion
 
 # Build rule for target.
@@ -536,6 +549,30 @@ src/maximum_element_in_Array.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/maximum_element_in_Array.dir/build.make CMakeFiles/maximum_element_in_Array.dir/src/maximum_element_in_Array.c.s
 .PHONY : src/maximum_element_in_Array.c.s
 
+src/morse_conversion_viceversa.o: src/morse_conversion_viceversa.c.o
+.PHONY : src/morse_conversion_viceversa.o
+
+# target to build an object file
+src/morse_conversion_viceversa.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/morse_conversion_viceversa.dir/build.make CMakeFiles/morse_conversion_viceversa.dir/src/morse_conversion_viceversa.c.o
+.PHONY : src/morse_conversion_viceversa.c.o
+
+src/morse_conversion_viceversa.i: src/morse_conversion_viceversa.c.i
+.PHONY : src/morse_conversion_viceversa.i
+
+# target to preprocess a source file
+src/morse_conversion_viceversa.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/morse_conversion_viceversa.dir/build.make CMakeFiles/morse_conversion_viceversa.dir/src/morse_conversion_viceversa.c.i
+.PHONY : src/morse_conversion_viceversa.c.i
+
+src/morse_conversion_viceversa.s: src/morse_conversion_viceversa.c.s
+.PHONY : src/morse_conversion_viceversa.s
+
+# target to generate assembly for a file
+src/morse_conversion_viceversa.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/morse_conversion_viceversa.dir/build.make CMakeFiles/morse_conversion_viceversa.dir/src/morse_conversion_viceversa.c.s
+.PHONY : src/morse_conversion_viceversa.c.s
+
 src/numbers_to_word_conversion.o: src/numbers_to_word_conversion.c.o
 .PHONY : src/numbers_to_word_conversion.o
 
@@ -748,6 +785,7 @@ help:
 	@echo "... double_linked_list"
 	@echo "... manage"
 	@echo "... maximum_element_in_Array"
+	@echo "... morse_conversion_viceversa"
 	@echo "... numbers_to_word_conversion"
 	@echo "... pattern_gen"
 	@echo "... print_char_indexing_string"
@@ -776,6 +814,9 @@ help:
 	@echo "... src/maximum_element_in_Array.o"
 	@echo "... src/maximum_element_in_Array.i"
 	@echo "... src/maximum_element_in_Array.s"
+	@echo "... src/morse_conversion_viceversa.o"
+	@echo "... src/morse_conversion_viceversa.i"
+	@echo "... src/morse_conversion_viceversa.s"
 	@echo "... src/numbers_to_word_conversion.o"
 	@echo "... src/numbers_to_word_conversion.i"
 	@echo "... src/numbers_to_word_conversion.s"
