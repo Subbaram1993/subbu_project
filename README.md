@@ -38,7 +38,7 @@ To run:
 Want to help improve this project? Great! See ***[CONTRIBUTING.md](https://github.com/Subbaram1993/subbu_project/blob/main/CONTRIBUTING.md)*** for how to start.
 
 ## 🧰 Support
-Need help? Please check out the ***[SUPPORT.md](https://github.com/Subbaram1993/subbu_project/blob/main/README.md)*** file.
+Need help? Please check out the ***[SUPPORT.md](https://github.com/Subbaram1993/subbu_project/blob/main/SUPPORT.md)*** file.
 
 ## 
 <p align="center">
