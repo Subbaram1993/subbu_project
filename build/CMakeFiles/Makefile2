@@ -78,6 +78,7 @@ all: CMakeFiles/single_linked_list.dir/all
 all: CMakeFiles/sll_with_bsts.dir/all
 all: CMakeFiles/sum_of_unique_array_elements.dir/all
 all: CMakeFiles/sum_the_ip_addr_octets.dir/all
+all: CMakeFiles/temperature_conver.dir/all
 all: test/all
 .PHONY : all
 
@@ -101,6 +102,7 @@ clean: CMakeFiles/single_linked_list.dir/clean
 clean: CMakeFiles/sll_with_bsts.dir/clean
 clean: CMakeFiles/sum_of_unique_array_elements.dir/clean
 clean: CMakeFiles/sum_the_ip_addr_octets.dir/clean
+clean: CMakeFiles/temperature_conver.dir/clean
 clean: CMakeFiles/clean_build.dir/clean
 clean: test/clean
 .PHONY : clean
@@ -511,6 +513,32 @@ sum_the_ip_addr_octets: CMakeFiles/sum_the_ip_addr_octets.dir/rule
 CMakeFiles/sum_the_ip_addr_octets.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/clean
 .PHONY : CMakeFiles/sum_the_ip_addr_octets.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/temperature_conver.dir
+
+# All Build rule for target.
+CMakeFiles/temperature_conver.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/temperature_conver.dir/build.make CMakeFiles/temperature_conver.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/temperature_conver.dir/build.make CMakeFiles/temperature_conver.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles --progress-num=51,52 "Built target temperature_conver"
+.PHONY : CMakeFiles/temperature_conver.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/temperature_conver.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/temperature_conver.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/CMakeFiles 0
+.PHONY : CMakeFiles/temperature_conver.dir/rule
+
+# Convenience name for target.
+temperature_conver: CMakeFiles/temperature_conver.dir/rule
+.PHONY : temperature_conver
+
+# clean rule for target.
+CMakeFiles/temperature_conver.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/temperature_conver.dir/build.make CMakeFiles/temperature_conver.dir/clean
+.PHONY : CMakeFiles/temperature_conver.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/clean_build.dir

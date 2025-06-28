@@ -367,6 +367,19 @@ sum_the_ip_addr_octets/fast:
 .PHONY : sum_the_ip_addr_octets/fast
 
 #=============================================================================
+# Target rules for targets named temperature_conver
+
+# Build rule for target.
+temperature_conver: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 temperature_conver
+.PHONY : temperature_conver
+
+# fast build rule for target.
+temperature_conver/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/temperature_conver.dir/build.make CMakeFiles/temperature_conver.dir/build
+.PHONY : temperature_conver/fast
+
+#=============================================================================
 # Target rules for targets named clean_build
 
 # Build rule for target.
@@ -765,6 +778,30 @@ src/sum_the_ip_addr_octets.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/sum_the_ip_addr_octets.dir/build.make CMakeFiles/sum_the_ip_addr_octets.dir/src/sum_the_ip_addr_octets.c.s
 .PHONY : src/sum_the_ip_addr_octets.c.s
 
+src/temperature_conver.o: src/temperature_conver.c.o
+.PHONY : src/temperature_conver.o
+
+# target to build an object file
+src/temperature_conver.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/temperature_conver.dir/build.make CMakeFiles/temperature_conver.dir/src/temperature_conver.c.o
+.PHONY : src/temperature_conver.c.o
+
+src/temperature_conver.i: src/temperature_conver.c.i
+.PHONY : src/temperature_conver.i
+
+# target to preprocess a source file
+src/temperature_conver.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/temperature_conver.dir/build.make CMakeFiles/temperature_conver.dir/src/temperature_conver.c.i
+.PHONY : src/temperature_conver.c.i
+
+src/temperature_conver.s: src/temperature_conver.c.s
+.PHONY : src/temperature_conver.s
+
+# target to generate assembly for a file
+src/temperature_conver.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/temperature_conver.dir/build.make CMakeFiles/temperature_conver.dir/src/temperature_conver.c.s
+.PHONY : src/temperature_conver.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -796,6 +833,7 @@ help:
 	@echo "... subbu_project_logic"
 	@echo "... sum_of_unique_array_elements"
 	@echo "... sum_the_ip_addr_octets"
+	@echo "... temperature_conver"
 	@echo "... src/binary_linked_list.o"
 	@echo "... src/binary_linked_list.i"
 	@echo "... src/binary_linked_list.s"
@@ -841,6 +879,9 @@ help:
 	@echo "... src/sum_the_ip_addr_octets.o"
 	@echo "... src/sum_the_ip_addr_octets.i"
 	@echo "... src/sum_the_ip_addr_octets.s"
+	@echo "... src/temperature_conver.o"
+	@echo "... src/temperature_conver.i"
+	@echo "... src/temperature_conver.s"
 .PHONY : help
 
 

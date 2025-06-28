@@ -1,0 +1,1 @@
+/usr/bin/cc -O3 -DNDEBUG CMakeFiles/temperature_conver.dir/src/temperature_conver.c.o -o temperature_conver  -lm 
