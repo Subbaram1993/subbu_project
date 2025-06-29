@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: jenkins-trigger-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   trigger-jenkins:
     runs-on: self-hosted
@@ -32,6 +36,7 @@ jobs:
           } > "$GITHUB_WORKSPACE/logs/clean_repo.log" 2>&1
 
       - name: Clear Git LFS Objects
+        timeout-minutes: 5
         run: |
           LOG_FILE="$GITHUB_WORKSPACE/logs/git_lfs_cleanup.log"
           mkdir -p "$(dirname "$LOG_FILE")"
