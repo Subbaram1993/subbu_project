@@ -1,10 +1,10 @@
-Start testing: Jun 28 11:41 IST
+Start testing: Jun 29 20:49 IST
 ----------------------------------------------------------
 1/1 Testing: run_tests
 1/1 Test: run_tests
 Command: "/home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test/run_tests"
 Directory: /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test
-"run_tests" start time: Jun 28 11:41 IST
+"run_tests" start time: Jun 29 20:49 IST
 Output:
 ----------------------------------------------------------
 Current working directory: /home/subbaramaiah_chevuru/Runner/subbu_project/actions-runner/_work/subbu_project/subbu_project/build/test
@@ -59,11 +59,11 @@ test_update_operations: PASSED
 test_display_operations: PASSED
 test_student_operations: PASSED
 <end of output>
-Test time =   0.01 sec
+Test time =   0.02 sec
 ----------------------------------------------------------
 Test Passed.
-"run_tests" end time: Jun 28 11:41 IST
+"run_tests" end time: Jun 29 20:49 IST
 "run_tests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Jun 28 11:41 IST
+End testing: Jun 29 20:49 IST
