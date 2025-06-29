@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Fetch full history for complete operations
-	  token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
           persist-credentials: false  # Disable default GitHub token
 
       - name: Ensure the repository is clean
