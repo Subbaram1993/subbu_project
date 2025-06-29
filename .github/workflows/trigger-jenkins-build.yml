@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Prepare log directory
-        run: mkdir -p logs
+        run: mkdir -p "$GITHUB_WORKSPACE/logs"
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
             else
               echo "No uncommitted changes found."
             fi
-          } > logs/clean_repo.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/clean_repo.log" 2>&1
 
       - name: Clear Git LFS Objects
         run: |
@@ -44,7 +44,7 @@ jobs:
             git lfs migrate export --include="*" --yes || true
 
             echo "Git LFS cleanup completed."
-          } > logs/git_lfs_cleanup.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/git_lfs_cleanup.log" 2>&1
 
       - name: Install Git LFS
         run: |
@@ -52,7 +52,7 @@ jobs:
             git lfs install
             echo "Attempting to fetch LFS objects..."
             git lfs fetch --all || echo "Warning: Git LFS fetch failed (possibly quota-related)."
-          } > logs/git_lfs_install.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/git_lfs_install.log" 2>&1
 
       - name: Read JSON Configuration
         id: read-json
@@ -69,7 +69,7 @@ jobs:
               echo "Error: config.json file not found"
               exit 1
             fi
-          } > logs/read_json.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/read_json.log" 2>&1
 
       - name: Fetch Latest Jenkins Build Number
         id: fetch-jenkins-build-number
@@ -83,7 +83,7 @@ jobs:
               exit 1
             fi
             echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
-          } > logs/jenkins_build_number.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/jenkins_build_number.log" 2>&1
 
       - name: Fetch Jenkins Crumb for CSRF Protection
         run: |
@@ -96,7 +96,7 @@ jobs:
               exit 1
             fi
             echo "JENKINS_CRUMB=$CRUMB" >> $GITHUB_ENV
-          } > logs/jenkins_crumb.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/jenkins_crumb.log" 2>&1
 
       - name: Trigger Jenkins Build
         id: trigger-build
@@ -115,7 +115,7 @@ jobs:
               exit 1
             fi
             echo "Jenkins build triggered successfully."
-          } > logs/trigger_jenkins.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/trigger_jenkins.log" 2>&1
 
       - name: Re-fetch Latest Jenkins Build Number & Status
         id: refetch-jenkins-build-number-status
@@ -132,7 +132,7 @@ jobs:
 
             echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
             echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
-          } > logs/jenkins_status.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/jenkins_status.log" 2>&1
 
       - name: Update Build Numbers in JSON and Commit
         run: |
@@ -184,10 +184,10 @@ jobs:
             else
               echo "No changes to commit."
             fi
-          } > logs/update_json_commit.log 2>&1
+          } > "$GITHUB_WORKSPACE/logs/update_json_commit.log" 2>&1
 
       - name: Upload Execution Logs
         uses: actions/upload-artifact@v4
         with:
           name: trigger-jenkins-logs
-          path: logs/
+          path: "$GITHUB_WORKSPACE/logs"
