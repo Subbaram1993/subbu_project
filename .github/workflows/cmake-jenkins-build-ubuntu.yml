@@ -3,11 +3,11 @@ name: CMake Build, Test, and Update Tag with Jenkins Build Number
 on:
   workflow_run:
     workflows:
-      - "Trigger Jenkins Build and Update Build Numbers"  # Name of the triggering workflow
+      - "Trigger Jenkins Build and Update Build Numbers"
     types:
       - completed
     conclusions:
-      - success  # Ensure it runs only if trigger-jenkins-build.yml is successful
+      - success
 
 env:
   BUILD_TYPE: Release
@@ -20,154 +20,162 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
 
-      # Install required dependencies only if not available
+      - name: Prepare Log Directory
+        run: mkdir -p logs
+
       - name: Install jq and Valgrind if not available
         run: |
-          for pkg in jq valgrind; do
-            if ! command -v $pkg &> /dev/null; then
-              echo "$pkg not found. Installing..."
-              sudo apt-get update && sudo apt-get install -y $pkg
-            else
-              echo "$pkg is already installed."
-            fi
-          done
+          {
+            for pkg in jq valgrind; do
+              if ! command -v $pkg &> /dev/null; then
+                echo "$pkg not found. Installing..."
+                sudo apt-get update && sudo apt-get install -y $pkg
+              else
+                echo "$pkg is already installed."
+              fi
+            done
+          } > logs/install_deps.log 2>&1
 
-      # Import GPG key for signing commits
       - name: Setup GPG Key
-        run: echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import
+        run: echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import > logs/gpg_setup.log 2>&1
 
-      # Read the config.json and set the jobName as an environment variable
       - name: Set Job Name from config.json
         id: set_job_name
         run: |
-          JOB_NAME=$(jq -r '.buildConfig.jobName // empty' config.json)
-          if [[ -z "$JOB_NAME" ]]; then
-            echo "Error: Job name not found in config.json"
-            exit 1
-          fi
-          echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
+          {
+            JOB_NAME=$(jq -r '.buildConfig.jobName // empty' config.json)
+            if [[ -z "$JOB_NAME" ]]; then
+              echo "Error: Job name not found in config.json"
+              exit 1
+            fi
+            echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
+          } > logs/set_job_name.log 2>&1
 
-      # Clean build directory before pulling latest changes
+      - name: Configure Git to Use PAT
+        run: |
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+
       - name: Clean Build Directory
         run: |
-          echo "Cleaning up build directory..."
-          rm -rf build
+          echo "Cleaning build directory..." > logs/clean_build.log 2>&1
+          rm -rf build >> logs/clean_build.log 2>&1
 
-      # Pull Latest Changes and Handle Conflicts
       - name: Pull Latest Changes and Handle Conflicts
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ secrets.GIT_EMAIL }}"
-          git config --global commit.gpgSign true
-          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
+          {
+            git config user.name "${{ github.actor }}"
+            git config user.email "${{ secrets.GIT_EMAIL }}"
+            git config --global commit.gpgSign true
+            git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
 
-          STASH_NEEDED=false
-          if [[ -n $(git status --porcelain) ]]; then
-            git stash push -m "Auto-stash before pulling changes"
-            STASH_NEEDED=true
-          fi
+            STASH_NEEDED=false
+            if [[ -n $(git status --porcelain) ]]; then
+              git stash push -m "Auto-stash before pulling changes"
+              STASH_NEEDED=true
+            fi
 
-          git pull --rebase origin main || {
-            echo "Merge conflict detected. Resolving using 'theirs' strategy."
-            git rebase --abort
-            git pull --strategy=recursive -X theirs origin main
-          }
+            git pull --rebase origin main || {
+              echo "Merge conflict detected. Using 'theirs' strategy."
+              git rebase --abort
+              git pull --strategy=recursive -X theirs origin main
+            }
 
-          if [[ "$STASH_NEEDED" == "true" ]]; then
-            git stash pop || echo "Warning: Stash pop resulted in conflicts."
-          fi
+            if [[ "$STASH_NEEDED" == "true" ]]; then
+              git stash pop || echo "Warning: stash pop resulted in conflicts."
+            fi
+          } > logs/git_pull.log 2>&1
 
-      # Fetch Latest Jenkins Build Number
       - name: Get Latest Jenkins Build Number
         id: get_jenkins_build_number
         run: |
-          BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-            "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber" | tr -d '\n')
+          {
+            BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/buildNumber" | tr -d '\n')
 
-          if [[ -z "$BUILD_NUMBER" || "$BUILD_NUMBER" == "null" ]]; then
-            echo "Error: Failed to retrieve valid build number from Jenkins"
-            exit 1
-          fi
+            if [[ -z "$BUILD_NUMBER" || "$BUILD_NUMBER" == "null" ]]; then
+              echo "Error: Failed to retrieve valid build number"
+              exit 1
+            fi
 
-          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
-          echo "Jenkins Build Number: $BUILD_NUMBER"
+            echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
+          } > logs/jenkins_build_number.log 2>&1
 
-      # Determine version number based on build number
       - name: Determine Version
         id: determine_version
         run: |
-          PATCH=$((BUILD_NUMBER % 10))
-          MINOR=$((BUILD_NUMBER / 10 % 6))
-          MAJOR=$((BUILD_NUMBER / 60))
-          VERSION="v${MAJOR}.${MINOR}.${PATCH}"
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "Determined Version: $VERSION"
+          {
+            PATCH=$((BUILD_NUMBER % 10))
+            MINOR=$((BUILD_NUMBER / 10 % 6))
+            MAJOR=$((BUILD_NUMBER / 60))
+            VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+            echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          } > logs/determine_version.log 2>&1
 
-      # Ensure required directories exist
       - name: Ensure Required Directories Exist
-        run: |
-          mkdir -p include tools obj build
+        run: mkdir -p include tools obj build > logs/create_dirs.log 2>&1
 
-      # Generate header files using Makefile rule
       - name: Generate Header Files
-        run: make generate_headers
+        run: make generate_headers > logs/generate_headers.log 2>&1
 
-      # Build the project
       - name: Build the Project
         run: |
-          echo "Configuring project with CMake..."
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DENABLE_VALGRIND=ON
+          {
+            echo "Configuring CMake..."
+            cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DENABLE_VALGRIND=ON
 
-          echo "Compiling the project..."
-          cmake --build build
+            echo "Building project..."
+            cmake --build build
 
-          echo "Running tests..."
-          cd build
-          make test || exit 1  # Ensure test failures halt execution
+            echo "Running 'make test'..."
+            cd build
+            make test || exit 1
+          } > logs/build_project.log 2>&1
 
-      # Run CTest and display output
       - name: Run CTest
         run: |
-          echo "Running ctest..."
           cd build
-          ctest --output-on-failure || exit 1
+          ctest --output-on-failure > ../logs/ctest.log 2>&1 || exit 1
 
-      # Run tests with Valgrind
       - name: Run Tests with Valgrind
         run: |
-          echo "Running tests with Valgrind..."
           cd build
-          valgrind --leak-check=full --show-leak-kinds=all ./test/run_tests
+          valgrind --leak-check=full --show-leak-kinds=all ./test/run_tests > ../logs/valgrind.log 2>&1
 
-      # Save changes to the repository (excluding artifacts)
       - name: Save Changes to Repo
         run: |
-          git add .
-          git commit -S -m "Update version to ${{ env.VERSION }}" || echo "No changes to commit"
+          {
+            git add .
+            git commit -S -m "Update version to ${{ env.VERSION }}" || echo "No changes to commit"
+          } > logs/git_commit.log 2>&1
 
-      # Create and Push Tag
       - name: Create and Push Tag
         run: |
-          TAG_NAME="${{ env.VERSION }}"
+          {
+            TAG_NAME="${{ env.VERSION }}"
 
-          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-            echo "Tag $TAG_NAME already exists. Updating it."
-            git tag -d "$TAG_NAME"
-            git push --delete origin "$TAG_NAME"
-          fi
+            if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+              echo "Tag $TAG_NAME exists. Deleting..."
+              git tag -d "$TAG_NAME"
+              git push --delete origin "$TAG_NAME"
+            fi
 
-          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-          git push origin "$TAG_NAME"
+            git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+            git push origin "$TAG_NAME"
+          } > logs/git_tag.log 2>&1
 
-      # Push changes to the repository
       - name: Push Changes
-        run: |
-          git push origin main
+        run: git push origin main > logs/git_push.log 2>&1
 
-      # Final success message
+      - name: Upload Execution Logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: cmake-build-logs
+          path: logs/
+
       - name: Success Message
-        run: echo "Build, test, and tagging process completed successfully!"
+        run: echo "✅ Build, test, and tagging completed successfully!"

@@ -10,224 +10,185 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Ensure the repository is clean
-        run: |
-          # Check for uncommitted changes and stash or commit them
-          if ! git diff --quiet; then
-            echo "There are uncommitted changes. Stashing them..."
-            git stash push -m "Stashing uncommitted changes before LFS migration"
-          else
-            echo "No uncommitted changes found."
-          fi
-
-      - name: Clear Git LFS Objects
-        run: |
-          echo "Clearing Git LFS objects globally..."
-
-          # Ensure the repository is checked out to a branch
-          if [ -z "$(git symbolic-ref --short -q HEAD)" ]; then
-              echo "Repository is in detached HEAD state. Checking out to 'main'..."
-              git checkout main || git checkout -b main
-          fi
-
-          # Uninstall Git LFS and clean up configuration
-          git lfs uninstall --system || true
-          git lfs uninstall --global || true
-          git lfs uninstall --local || true
-
-          # Clean up lingering LFS objects
-          git lfs prune || true
-
-          # Migrate LFS objects if any are left
-          echo "Exporting all LFS objects..."
-          git lfs migrate export --include="*" --yes || true
-
-          echo "Git LFS cleanup completed."
+      - name: Prepare log directory
+        run: mkdir -p logs
 
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Fetch full history for complete operations
-          persist-credentials: false  # Disable default GitHub token
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Ensure the repository is clean
+        run: |
+          {
+            if ! git diff --quiet; then
+              echo "There are uncommitted changes. Stashing them..."
+              git stash push -m "Stashing uncommitted changes before LFS migration"
+            else
+              echo "No uncommitted changes found."
+            fi
+          } > logs/clean_repo.log 2>&1
+
+      - name: Clear Git LFS Objects
+        run: |
+          {
+            echo "Clearing Git LFS objects..."
+
+            git lfs uninstall --system || true
+            git lfs uninstall --local || true
+            git lfs uninstall --skip-repo || true
+
+            git lfs prune || true
+
+            echo "Exporting all LFS objects (if any)..."
+            git lfs migrate export --include="*" --yes || true
+
+            echo "Git LFS cleanup completed."
+          } > logs/git_lfs_cleanup.log 2>&1
 
       - name: Install Git LFS
         run: |
-          # Install Git LFS if not already installed
-          git lfs install
-
-          # Check if Git LFS objects are available and fetch them
-          echo "Attempting to fetch LFS objects..."
-          if ! git lfs fetch --all; then
-            echo "Git LFS fetch failed. This may be due to quota limits or other errors."
-            # Optionally, exit with a warning but continue the process
-            exit 0  # Proceed without LFS objects if there's an error
-          fi
-          echo "Git LFS fetch completed successfully."
+          {
+            git lfs install
+            echo "Attempting to fetch LFS objects..."
+            git lfs fetch --all || echo "Warning: Git LFS fetch failed (possibly quota-related)."
+          } > logs/git_lfs_install.log 2>&1
 
       - name: Read JSON Configuration
         id: read-json
         run: |
-          # Check if config.json exists and read jobName
-          if [ -f config.json ]; then
-            JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
-            if [ -z "$JOB_NAME" ] || [ "$JOB_NAME" == "null" ]; then
-              echo "Error: 'jobName' not found in config.json"
+          {
+            if [ -f config.json ]; then
+              JOB_NAME=$(jq -r '.buildConfig.jobName' config.json)
+              if [ -z "$JOB_NAME" ] || [ "$JOB_NAME" == "null" ]; then
+                echo "Error: 'jobName' not found in config.json"
+                exit 1
+              fi
+              echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
+            else
+              echo "Error: config.json file not found"
               exit 1
             fi
-            echo "JOB_NAME=${JOB_NAME}" >> $GITHUB_ENV
-          else
-            echo "Error: config.json file not found"
-            exit 1
-          fi
+          } > logs/read_json.log 2>&1
 
       - name: Fetch Latest Jenkins Build Number
         id: fetch-jenkins-build-number
         run: |
-          # Fetch the last build number from Jenkins
-          LATEST_BUILD_NUMBER_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-            "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number")
-
-          # Parse the build number
-          LATEST_BUILD_NUMBER=$(echo "$LATEST_BUILD_NUMBER_RESPONSE" | jq -r '.number')
-
-          # Check if the build number is valid
-          if [ -z "$LATEST_BUILD_NUMBER" ] || [ "$LATEST_BUILD_NUMBER" == "null" ]; then
-            echo "Error: No builds found for job '${{ env.JOB_NAME }}'."
-            exit 1
-          fi
-
-          echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
+          {
+            RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number")
+            LATEST_BUILD_NUMBER=$(echo "$RESPONSE" | jq -r '.number')
+            if [ -z "$LATEST_BUILD_NUMBER" ] || [ "$LATEST_BUILD_NUMBER" == "null" ]; then
+              echo "Error: No builds found."
+              exit 1
+            fi
+            echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
+          } > logs/jenkins_build_number.log 2>&1
 
       - name: Fetch Jenkins Crumb for CSRF Protection
         run: |
-          # Fetch Jenkins Crumb for CSRF protection
-          echo "Fetching Jenkins crumb..."
-          CRUMB_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-            "${{ secrets.JENKINS_URL }}/crumbIssuer/api/json")
-          CRUMB=$(echo "$CRUMB_RESPONSE" | jq -r '.crumb')
-
-          # Check if the crumb is valid
-          if [ -z "$CRUMB" ] || [ "$CRUMB" == "null" ]; then
-            echo "Failed to obtain crumb. Exiting."
-            exit 1
-          fi
-
-          echo "JENKINS_CRUMB=$CRUMB" >> $GITHUB_ENV
+          {
+            RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/crumbIssuer/api/json")
+            CRUMB=$(echo "$RESPONSE" | jq -r '.crumb')
+            if [ -z "$CRUMB" ] || [ "$CRUMB" == "null" ]; then
+              echo "Failed to obtain Jenkins crumb."
+              exit 1
+            fi
+            echo "JENKINS_CRUMB=$CRUMB" >> $GITHUB_ENV
+          } > logs/jenkins_crumb.log 2>&1
 
       - name: Trigger Jenkins Build
         id: trigger-build
         run: |
-          # Trim trailing slashes from Jenkins URL
-          TRIMMED_JENKINS_URL=$(echo "${{ secrets.JENKINS_URL }}" | sed 's:/*$::')
+          {
+            URL=$(echo "${{ secrets.JENKINS_URL }}" | sed 's:/*$::')
+            FULL_URL="${URL}/job/${{ env.JOB_NAME }}/build"
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
+              --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              --header "Jenkins-Crumb:${{ env.JENKINS_CRUMB }}" \
+              --header "Content-Type: application/x-www-form-urlencoded" \
+              --request POST)
 
-          # Trigger the Jenkins build
-          FULL_URL="${TRIMMED_JENKINS_URL}/job/${{ env.JOB_NAME }}/build"
-          response=$(curl -s -o /dev/null -w "%{http_code}" "$FULL_URL" \
-               --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-               --header "Jenkins-Crumb:${{ env.JENKINS_CRUMB }}" \
-               --header "Content-Type: application/x-www-form-urlencoded" \
-               --request POST)
-
-          if [ "$response" -ne 201 ]; then
-            echo "Error: Jenkins build trigger failed with response code $response. Exiting."
-            exit 1
-          fi
-
-          echo "Jenkins build triggered successfully."
+            if [ "$RESPONSE" -ne 201 ]; then
+              echo "Error: Jenkins build trigger failed with response $RESPONSE"
+              exit 1
+            fi
+            echo "Jenkins build triggered successfully."
+          } > logs/trigger_jenkins.log 2>&1
 
       - name: Re-fetch Latest Jenkins Build Number & Status
         id: refetch-jenkins-build-number-status
         run: |
-          # Wait for Jenkins to complete the build and update build info
-          sleep 100
-          LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
-          BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/$LATEST_BUILD_NUMBER/api/json?tree=result" | jq -r '.result')
+          {
+            echo "Waiting for Jenkins to finish..."
+            sleep 100
 
-          # Set the status to "SUCCESS" if the build succeeded
-          if [ "$BUILD_STATUS" == "SUCCESS" ]; then
-            BUILD_STATUS="SUCCESS"
-          fi
+            LATEST_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+                "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number" | jq -r '.number')
 
-          echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
-          echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
-          echo "Build completed with status: $BUILD_STATUS"
+            BUILD_STATUS=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+                "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/${LATEST_BUILD_NUMBER}/api/json?tree=result" | jq -r '.result')
+
+            echo "LATEST_BUILD_NUMBER=${LATEST_BUILD_NUMBER}" >> $GITHUB_ENV
+            echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
+          } > logs/jenkins_status.log 2>&1
 
       - name: Update Build Numbers in JSON and Commit
         run: |
-          # Define the JSON file path
-          JSON_FILE=".github/build_numbers/build_numbers_status.json"
-          mkdir -p .github/build_numbers
+          {
+            JSON_FILE=".github/build_numbers/build_numbers_status.json"
+            mkdir -p .github/build_numbers
 
-          # Initialize the JSON file if it doesn't exist
-          if [ ! -f "$JSON_FILE" ]; then
-            echo '{"last_successful_build_number": 0, "build_history": []}' > "$JSON_FILE"
-          fi
+            if [ ! -f "$JSON_FILE" ]; then
+              echo '{"last_successful_build_number": 0, "build_history": []}' > "$JSON_FILE"
+            fi
 
-          # Fetch the last successful build number from Jenkins API
-          FULL_URL="${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/api/json"
-          LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" "$FULL_URL" | jq -r '.number')
+            LAST_SUCCESSFUL=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+              "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/api/json" | jq -r '.number')
 
-          # Generate timestamp in UTC
-          TIMESTAMP=$(TZ=Asia/Kolkata date +"%Y-%m-%dT%H:%M:%S%z")
+            TIMESTAMP=$(TZ=Asia/Kolkata date +"%Y-%m-%dT%H:%M:%S%z")
 
-          # Update the JSON file with the last successful build number and the latest timestamp
-          jq --argjson lastBuild "$LAST_SUCCESSFUL_BUILD_NUMBER" \
-             --arg timestamp "$TIMESTAMP" \
-             '.last_successful_build_number = $lastBuild | .last_updated = $timestamp' \
-             "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
+            jq --argjson lastBuild "$LAST_SUCCESSFUL" \
+               --arg timestamp "$TIMESTAMP" \
+               '.last_successful_build_number = $lastBuild | .last_updated = $timestamp' \
+               "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
 
-          echo "Updated last successful build number ($LAST_SUCCESSFUL_BUILD_NUMBER) and timestamp ($TIMESTAMP) in $JSON_FILE"
+            jq --argjson latestBuildNumber "${{ env.LATEST_BUILD_NUMBER }}" \
+               --arg buildStatus "${{ env.BUILD_STATUS }}" \
+               --arg timestamp "$TIMESTAMP" \
+               '.build_history += [{"build_number": $latestBuildNumber, "status": $buildStatus, "timestamp": $timestamp}]' \
+               "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
 
-          # Append the latest successful build number, status, and timestamp to build_history in JSON
-          jq --argjson latestBuildNumber "${{ env.LATEST_BUILD_NUMBER }}" \
-             --arg buildStatus "${{ env.BUILD_STATUS }}" \
-             --arg timestamp "$TIMESTAMP" \
-             '.build_history += [{"build_number": $latestBuildNumber, "status": $buildStatus, "timestamp": $timestamp}]' \
-             "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
+            echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+            git config user.name "${{ github.actor }}"
+            git config user.email "${{ secrets.GIT_EMAIL }}"
+            git config --global commit.gpgSign true
+            git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
 
-          echo "Build history updated in $JSON_FILE"
-
-          # Import GPG private key for signed commits
-          mkdir -p ~/.gnupg
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-
-          # Configure Git user details for signing commits
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ secrets.GIT_EMAIL }}"
-          git config --global commit.gpgSign true
-          git config --global user.signingkey "${{ secrets.GPG_KEY_ID }}"
-
-          # Check if there are changes to commit
-          if ! git diff --quiet; then
-            echo "Changes detected, preparing to commit."
-
-            # Fetch latest changes from remote repository
-            git fetch origin
-            git stash push -m "Stashing untracked files"
-
-            # Attempt to pull with rebase to avoid conflicts
-            git pull --rebase origin main || {
-              echo "Merge conflict occurred. Attempting to resolve automatically."
-              git merge --abort
+            if ! git diff --quiet; then
+              git fetch origin
+              git stash push -m "Stashing untracked files"
+              git pull --rebase origin main || {
+                git merge --abort
+                git stash pop || true
+                if git ls-files -u | grep -q .; then
+                  echo "Merge conflicts detected."
+                  exit 1
+                fi
+              }
               git stash pop || true
+              git add "$JSON_FILE"
+              git commit -S -m "Update build numbers for build ${{ env.LATEST_BUILD_NUMBER }} - ${{ env.BUILD_STATUS }} [$TIMESTAMP] [skip ci]"
+              git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
+            else
+              echo "No changes to commit."
+            fi
+          } > logs/update_json_commit.log 2>&1
 
-              # Check if there are still unresolved merge conflicts
-              if git ls-files -u | grep -q .; then
-                echo "Merge conflicts detected. Please resolve them manually."
-                exit 1
-              fi
-            }
-
-            git stash pop || true
-            git add "$JSON_FILE"
-
-            # Commit the updated JSON file with the latest build info
-            git commit -S -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
-
-            # Push changes to the repository using GitHub PAT Token
-            git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
-          else
-            echo "No changes to commit."
-          fi
+      - name: Upload Execution Logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: trigger-jenkins-logs
+          path: logs/
