@@ -8,7 +8,7 @@
 /*			REVISION LOG					*/
 /************************************************************************/
 /*	25-06-28	-	Initial Draft of the Program		*/
-/*									*/
+/*	25-06-29	-	Indentation Correction.			*/
 /************************************************************************/
 
 
@@ -61,17 +61,14 @@ int main()
 			scanf("%f", &temp);
 			convertCelsius(temp);
 			break;
-		
 		case 2: printf("\nEnter the Temperature in Fahrenheit:\n");
 			scanf("%f", &temp);
 			convertFahrenheit(temp);
 			break;
-
 		case 3: printf("\nEnter the Temperature in Celsius:\n");
 			scanf("%f", &temp);
 			convertKelvin(temp);
 			break;
-
 		default: printf("\nInvalid Choice Displaying the Celsius...\n");
 			 printf("\nEnter the Temperature in Celsius:\n");
 			 scanf("%f", &temp);
