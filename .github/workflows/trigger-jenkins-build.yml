@@ -10,15 +10,15 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Prepare log directory
-        run: mkdir -p "$GITHUB_WORKSPACE/logs"
-
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: ${{ secrets.PAT_TOKEN }}
           persist-credentials: false
+
+      - name: Prepare log directory
+        run: mkdir -p "$GITHUB_WORKSPACE/logs"
 
       - name: Ensure the repository is clean
         run: |
