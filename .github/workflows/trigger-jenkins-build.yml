@@ -34,6 +34,7 @@ jobs:
       - name: Clear Git LFS Objects
         run: |
           {
+            LOG_FILE="$GITHUB_WORKSPACE/logs/git_lfs_cleanup.log"
             echo "Clearing Git LFS objects..."
 
             git lfs uninstall --system || true
@@ -46,7 +47,7 @@ jobs:
             git lfs migrate export --include="*" --yes || true
 
             echo "Git LFS cleanup completed."
-          } > "$GITHUB_WORKSPACE/logs/git_lfs_cleanup.log" 2>&1
+          } > "$LOG_FILE" 2>&1
 
       - name: Install Git LFS
         run: |
