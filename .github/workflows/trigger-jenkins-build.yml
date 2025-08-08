@@ -171,6 +171,11 @@ jobs:
           FULL_URL="${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/api/json"
           LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" "$FULL_URL" | jq -r '.number')
 
+          # FIX: Ensure LAST_SUCCESSFUL_BUILD_NUMBER is numeric and not null
+          if [ -z "$LAST_SUCCESSFUL_BUILD_NUMBER" ] || [ "$LAST_SUCCESSFUL_BUILD_NUMBER" = "null" ]; then
+            LAST_SUCCESSFUL_BUILD_NUMBER=0
+          fi
+
           # Generate timestamp in IST
           TIMESTAMP=$(TZ=Asia/Kolkata date +"%Y-%m-%dT%H:%M:%S%z")
 
