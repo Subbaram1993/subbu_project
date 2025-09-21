@@ -156,7 +156,7 @@ jobs:
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
           echo "Build completed with status: $BUILD_STATUS"
 
-      - name: Update Build Numbers in JSON and Commit (With GPG Signing)
+      - name: Update Build Numbers in JSON and Commit (With GPG Signing, CI-Safe)
         run: |
           # Define the JSON file path
           JSON_FILE=".github/build_numbers/build_numbers_status.json"
@@ -224,7 +224,12 @@ jobs:
           # Check if there are staged changes before committing
           if ! git diff --cached --quiet; then
               echo "Changes detected, committing with GPG signing."
-              git commit -S -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
+
+              # CI-safe GPG commit: explicit key + loopback mode
+              git -c gpg.program="gpg" \
+                  -c commit.gpgSign=true \
+                  commit -S --gpg-sign="$KEY_ID" \
+                  -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
 
               # Push changes to the repository using GitHub PAT Token
               git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
