@@ -156,7 +156,7 @@ jobs:
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
           echo "Build completed with status: $BUILD_STATUS"
 
-      - name: Update Build Numbers in JSON and Commit
+      - name: Update Build Numbers in JSON and Commit (With GPG Signing)
         run: |
           # Define the JSON file path
           JSON_FILE=".github/build_numbers/build_numbers_status.json"
@@ -202,48 +202,32 @@ jobs:
           echo -e "5\ny\n" | gpg --batch --yes --command-fd 0 --edit-key "$KEY_ID" trust quit
 
           # Configure GPG to work in CI
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
           echo "no-tty" >> ~/.gnupg/gpg.conf
           echo "use-agent" >> ~/.gnupg/gpg.conf
-          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
           export GPG_TTY=$(tty)
 
           # Configure Git user details for signing commits
           git config user.name "${{ github.actor }}"
           git config user.email "${{ secrets.GIT_EMAIL }}"
-          git config --global commit.gpgSign false
-          git config --global tag.gpgSign false
           git config --global user.signingkey "$KEY_ID"
           git config --global gpg.program gpg
+          git config --global commit.gpgSign true
+          git config --global tag.gpgSign true
 
-          # Check if there are changes to commit
-          if ! git diff --quiet; then
-            echo "Changes detected, preparing to commit."
+          # Pop any stashed changes before staging the JSON file
+          git stash pop || true
 
-            # Fetch latest changes from remote repository
-            git fetch origin
-            git stash push -m "Stashing untracked files"
+          # Stage the updated JSON file
+          git add "$JSON_FILE"
 
-            # Attempt to pull with rebase to avoid conflicts
-            git pull --rebase origin main || {
-              echo "Merge conflict occurred. Attempting to resolve automatically."
-              git merge --abort
-              git stash pop || true
+          # Check if there are staged changes before committing
+          if ! git diff --cached --quiet; then
+              echo "Changes detected, committing with GPG signing."
+              git commit -S -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
 
-              # Check if there are still unresolved merge conflicts
-              if git ls-files -u | grep -q .; then
-                echo "Merge conflicts detected. Please resolve them manually."
-                exit 1
-              fi
-            }
-
-            git stash pop || true
-            git add "$JSON_FILE"
-
-            # Commit the updated JSON file with the latest build info
-            git commit -S -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
-
-            # Push changes to the repository using GitHub PAT Token
-            git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
+              # Push changes to the repository using GitHub PAT Token
+              git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
-            echo "No changes to commit."
+              echo "No changes to commit."
           fi
