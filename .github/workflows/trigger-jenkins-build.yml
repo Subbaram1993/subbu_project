@@ -51,7 +51,6 @@ jobs:
 
           echo "Git LFS cleanup completed."
 
-
       - name: Install Git LFS
         run: |
           # Install Git LFS if not already installed
@@ -156,63 +155,53 @@ jobs:
           echo "BUILD_STATUS=${BUILD_STATUS}" >> $GITHUB_ENV
           echo "Build completed with status: $BUILD_STATUS"
 
-      - name: Update Build Numbers in JSON and Commit (CI-safe GPG)
+      - name: Update Build Numbers in JSON and Commit (CI-safe, no GPG signing)
         run: |
+          # Define the JSON file path
           JSON_FILE=".github/build_numbers/build_numbers_status.json"
           mkdir -p .github/build_numbers
 
-          # Initialize the JSON file if missing
+          # Initialize the JSON file if it doesn't exist
           if [ ! -f "$JSON_FILE" ]; then
             echo '{"last_successful_build_number": 0, "build_history": []}' > "$JSON_FILE"
           fi
 
+          # Fetch the last successful build number from Jenkins API
           FULL_URL="${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastSuccessfulBuild/api/json"
           LAST_SUCCESSFUL_BUILD_NUMBER=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" "$FULL_URL" | jq -r '.number')
-          [ -z "$LAST_SUCCESSFUL_BUILD_NUMBER" ] || [ "$LAST_SUCCESSFUL_BUILD_NUMBER" = "null" ] && LAST_SUCCESSFUL_BUILD_NUMBER=0
 
+          # Ensure LAST_SUCCESSFUL_BUILD_NUMBER is numeric and not null
+          if [ -z "$LAST_SUCCESSFUL_BUILD_NUMBER" ] || [ "$LAST_SUCCESSFUL_BUILD_NUMBER" = "null" ]; then
+            LAST_SUCCESSFUL_BUILD_NUMBER=0
+          fi
+
+          # Generate timestamp in IST
           TIMESTAMP=$(TZ=Asia/Kolkata date +"%Y-%m-%dT%H:%M:%S%z")
 
-          # Update JSON
-          jq --argjson lastBuild "$LAST_SUCCESSFUL_BUILD_NUMBER" --arg timestamp "$TIMESTAMP" \
-             '.last_successful_build_number = $lastBuild | .last_updated = $timestamp' "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
+          # Update the JSON file with the last successful build number and the latest timestamp
+          jq --argjson lastBuild "$LAST_SUCCESSFUL_BUILD_NUMBER" \
+             --arg timestamp "$TIMESTAMP" \
+             '.last_successful_build_number = $lastBuild | .last_updated = $timestamp' \
+             "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
 
-          jq --argjson latestBuildNumber "${{ env.LATEST_BUILD_NUMBER }}" --arg buildStatus "${{ env.BUILD_STATUS }}" --arg timestamp "$TIMESTAMP" \
-             '.build_history += [{"build_number": $latestBuildNumber, "status": $buildStatus, "timestamp": $timestamp}]' "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
+          # Append the latest successful build number, status, and timestamp to build_history in JSON
+          jq --argjson latestBuildNumber "${{ env.LATEST_BUILD_NUMBER }}" \
+             --arg buildStatus "${{ env.BUILD_STATUS }}" \
+             --arg timestamp "$TIMESTAMP" \
+             '.build_history += [{"build_number": $latestBuildNumber, "status": $buildStatus, "timestamp": $timestamp}]' \
+             "$JSON_FILE" > tmp.json && mv tmp.json "$JSON_FILE"
 
-          # Import GPG key
-          mkdir -p ~/.gnupg
-          chmod 700 ~/.gnupg
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-
-          # Trust the key
-          KEY_ID="${{ secrets.GPG_KEY_ID }}"
-          echo -e "5\ny\n" | gpg --batch --yes --command-fd 0 --edit-key "$KEY_ID" trust quit
-
-          # Configure GPG for CI
-          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          echo "no-tty" >> ~/.gnupg/gpg.conf
-          export GPG_TTY=$(tty)
-
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ secrets.GIT_EMAIL }}"
-          git config --global gpg.program gpg
-          git config --global user.signingkey "$KEY_ID"
-          git config --global commit.gpgSign true
-          git config --global tag.gpgSign true
-
-          # Pop any stashed changes before staging
+          # Pop any stashed changes before staging the JSON file
           git stash pop || true
           git add "$JSON_FILE"
 
-          # CI-safe commit using explicit GPG key
+          # Commit the updated JSON file only if changes exist
           if ! git diff --cached --quiet; then
-            git -c gpg.program="gpg" \
-                -c commit.gpgSign=true \
-                commit -S --gpg-sign="$KEY_ID" \
-                -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
+            echo "Changes detected, committing without GPG signing."
+            git commit -m "Update build numbers in JSON for build ${{ env.LATEST_BUILD_NUMBER }} with status ${{ env.BUILD_STATUS }} and timestamp $TIMESTAMP [skip ci]"
 
+            # Push changes to the repository using GitHub PAT Token
             git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:${GITHUB_REF#refs/heads/}
           else
             echo "No changes to commit."
           fi
-
