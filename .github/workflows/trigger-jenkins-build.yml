@@ -195,6 +195,10 @@ jobs:
           git stash pop || true
           git add "$JSON_FILE"
 
+          # Disable GPG signing for CI
+          git config --global commit.gpgSign false
+          git config --global tag.gpgSign false
+
           # Commit the updated JSON file only if changes exist
           if ! git diff --cached --quiet; then
             echo "Changes detected, committing without GPG signing."
