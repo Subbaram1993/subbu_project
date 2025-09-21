@@ -210,7 +210,8 @@ jobs:
           # Configure Git user details for signing commits
           git config user.name "${{ github.actor }}"
           git config user.email "${{ secrets.GIT_EMAIL }}"
-          git config --global commit.gpgSign true
+          git config --global commit.gpgSign false
+          git config --global tag.gpgSign false
           git config --global user.signingkey "$KEY_ID"
           git config --global gpg.program gpg
 
