@@ -554,7 +554,12 @@
       "build_number": 82,
       "status": "SUCCESS",
       "timestamp": "2025-09-21T13:13:24+0530"
+    },
+    {
+      "build_number": 83,
+      "status": "null",
+      "timestamp": "2025-10-21T17:32:47+0530"
     }
   ],
-  "last_updated": "2025-09-21T13:13:24+0530"
+  "last_updated": "2025-10-21T17:32:47+0530"
 }
