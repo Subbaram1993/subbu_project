@@ -16,7 +16,6 @@
 //	24-12-01 -      Rewrite the logic into seperate function.	//
 //======================================================================//
 
-
 //Header Files
 #include <stdio.h>
 #include <stdlib.h>
