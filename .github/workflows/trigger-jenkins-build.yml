@@ -108,11 +108,31 @@ jobs:
         run: |
           # Fetch Jenkins Crumb for CSRF protection
           echo "Fetching Jenkins crumb..."
-          CRUMB=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-                            "${{ secrets.JENKINS_URL }}/crumbIssuer/api/json" | jq -r '.crumb')
-          # Check if crumb was obtained
-          if [ -z "$CRUMB" ] || [ "$CRUMB" == "null" ]; then
-            echo "Failed to obtain crumb. Exiting."
+
+          # Fetch crumb and HTTP status
+          CRUMB_RESPONSE=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+                                   -w "\n%{http_code}" \
+                                   "${{ secrets.JENKINS_URL }}/crumbIssuer/api/json")
+
+          # Extract HTTP code (last line)
+          HTTP_CODE=$(echo "$CRUMB_RESPONSE" | tail -n1)
+
+          # Extract body (everything except last line)
+          BODY=$(echo "$CRUMB_RESPONSE" | sed '$d')
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Failed to fetch Jenkins crumb. HTTP status: $HTTP_CODE"
+            echo "Response body:"
+            echo "$BODY"
+            exit 1
+          fi
+
+          # Parse crumb from JSON# Parse crumb from JSON
+          CRUMB=$(echo "$BODY" | jq -r '.crumb // empty')
+
+          if [ -z "$CRUMB" ]; then
+            echo "Failed to obtain crumb from JSON. Response was:"
+            echo "$BODY"
             exit 1
           fi
 
