@@ -89,7 +89,11 @@ jobs:
             "${{ secrets.JENKINS_URL }}/job/${{ env.JOB_NAME }}/lastBuild/api/json?tree=number")
 
           # Parse the build number
-          LATEST_BUILD_NUMBER=$(echo "$LATEST_BUILD_NUMBER_RESPONSE" | jq -r '.number')
+          if [ "$RESPONSE" != "200" ]; then
+            echo "No previous builds found. Initializing build number to 0."
+            LATEST_BUILD_NUMBER=0
+          else
+            LATEST_BUILD_NUMBER=$(echo "$LATEST_BUILD_NUMBER_RESPONSE" | jq -r '.number')
 
           # Check if the build number is valid
           if [ -z "$LATEST_BUILD_NUMBER" ] || [ "$LATEST_BUILD_NUMBER" == "null" ]; then
