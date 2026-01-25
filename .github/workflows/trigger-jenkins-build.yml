@@ -94,6 +94,7 @@ jobs:
             LATEST_BUILD_NUMBER=0
           else
             LATEST_BUILD_NUMBER=$(echo "$LATEST_BUILD_NUMBER_RESPONSE" | jq -r '.number')
+          fi
 
           # Check if the build number is valid
           if [ -z "$LATEST_BUILD_NUMBER" ] || [ "$LATEST_BUILD_NUMBER" == "null" ]; then
