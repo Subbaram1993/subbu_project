@@ -110,9 +110,15 @@ jobs:
           echo "Fetching Jenkins crumb..."
 
           # Fetch crumb and HTTP status
-          CRUMB=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
-                             "http://192.168.241.134:8081/crumbIssuer/api/json" \
-                              | jq -r '.crumb')
+          RESPONSE=$(curl -s -u "user:token" "http://jenkins.example.com/crumbIssuer/api/json")
+
+          if ! echo "$RESPONSE" | jq . >/dev/null 2>&1; then
+           echo "Error: Jenkins response is not valid JSON:"
+           echo "$RESPONSE"
+           exit 1
+          fi
+
+          CRUMB=$(echo "$RESPONSE" | jq -r '.crumb')
 
           if [ -z "$CRUMB" ] || [ "$CRUMB" == "null" ]; then
            echo "Failed to obtain crumb. Exiting."
@@ -121,7 +127,6 @@ jobs:
 
           echo "JENKINS_CRUMB=$CRUMB" >> $GITHUB_ENV
           echo "Jenkins crumb fetched successfully!"
-        shell: /usr/bin/bash -e {0}
 
       - name: Trigger Jenkins Build
         id: trigger-build
