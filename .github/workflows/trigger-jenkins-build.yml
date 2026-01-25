@@ -121,7 +121,7 @@ jobs:
 
           echo "JENKINS_CRUMB=$CRUMB" >> $GITHUB_ENV
           echo "Jenkins crumb fetched successfully!"
-        shell: /usr/bin/bash
+        shell: /usr/bin/bash -e {0}
 
       - name: Trigger Jenkins Build
         id: trigger-build
