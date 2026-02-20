@@ -15,7 +15,6 @@
 //Header Files
 #include <stdio.h>
 
-
 //Function to convert to Celsius to Fahrenheit and Celsius to Kelvin
 void convertCelsius(float c)
 {
