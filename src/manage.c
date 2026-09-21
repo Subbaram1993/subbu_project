@@ -9,7 +9,7 @@
 /*		REVISION LOG				*/
 /********************************************************/
 /* 24-11-02 - 	Initial Draft for the Cheet Program 	*/
-/*		and save into a file.			*/
+/*		        and save into a file.			*/
 /*							*/
 /********************************************************/
 
